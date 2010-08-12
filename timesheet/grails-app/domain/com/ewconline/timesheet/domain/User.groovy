@@ -31,7 +31,7 @@ class User {
 	static constraints = {
 		username(blank: false, unique: true)
 		userRealName(blank: false)
-		passwd(blank: false)
+		passwd(nullable:true)
 		enabled()
 	}
 }
