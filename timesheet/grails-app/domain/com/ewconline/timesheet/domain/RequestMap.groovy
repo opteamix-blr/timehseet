@@ -1,4 +1,4 @@
-
+package com.ewconline.timesheet.domain
 
 /**
  * Request Map domain class.

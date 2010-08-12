@@ -1,6 +1,6 @@
+package com.ewconline.timesheet.domain
 
-
-
+import com.ewconline.timesheet.domain.User
 
 /**
  * Authority domain class.
