@@ -13,14 +13,14 @@ hibernate {
 // environment specific settings
 environments {
     development {
-        """dataSource {
+       dataSource {
             dbCreate = "create-drop" // one of 'create', 'create-drop','update'
-            url = "jdbc:hsqldb:mem:devDB" """
-           dataSource {
-               dbCreate="create-drop"
-               url="jdbc:mysql://dev.bct-llc.com:3306/timesheet"
-           
-        }
+            url = "jdbc:hsqldb:mem:devDB"
+       }
+//           dataSource {
+//               dbCreate="create-drop"
+//               url="jdbc:mysql://dev.bct-llc.com:3306/timesheet"
+//        }
     }
     test {
         dataSource {
