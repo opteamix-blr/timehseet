@@ -28,8 +28,6 @@ class User {
 	/** plain password to create a MD5 password */
 	String pass = '[secret]'
 
-        Timesheet timesheets
-
 	static constraints = {
 		username(blank: false, unique: true)
 		userRealName(blank: false)
