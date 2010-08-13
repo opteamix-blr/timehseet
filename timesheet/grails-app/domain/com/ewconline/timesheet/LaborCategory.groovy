@@ -1,4 +1,4 @@
-package com.ewconline.timesheet.domain
+package com.ewconline.timesheet
 
 class LaborCategory {
     String name
@@ -6,4 +6,6 @@ class LaborCategory {
     
     static constraints = {
     }
+    
+    static belongsTo = [User, TimesheetEntry]
 }

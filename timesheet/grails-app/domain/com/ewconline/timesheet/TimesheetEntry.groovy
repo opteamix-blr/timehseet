@@ -1,16 +1,20 @@
-package com.ewconline.timesheet.domain
+package com.ewconline.timesheet
 
 /** This represents a row on a time sheet.
 */
 class TimesheetEntry {
-    Task task
     LaborCategory laborCategory
     ChargeCode chargeCode
+    Date dateWorked
+    double hoursWorked
 
     static constraints = {
+        chargeCode(blank:false)
+        laborCategory(blank:false)
+        workDate(blank:false)
+        hoursWorked(blank:false)
     }
-    
-    static hasMany = [workDays:WorkDay]
+    static belongsTo = [timesheet:Timesheet]
 
     
 }
