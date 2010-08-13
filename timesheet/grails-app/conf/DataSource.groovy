@@ -14,24 +14,26 @@ hibernate {
 environments {
     development {
        dataSource {
+            driverClassName = "org.hsqldb.jdbcDriver"
             dbCreate = "create-drop" // one of 'create', 'create-drop','update'
             url = "jdbc:hsqldb:mem:devDB"
+            username = ""
+            password = ""
        }
-//           dataSource {
-//               dbCreate="create-drop"
-//               url="jdbc:mysql://dev.bct-llc.com:3306/timesheet"
-//        }
     }
     test {
         dataSource {
+            driverClassName = "org.hsqldb.jdbcDriver"
             dbCreate = "update"
             url = "jdbc:hsqldb:mem:testDb"
+            username = ""
+            password = ""
         }
     }
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:hsqldb:file:prodDb;shutdown=true"
+            url = "jdbc:mysql://dev.bct-llc.com:3306/timesheet"
         }
     }
 }
