@@ -7,7 +7,6 @@ class Timesheet {
     Date endDate
 
     static constraints = {
-        user()
         startDate(blank:false)
         endDate(blank:false)
     }
