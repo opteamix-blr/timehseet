@@ -1,6 +1,6 @@
-package com.ewconline.timesheet.domain
+package com.ewconline.timesheet
 
-import com.ewconline.timesheet.domain.Role
+import com.ewconline.timesheet.Role
 
 /**
  * User domain class.
@@ -8,7 +8,7 @@ import com.ewconline.timesheet.domain.Role
 class User {
 	static transients = ['pass']
 	static hasMany = [authorities: Role]
-	static belongsTo = Role
+	static belongsTo = [Role]
 
 	/** Username */
 	String username
@@ -27,6 +27,8 @@ class User {
 
 	/** plain password to create a MD5 password */
 	String pass = '[secret]'
+
+        Timesheet timesheets
 
 	static constraints = {
 		username(blank: false, unique: true)
