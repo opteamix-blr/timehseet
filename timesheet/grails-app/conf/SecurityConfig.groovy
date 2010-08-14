@@ -4,7 +4,7 @@ security {
 
 	active = true
 
-	loginUserDomainClass = "com.ewconline.timesheet.domain.User"
-	authorityDomainClass = "com.ewconline.timesheet.domain.Role"
-	requestMapClass = "com.ewconline.timesheet.domain.RequestMap"
+	loginUserDomainClass = "com.ewconline.timesheet.User"
+	authorityDomainClass = "com.ewconline.timesheet.Role"
+	requestMapClass = "com.ewconline.timesheet.RequestMap"
 }
