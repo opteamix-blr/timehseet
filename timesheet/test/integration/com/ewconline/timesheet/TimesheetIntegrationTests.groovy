@@ -20,7 +20,7 @@ class TimesheetIntegrationTests extends GrailsUnitTestCase {
         assertNotNull(te1)
         t.addToEntries(te1)
 
-        assertEquals(1, t.entries.count())
+        assertEquals(1, t.entries.size())
     }
 
 
