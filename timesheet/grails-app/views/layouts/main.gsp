@@ -102,7 +102,7 @@
 		  <table bgcolor="#477BB6" width="900" cellspacing="0" cellpadding="0" style="padding-top: 10px; padding-bottom: 10px;">
 		    <tr>
 		      <td align="center">
-		        Timesheet Version <g:meta name="app.version"/>
+		        <g:meta name="app.name"/> Version <g:meta name="app.version"/>
 		      </td>
 		    </tr>
 		  </table>
