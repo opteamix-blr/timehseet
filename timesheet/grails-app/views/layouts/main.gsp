@@ -51,7 +51,7 @@
 		          <tr>
 			          <td style="padding-left: 5px; padding-top: 10px; padding-bottom: 10px;">
 			          <font face="arial" color="#000000" size="3"> 
-			          	<a href="index.gsp">List Timesheets </a>
+			          	<a href="${createLinkTo(dir:'', file:'timesheet/listTimesheets')}">List Timesheets </a>
 			          </font>
 			          </td>
 			      </tr>
