@@ -10,7 +10,7 @@
 <body class="login">
 <div id="login"><h1><a href="" title="Timesheet">Timesheet</a></h1>
 
-<form name="loginform" id="loginform" action="index.gsp" method="post">
+<form name="loginform" id="loginform" action="${createLinkTo(dir:'', file:'access/authenticate')}" method="post">
 	<p>
 		<label>Username<br />
 		<input type="text" name="log" id="user_login" class="input" value="" size="20" tabindex="10" /></label>

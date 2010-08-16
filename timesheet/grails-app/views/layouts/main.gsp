@@ -32,7 +32,7 @@
 		      </td>
 		      <td align="right" style="padding-right: 10px;">
 		      	<font face="arial" color="#FFFFFF" size="2"> 
-				  <a href="index.gsp">Logout</a>	       
+				  <a href="${createLinkTo(dir:'', file:'access/logout')}">Logout</a>	       
 				</font>
 		      </td>
 		    </tr>
@@ -79,7 +79,7 @@
 			      <tr>
 			          <td style="padding-left: 5px; padding-top: 10px; padding-bottom: 10px;">
 			          	<font face="arial" color="#000000" size="3">
-			          	<a href="index.gsp">Logout</a>
+			          	<a href="${createLinkTo(dir:'', file:'access/logout')}">Logout</a>
 			          	</font>
 			          </td>
 		          </tr>
