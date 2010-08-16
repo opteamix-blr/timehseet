@@ -8,7 +8,12 @@ class AccessController {
 	}
 	
 	def logout = {
-		// todo remove session user
+		// TODO remove session user
 		redirect(action:login)
+	}
+	
+	def authenticate = {
+		// TODO use ldap to check username and password
+		redirect(controller: "timesheet", action: "listTimesheets")
 	}
 }
