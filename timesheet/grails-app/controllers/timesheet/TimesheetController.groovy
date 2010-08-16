@@ -9,6 +9,6 @@ class TimesheetController {
 	//  http://localhost:8080/Timesheet/timesheet/listTimesheets
 	def listTimesheets = {
 		def timesheetList = Timesheet.list()
-		render(view:"list", timesheetList:timesheetList)
+		[timesheetList:timesheetList]
 	}
 }
