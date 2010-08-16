@@ -7,4 +7,4 @@
 //</g:if>
 
  %>
-${response.sendRedirect("myController/myAction")}
+${response.sendRedirect("access/login")}
