@@ -81,6 +81,3 @@ log4j = {
 
     warn   'org.mortbay.log'
 }
-
-
-//log4j.logger.org.springframework.security='off,stdout'

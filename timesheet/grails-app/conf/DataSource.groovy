@@ -1,9 +1,8 @@
 dataSource {
     pooled = true
-    //driverClassName = "org.hsqldb.jdbcDriver"
-    driverClassName = "com.mysql.jdbc.Driver"
-    username = "timesheet"
-    password = "timesheet"
+    driverClassName = "org.hsqldb.jdbcDriver"
+    username = "sa"
+    password = ""
 }
 hibernate {
     cache.use_second_level_cache = true
@@ -13,27 +12,21 @@ hibernate {
 // environment specific settings
 environments {
     development {
-       dataSource {
-            driverClassName = "org.hsqldb.jdbcDriver"
+        dataSource {
             dbCreate = "create-drop" // one of 'create', 'create-drop','update'
             url = "jdbc:hsqldb:mem:devDB"
-            username = ""
-            password = ""
-       }
+        }
     }
     test {
         dataSource {
-            driverClassName = "org.hsqldb.jdbcDriver"
             dbCreate = "update"
             url = "jdbc:hsqldb:mem:testDb"
-            username = ""
-            password = ""
         }
     }
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:mysql://dev.bct-llc.com:3306/timesheet"
+            url = "jdbc:hsqldb:file:prodDb;shutdown=true"
         }
     }
 }

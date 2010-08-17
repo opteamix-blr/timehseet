@@ -2,7 +2,7 @@ package com.ewconline.timesheet
 
 import grails.test.*
 
-class WorkDayTests extends GrailsUnitTestCase {
+class WorkdayTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
     }
