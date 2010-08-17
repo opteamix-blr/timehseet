@@ -3,12 +3,16 @@ package com.ewconline.timesheet
 /** This represents a row on a time sheet.
 */
 class TimesheetEntry {
-    LaborCategory laborCategory
+	static belongsTo = [timesheet:Timesheet]
+	
+	LaborCategory laborCategory
 	ChargeCode chargeCode
 
     static constraints = {
+		laborCategory()
+		chargeCode()
     }
-    static hasMany = [workdays : Workday]
-	static belongsTo = [timesheet : Timesheet]
+    //static hasMany = [workdays : Workday]
+
     
 }
