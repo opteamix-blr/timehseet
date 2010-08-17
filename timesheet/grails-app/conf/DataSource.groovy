@@ -19,8 +19,8 @@ environments {
     }
     test {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:hsqldb:mem:testDb"
+            dbCreate = "create-drop"
+			url = "jdbc:hsqldb:mem:testDb"
         }
     }
     production {

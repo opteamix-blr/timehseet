@@ -5,7 +5,7 @@ class Workday {
 	Date dateWorked
 	double hoursWorked
 	
-	static belongsTo = [timesheetEntry : TimesheetEntry]
+	static belongsTo = TimesheetEntry
 	
     static constraints = {
     }
