@@ -15,12 +15,11 @@ class TimesheetIntegrationTests extends GrailsUnitTestCase {
         Timesheet t = createTimesheet().save()
         ChargeCode c = createChargeCode()
         LaborCategory lc = createLaborCategory()
-        TimesheetEntry te1 = new TimesheetEntry(laborCategory:lc, chargeCode:c, dateWorked:new Date("07/01/2010"), hoursWorked:8.5)
-        assertEquals(new Date("07/01/2010"), te1.dateWorked)
-        assertNotNull(te1)
-        t.addToEntries(te1)
-
-        assertEquals(1, t.entries.size())
+        TimesheetEntry te1 = new TimesheetEntry(laborCategory:lc, chargeCode:c)
+		Workday w = new Workday( dateWorked:new Date("07/01/2010"), hoursWorked:8.5)
+        t.addToTimesheetEntries(te1)
+		
+        assertEquals(1, t.timesheetEntries.size())
     }
 
 

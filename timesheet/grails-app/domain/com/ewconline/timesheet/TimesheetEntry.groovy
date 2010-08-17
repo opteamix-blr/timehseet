@@ -4,17 +4,11 @@ package com.ewconline.timesheet
 */
 class TimesheetEntry {
     LaborCategory laborCategory
-    ChargeCode chargeCode
-    Date dateWorked
-    double hoursWorked
+	ChargeCode chargeCode
 
     static constraints = {
-        chargeCode(blank:false)
-        laborCategory(blank:false)
-        workDate(blank:false)
-        hoursWorked(blank:false)
     }
-    static belongsTo = [timesheet:Timesheet]
-
+    static hasMany = [workdays : Workday]
+	static belongsTo = [timesheet : Timesheet]
     
 }
