@@ -10,7 +10,7 @@ class Timesheet {
         startDate(blank:false)
         endDate(blank:false)
     }
-    static hasMany = [entries: TimesheetEntry]
+    static hasMany = [timesheetEntries: TimesheetEntry]
 
     //static belongsTo = [user:User]
 }
