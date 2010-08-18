@@ -11,6 +11,32 @@ class TimesheetIntegrationTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 	
+	void testCreatingWorkWeek(){
+		Timesheet foundt = createTimesheetForWeek()
+		assertNotNull(foundt)
+		def TimesheetEntry foundte1 = foundt.timesheetEntries.find{it.laborCategory.name = "Sys Eng 3"}
+		assertNotNull(foundte1)
+		assertEquals(6, foundte1.workdays.size())
+		def TimesheetEntry foundte2 = foundt.timesheetEntries.find{it.laborCategory.name = "SW Eng 4"}
+		assertNotNull(foundte2)
+		assertEquals(6, foundte2.workdays.size())
+	}	
+	
+	void testWorkWeekProjections(){
+		Timesheet foundt = createTimesheetForWeek()
+		assertNotNull(foundt)
+		def totalHours = 0
+		
+		for (entry in foundt.timesheetEntries){
+			totalHours = entry.workdays.inject(totalHours) { 
+				total, item -> total + item.hoursWorked 
+				}
+			}
+		
+		assertEquals(48, totalHours)
+		
+	}
+	
 	void testSaveTimesheet(){
 		def Timesheet t = createTimesheet().save()
 		def Timesheet foundt = Timesheet.get(t.id)
@@ -45,7 +71,29 @@ class TimesheetIntegrationTests extends GrailsUnitTestCase {
     private ChargeCode createChargeCode(){
         return new ChargeCode(chargeNumber:"EPM II - BA5 - TTO 3C", description:"Test charge #")
     }
-     private Timesheet createTimesheet(){
+    private Timesheet createTimesheet(){
         return new Timesheet(startDate:new Date("07/01/2010"), endDate:new Date("07/15/2010"))
     }
+	 
+	private Timesheet createTimesheetForWeek(){
+		def Timesheet t = createTimesheet().save()
+		def TimesheetEntry rowOne = new TimesheetEntry(
+			laborCategory: new LaborCategory(name: "Sys Eng 3",
+			description: "Systems Engineer 3"))
+		def TimesheetEntry rowTwo = new TimesheetEntry(
+			laborCategory: new LaborCategory(name: "SW Eng 4",
+			description: "Software Engineer 4"))
+		t.addToTimesheetEntries(rowOne)
+		t.addToTimesheetEntries(rowTwo)
+		
+		
+		def Date d = new Date("7/1/2010")
+		
+		for (x in 0..5){
+			rowOne.addToWorkdays(dateWorked:d + x, hoursWorked:4.0)
+			rowTwo.addToWorkdays(dateWorked:d + x, hoursWorked:4.0)
+		}
+		
+		return Timesheet.get(t.id)
+	}
 }
