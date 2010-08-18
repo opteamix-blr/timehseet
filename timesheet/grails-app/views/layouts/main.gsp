@@ -85,9 +85,6 @@
 		      
 		      <td style="padding-left: 5px;" bgcolor="#ffffff" width="768" valign="top">
 		      <!-- layout body / main Content region -->
-		        <font face="arial" color="#ffffff" size="4">
-		        Content region here!!
-		        </font>
 				<g:layoutBody />
 		      </td>
 		    </tr>
