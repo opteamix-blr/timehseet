@@ -4,7 +4,7 @@ html {
 	font-weight: bold;
 }  /* Page background. Can't use the body tag for this! */
 h1 a {
-	/* Title image (The "WordPress Logo"). Remember to update the height and width your image's dimensions */
+	/* . Remember to update the height and width your image's dimensions */
 	background: url(images/pbd-png-sprite.png) 0 0 no-repeat;
 	width: 312px;
 	height: 111px;
