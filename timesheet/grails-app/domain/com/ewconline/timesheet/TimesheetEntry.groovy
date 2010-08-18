@@ -12,7 +12,7 @@ class TimesheetEntry {
 		laborCategory()
 		chargeCode()
     }
-    //static hasMany = [workdays : Workday]
+    static hasMany = [workdays : Workday]
 
     
 }
