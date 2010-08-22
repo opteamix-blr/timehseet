@@ -16,7 +16,7 @@ class AccessController {
 		// TODO remove session user
 		if (session) {
 			if (session.user) {
-				log.debug $session.user.username + " is logging out at " + new Date()
+				log.debug session.user.username + " is logging out."
 			}
 		}
 		session.user = null
