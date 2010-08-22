@@ -19,7 +19,7 @@ class User {
 	/** enabled */
 	boolean enabled
 
-	String email
+	String email = ''
 	boolean emailShow
 
 	/** description */
@@ -30,7 +30,7 @@ class User {
 
 	static constraints = {
 		username(blank: false, unique: true)
-		userRealName(blank: false)
+		userRealName(nullable: true)
 		passwd(nullable:true)
 		enabled()
 	}
