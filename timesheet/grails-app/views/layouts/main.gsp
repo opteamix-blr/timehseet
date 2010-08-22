@@ -22,13 +22,13 @@
 		  <table bgcolor="#477BB6" width="900" cellspacing="0" cellpadding="0" style="padding-bottom: 5px;">
 		    <tr>
 		      <td align="left" style="padding-left: 5px;">
-		       Hello, User
+		       Hello, ${ session.user?.userRealName }
 		      </td>
 		      
 		    </tr>
 		    <tr>
 		      <td align="left" style="padding-left: 5px;">
-		        <div id="dateClock"></div>
+		        <div id="dateClock">${ new Date() }</div>
 		      </td>
 		      <td align="right" style="padding-right: 10px;">
 		      	<font face="arial" color="#FFFFFF" size="2"> 
