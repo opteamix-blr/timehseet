@@ -8,10 +8,6 @@
 
 </head>
 <body class="login">
-<% 
-
-println "environment = " + grails.util.Environment.current
-%>
 <div id="login"><h1><a href="" title="Timesheet">Timesheet</a></h1>
 ${flash.message}
 <form name="loginform" id="loginform" action="${createLinkTo(dir:'', file:'access/authenticate')}" method="post">
