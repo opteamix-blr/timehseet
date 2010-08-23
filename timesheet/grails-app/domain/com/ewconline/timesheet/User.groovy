@@ -7,7 +7,7 @@ import com.ewconline.timesheet.Role
  */
 class User {
 	static transients = ['pass']
-	static hasMany = [authorities: Role]
+	static hasMany = [authorities: Role, timesheets: Timesheet]
 	static belongsTo = [Role]
 
 	/** Username */
