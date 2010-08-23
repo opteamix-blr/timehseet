@@ -12,5 +12,5 @@ class Timesheet {
     }
     static hasMany = [timesheetEntries: TimesheetEntry]
 
-    //static belongsTo = [user:User]
+    static belongsTo = [user:User]
 }

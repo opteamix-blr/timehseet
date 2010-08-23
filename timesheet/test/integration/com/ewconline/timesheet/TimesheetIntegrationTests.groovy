@@ -38,30 +38,26 @@ class TimesheetIntegrationTests extends GrailsUnitTestCase {
 	}
 	
 	void testSaveTimesheet(){
-		def Timesheet t = createTimesheet().save()
-		def Timesheet foundt = Timesheet.get(t.id)
-		assertNotNull(foundt)
+		def Timesheet t = createTimesheet()
+		assertNotNull(t)
 	}
 
     void testCreateTimeSheetEntry(){
-		def Timesheet t = createTimesheet().save()
+		def Timesheet t = createTimesheet()
 		def TimesheetEntry te = new TimesheetEntry(laborCategory:createLaborCategory(), chargeCode:createChargeCode())
 		t.addToTimesheetEntries(te)
-		assertNotNull(Timesheet.get(t.id))
-		assertEquals 1, Timesheet.get(t.id).timesheetEntries.size()
+		assertEquals 1, t.timesheetEntries.size()
     }
 	
 	void testAddWorkday(){
-		def Timesheet t = createTimesheet().save()
+		def Timesheet t = createTimesheet()
 		def TimesheetEntry te = new TimesheetEntry(laborCategory:createLaborCategory(), chargeCode:createChargeCode())
 		t.addToTimesheetEntries(te)
 		def Workday w = new Workday(dateWorked:new Date("07/01/2010"), hoursWorked:8.5)
 		te.addToWorkdays(w)
 		
-		def Timesheet foundt = Timesheet.get(t.id)
-		assertNotNull(foundt)
-		assertEquals(1, foundt.timesheetEntries.size())
-		assertEquals(1, foundt.timesheetEntries.find{it.laborCategory.name == "Sys Eng 3"}.workdays.size())
+		assertEquals(1, t.timesheetEntries.size())
+		assertEquals(1, t.timesheetEntries.find{it.laborCategory.name == "Sys Eng 3"}.workdays.size())
 	}
 
     private LaborCategory createLaborCategory(){
@@ -72,11 +68,19 @@ class TimesheetIntegrationTests extends GrailsUnitTestCase {
         return new ChargeCode(chargeNumber:"EPM II - BA5 - TTO 3C", description:"Test charge #")
     }
     private Timesheet createTimesheet(){
-        return new Timesheet(startDate:new Date("07/01/2010"), endDate:new Date("07/15/2010"))
+		def Role r = new Role(description: "test description", authority: "test authority").save()
+		r.addToPeople(new User(username: "Kyle", userRealName: "Kyle Burall"))
+		def User u = r.people.find { it.username == "Kyle" }
+		assertNotNull(u)
+		
+		u.addToTimesheets(new Timesheet(startDate: new Date("07/01/2010"), endDate: new Date("07/15/2010")))
+		def Timesheet foundt = u.timesheets.find { it.startDate.getDateString() == new Date("07/01/2010").getDateString()}
+		assertNotNull(foundt)
+		return foundt
     }
 	 
 	private Timesheet createTimesheetForWeek(){
-		def Timesheet t = createTimesheet().save()
+		def Timesheet t = createTimesheet()
 		def TimesheetEntry rowOne = new TimesheetEntry(
 			laborCategory: new LaborCategory(name: "Sys Eng 3",
 			description: "Systems Engineer 3"))
@@ -94,6 +98,6 @@ class TimesheetIntegrationTests extends GrailsUnitTestCase {
 			rowTwo.addToWorkdays(dateWorked:d + x, hoursWorked:4.0)
 		}
 		
-		return Timesheet.get(t.id)
+		return t
 	}
 }
