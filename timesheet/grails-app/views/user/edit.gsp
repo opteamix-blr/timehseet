@@ -78,6 +78,15 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                  <label for="chargeCodes"><g:message code="user.chargeCodes.label" default="Charge Codes" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'chargeCodes', 'errors')}">
+                                    <g:select name="chargeCodes" from="${com.ewconline.timesheet.ChargeCode.list()}" multiple="yes" optionKey="id" size="5" value="${userInstance?.chargeCodes*.id}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                   <label for="description"><g:message code="user.description.label" default="Description" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'description', 'errors')}">
@@ -100,6 +109,40 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'emailShow', 'errors')}">
                                     <g:checkBox name="emailShow" value="${userInstance?.emailShow}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="laborCategories"><g:message code="user.laborCategories.label" default="Labor Categories" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'laborCategories', 'errors')}">
+                                    <g:select name="laborCategories" from="${com.ewconline.timesheet.LaborCategory.list()}" multiple="yes" optionKey="id" size="5" value="${userInstance?.laborCategories*.id}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="tasks"><g:message code="user.tasks.label" default="Tasks" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'tasks', 'errors')}">
+                                    <g:select name="tasks" from="${com.ewconline.timesheet.Task.list()}" multiple="yes" optionKey="id" size="5" value="${userInstance?.tasks*.id}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="timesheets"><g:message code="user.timesheets.label" default="Timesheets" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'timesheets', 'errors')}">
+                                    
+<ul>
+<g:each in="${userInstance?.timesheets?}" var="t">
+    <li><g:link controller="timesheet" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></li>
+</g:each>
+</ul>
+<g:link controller="timesheet" action="create" params="['user.id': userInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'timesheet.label', default: 'Timesheet')])}</g:link>
+
                                 </td>
                             </tr>
                         
