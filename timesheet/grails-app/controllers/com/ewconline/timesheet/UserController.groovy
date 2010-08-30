@@ -16,7 +16,10 @@ class UserController {
     def create = {
         def userInstance = new User()
         userInstance.properties = params
-        return [userInstance: userInstance]
+		def allTasks = Task.list([sort: 'name', order: 'asc'])
+		def allLaborCategories = LaborCategory.list([sort: 'name', order: 'asc'])
+		def allChargeCodes = ChargeCode.list([sort: 'chargeNumber', order: 'asc'])
+        return [userInstance: userInstance, allTasks:allTasks, allLaborCategories:allLaborCategories, allChargeCodes:allChargeCodes]
     }
 
     def save = {
