@@ -7,8 +7,10 @@ class TimesheetEntry {
 	
 	LaborCategory laborCategory
 	ChargeCode chargeCode
+	Task task
 
     static constraints = {
+		task()
 		laborCategory()
 		chargeCode()
     }
