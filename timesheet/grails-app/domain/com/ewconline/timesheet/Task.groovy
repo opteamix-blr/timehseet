@@ -1,6 +1,7 @@
 package com.ewconline.timesheet
 
-class LaborCategory {
+class Task {
+
     String name
     String description
     
@@ -8,6 +9,6 @@ class LaborCategory {
         name(blank:false, maxSize:50)
         description(nullable:true, maxSize:1000)
     }
-    
+
     static belongsTo = [User, TimesheetEntry]
 }
