@@ -13,6 +13,14 @@ class ParentTimesheetTestCase extends GrailsUnitTestCase {
 		super.setUp()
 	}
 	
+	TimesheetEntry createTimesheetEntry(Timesheet ts, LaborCategory lc, ChargeCode cc){
+		def TimesheetEntry te = new TimesheetEntry(
+			laborCategory: lc,
+			chargeCode: cc)
+		ts.addToTimesheetEntries(te)
+		return te
+	}
+	
 	Timesheet createTimesheet(User u, Date startDate, Date endDate){
 		u.addToTimesheets(new Timesheet(startDate: startDate, endDate: endDate))
 		def Timesheet foundt = u.timesheets.find { it.startDate.getDateString() == startDate.getDateString()}
