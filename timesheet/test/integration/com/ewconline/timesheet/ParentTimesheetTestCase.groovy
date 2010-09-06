@@ -21,6 +21,12 @@ class ParentTimesheetTestCase extends GrailsUnitTestCase {
 		return te
 	}
 	
+	Workday createWorkday(TimesheetEntry te, Date dateWorked, double hoursWorked){
+		Workday wd = new Workday(dateWorked:dateWorked, hoursWorked:hoursWorked)
+		te.addToWorkdays(wd)
+		return wd
+	}
+	
 	Timesheet createTimesheet(User u, Date startDate, Date endDate){
 		u.addToTimesheets(new Timesheet(startDate: startDate, endDate: endDate))
 		def Timesheet foundt = u.timesheets.find { it.startDate.getDateString() == startDate.getDateString()}
