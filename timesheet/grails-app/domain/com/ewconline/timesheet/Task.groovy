@@ -10,5 +10,4 @@ class Task {
         description(nullable:true, maxSize:1000)
     }
 
-    static belongsTo = [User, TimesheetEntry]
 }
