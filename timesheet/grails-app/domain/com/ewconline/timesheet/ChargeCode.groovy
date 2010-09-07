@@ -9,6 +9,4 @@ class ChargeCode {
         chargeNumber(blank:false, maxSize:100)
         description(nullable:true, maxSize:1000)
     }
-
-    static belongsTo = [User, TimesheetEntry]
 }
