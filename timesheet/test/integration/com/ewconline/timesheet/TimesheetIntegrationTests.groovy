@@ -69,8 +69,8 @@ class TimesheetIntegrationTests extends GrailsUnitTestCase {
     }
     private Timesheet createTimesheet(){
 		def Role r = new Role(description: "test description", authority: "test authority").save()
-		r.addToPeople(new User(username: "Kyle", userRealName: "Kyle Burall"))
-		def User u = r.people.find { it.username == "Kyle" }
+		r.addToPeople(new User(username: "tuser", userRealName: "Test User"))
+		def User u = r.people.find { it.username == "tuser" }
 		assertNotNull(u)
 		
 		u.addToTimesheets(new Timesheet(startDate: new Date("07/01/2010"), endDate: new Date("07/15/2010")))

@@ -10,7 +10,7 @@ class WorkdayUpdateTests extends ParentTimesheetTestCase {
     protected void tearDown() {
         super.tearDown()
     }
-
+	
     void testCreateAndUpdateWorkday() {
 		User u = super.createUser ("tuser", "Test User")
 		LaborCategory lc = super.createLaborCategory()
