@@ -7,6 +7,66 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
         <title><g:message code="default.edit.label" args="[entityName]" /></title>
+                <script language="JavaScript" type="text/javascript">
+
+        function selectAllListBoxes() {
+        	selectItemsListBox('tasks');
+        	selectItemsListBox('laborCategories');
+        	selectItemsListBox('chargeCodes');
+        }
+        
+        function selectItemsListBox(selectedListBoxName) {
+            
+            selectedList = document.getElementById(selectedListBoxName);
+        	for (var i=(selectedList.options.length-1); i>=0; i--) {
+	        	var o = selectedList.options[i];
+	        	if (!o.selected) {
+	        		o.selected = true;
+	        	}
+        	}
+        }
+        
+        function moveSelectedOptions(from,to) {
+        	fromThis = document.getElementById(from)
+        	toThat = document.getElementById(to)
+        	// Unselect matching options, if required
+        	if (arguments.length>3) {
+	        	var regex = arguments[3];
+	        	if (regex != "") {
+	        		unSelectMatchingOptions(fromThis,regex);
+	        	}
+        	}
+        	// Move them over
+        	for (var i=0; i<fromThis.options.length; i++) {
+	        	var o = fromThis.options[i];
+	        	if (o.selected) {
+	        		toThat.options[toThat.options.length] = new Option( o.text, o.value, false, false);
+	        	}
+        	}
+        	// Delete them fromThis original
+        	for (var i=(fromThis.options.length-1); i>=0; i--) {
+	        	var o = fromThis.options[i];
+	        	if (o.selected) {
+	        		fromThis.options[i] = null;
+	        	}
+        	}
+
+        	fromThis.selectedIndex = -1;
+        	toThat.selectedIndex = -1;
+        }
+        
+		function moveToRight( leftListName, rightListName ) {
+			var leftList = document.getElementById(leftListName).options
+			var rightList = document.getElementById(rightListName).options
+			for (var i = leftList.length; i >=0; i--) {
+				if (leftList[i].selected) {
+					
+					rightList.add(leftList[i])
+				}
+			}
+		}
+        
+        </script>
     </head>
     <body>
         <div class="nav">
@@ -24,7 +84,7 @@
                 <g:renderErrors bean="${userInstance}" as="list" />
             </div>
             </g:hasErrors>
-            <g:form method="post" >
+            <g:form action="update" method="post" onSubmit="selectAllListBoxes()">
                 <g:hiddenField name="id" value="${userInstance?.id}" />
                 <g:hiddenField name="version" value="${userInstance?.version}" />
                 <div class="dialog">
@@ -125,9 +185,30 @@
                                 <td valign="top" class="name">
                                   <label for="tasks"><g:message code="user.tasks.label" default="Tasks" /></label>
                                 </td>
+                                
+                                
                                 <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'tasks', 'errors')}">
-                                    <g:select name="tasks" from="${com.ewconline.timesheet.Task.list()}" multiple="yes" optionKey="id" size="5" value="${userInstance?.tasks*.id}" />
+                                    <g:select name="task.name"
+          										from="${allTasks}"
+          										optionValue="name"
+          										optionKey="id"
+          										multiple="true"/>
                                 </td>
+                                <td>
+                                	<input type="button" value="&#062;" onClick="moveSelectedOptions('task.name', 'tasks');"/><br/>
+                                	<input type="button" value="&#060;" onClick="moveSelectedOptions('tasks', 'task.name');"/>
+                                </td>
+                                <td class="name">
+                                	<g:select name="tasks"
+          										from="${userInstance.tasks}"
+          										optionValue="name"
+          										optionKey="id"
+          										multiple="true"/>
+                                </td>
+                                
+                                
+                                
+                                
                             </tr>
                         
                             <tr class="prop">

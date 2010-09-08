@@ -76,7 +76,7 @@
                             <td valign="top" style="text-align: left;" class="value">
                                 <ul>
                                 <g:each in="${userInstance.chargeCodes}" var="c">
-                                    <li><g:link controller="chargeCode" action="show" id="${c.id}">${c?.encodeAsHTML()}</g:link></li>
+                                    <li><g:link controller="chargeCode" action="show" id="${c.id}">${c?.chargeNumber}</g:link></li>
                                 </g:each>
                                 </ul>
                             </td>
@@ -110,7 +110,7 @@
                             <td valign="top" style="text-align: left;" class="value">
                                 <ul>
                                 <g:each in="${userInstance.laborCategories}" var="l">
-                                    <li><g:link controller="laborCategory" action="show" id="${l.id}">${l?.encodeAsHTML()}</g:link></li>
+                                    <li><g:link controller="laborCategory" action="show" id="${l.id}">${l?.name}</g:link></li>
                                 </g:each>
                                 </ul>
                             </td>
@@ -123,7 +123,7 @@
                             <td valign="top" style="text-align: left;" class="value">
                                 <ul>
                                 <g:each in="${userInstance.tasks}" var="t">
-                                    <li><g:link controller="task" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></li>
+                                    <li><g:link controller="task" action="show" id="${t.id}">${t?.name.encodeAsHTML()}</g:link></li>
                                 </g:each>
                                 </ul>
                             </td>

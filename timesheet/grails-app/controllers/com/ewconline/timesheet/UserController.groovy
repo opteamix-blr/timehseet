@@ -24,6 +24,8 @@ class UserController {
 
     def save = {
         def userInstance = new User(params)
+		print "1=====> " + request['tasks']
+		println "2=====> " + params['tasks']
         if (userInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
             redirect(action: "show", id: userInstance.id)
@@ -46,12 +48,16 @@ class UserController {
 
     def edit = {
         def userInstance = User.get(params.id)
+		def allTasks = Task.list([sort: 'name', order: 'asc'])
+		//allTasks = allTasks.removeAll(userInstance.tasks)
+		def allLaborCategories = LaborCategory.list([sort: 'name', order: 'asc'])
+		def allChargeCodes = ChargeCode.list([sort: 'chargeNumber', order: 'asc'])
         if (!userInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])}"
             redirect(action: "list")
         }
         else {
-            return [userInstance: userInstance]
+            return [userInstance: userInstance, allTasks:allTasks, allLaborCategories:allLaborCategories, allChargeCodes:allChargeCodes]
         }
     }
 
@@ -100,4 +106,7 @@ class UserController {
             redirect(action: "list")
         }
     }
+}
+class UserCommand extends User {
+	
 }
