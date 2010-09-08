@@ -8,6 +8,24 @@
         <g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
         <script language="JavaScript" type="text/javascript">
+
+        function selectAllListBoxes() {
+        	selectItemsListBox('tasks');
+        	selectItemsListBox('laborCategories');
+        	selectItemsListBox('chargeCodes');
+        }
+        
+        function selectItemsListBox(selectedListBoxName) {
+            
+            selectedList = document.getElementById(selectedListBoxName);
+        	for (var i=(selectedList.options.length-1); i>=0; i--) {
+	        	var o = selectedList.options[i];
+	        	if (!o.selected) {
+	        		o.selected = true;
+	        	}
+        	}
+        }
+        
         function moveSelectedOptions(from,to) {
         	fromThis = document.getElementById(from)
         	toThat = document.getElementById(to)
@@ -68,7 +86,7 @@
                 <g:renderErrors bean="${userInstance}" as="list" />
             </div>
             </g:hasErrors>
-            <g:form action="save" method="post" >
+            <g:form action="save" method="post" onSubmit="selectAllListBoxes()">
                 <div class="dialog">
                     <table>
                         <tbody>
@@ -163,11 +181,11 @@
           										multiple="true"/>
                                 </td>
                                 <td>
-                                	<input type="button" value="&#062;" onClick="moveSelectedOptions('task.name', 'selectedTasks');"/><br/>
-                                	<input type="button" value="&#060;" onClick="moveSelectedOptions('selectedTasks', 'task.name');"/>
+                                	<input type="button" value="&#062;" onClick="moveSelectedOptions('task.name', 'tasks');"/><br/>
+                                	<input type="button" value="&#060;" onClick="moveSelectedOptions('tasks', 'task.name');"/>
                                 </td>
                                 <td class="name">
-                                    <select id="selectedTasks" name="selectedTasks" multiple="multiple">
+                                    <select id="tasks" name="tasks" multiple="multiple">
                                     </select>
                                 </td>
                             </tr>
@@ -190,11 +208,11 @@
           							
                                 </td>
                                 <td>
-                                	<input type="button" value="&#062;" onClick="moveSelectedOptions('laborCategory.name', 'selectedLaborCategories');"/><br/>
-                                	<input type="button" value="&#060;" onClick="moveSelectedOptions('selectedLaborCategories', 'laborCategory.name');"/>
+                                	<input type="button" value="&#062;" onClick="moveSelectedOptions('laborCategory.name', 'laborCategories');"/><br/>
+                                	<input type="button" value="&#060;" onClick="moveSelectedOptions('laborCategories', 'laborCategory.name');"/>
                                 </td>
                                 <td class="name">
-                                    <select id="selectedLaborCategories" name="selectedLaborCategories" multiple="multiple">
+                                    <select id="laborCategories" name="laborCategories" multiple="multiple">
                                     </select>
                                 </td>
                             </tr>
@@ -208,18 +226,18 @@
                                     <label for="user.chargeCodes"><g:message code="user.chargeCodes.label" default="Charge Codes" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'chargeCodes', 'errors')}">
-                                    <g:select name="chargeCode.chargeNumbers"
+                                    <g:select name="chargeCode.chargeNumber"
           										from="${allChargeCodes}"
           										optionValue="chargeNumber"
           										optionKey="id"
           										multiple="true"/>
                                 </td>
                                 <td>
-                                	<input type="button" value="&#062;" onClick="moveSelectedOptions('chargeCode.chargeNumbers', 'selectedChargeNumbers');"/><br/>
-                                	<input type="button" value="&#060;" onClick="moveSelectedOptions('selectedChargeNumbers', 'chargeCode.chargeNumbers');"/>
+                                	<input type="button" value="&#062;" onClick="moveSelectedOptions('chargeCode.chargeNumber', 'chargeCodes');"/><br/>
+                                	<input type="button" value="&#060;" onClick="moveSelectedOptions('chargeCodes', 'chargeCode.chargeNumber');"/>
                                 </td>
                                 <td class="name">
-                                    <select id="selectedChargeNumbers" name="selectedChargeNumbers" multiple="multiple">
+                                    <select id="chargeCodes" name="chargeCodes" multiple="multiple">
                                     </select>
                                 </td>
                             </tr>
