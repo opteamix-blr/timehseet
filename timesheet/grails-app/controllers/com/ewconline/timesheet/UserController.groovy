@@ -19,7 +19,8 @@ class UserController {
 		def allTasks = Task.list([sort: 'name', order: 'asc'])
 		def allLaborCategories = LaborCategory.list([sort: 'name', order: 'asc'])
 		def allChargeCodes = ChargeCode.list([sort: 'chargeNumber', order: 'asc'])
-        return [userInstance: userInstance, allTasks:allTasks, allLaborCategories:allLaborCategories, allChargeCodes:allChargeCodes]
+		def allRoles = Role.list([sort: 'authority', order: 'asc'])
+        return [userInstance: userInstance, allRoles:allRoles, allTasks:allTasks, allLaborCategories:allLaborCategories, allChargeCodes:allChargeCodes]
     }
 
     def save = {
