@@ -49,7 +49,7 @@
                             <td valign="top" style="text-align: left;" class="value">
                                 <ul>
                                 <g:each in="${roleInstance.people}" var="p">
-                                    <li><g:link controller="user" action="show" id="${p.id}">${p?.encodeAsHTML()}</g:link></li>
+                                    <li><g:link controller="user" action="show" id="${p.id}">${p?.userRealName.encodeAsHTML()}</g:link> (${p?.username.encodeAsHTML()})</li>
                                 </g:each>
                                 </ul>
                             </td>
