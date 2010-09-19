@@ -13,6 +13,7 @@
         	selectItemsListBox('tasks');
         	selectItemsListBox('laborCategories');
         	selectItemsListBox('chargeCodes');
+        	selectItemsListBox('authorities');
         }
         
         function selectItemsListBox(selectedListBoxName) {
@@ -164,6 +165,33 @@
                             </tr>
                         
                         </tbody>
+                    </table>
+                </div>
+                <div class="dialog">
+                    <table>
+                        <tbody>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="user.authorities"><g:message code="user.authorities.label" default="Authorities" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'authorities', 'errors')}">
+                                    <g:select name="role.authority"
+                                                from="${allRoles}"
+                                                optionValue="authority"
+                                                optionKey="id"
+                                                multiple="multiple"/>
+                                    
+                                </td>
+                                <td>
+                                    <input type="button" value="&#062;" onClick="moveSelectedOptions('role.authority', 'authorities');"/><br/>
+                                    <input type="button" value="&#060;" onClick="moveSelectedOptions('authorities', 'role.authority');"/>
+                                </td>
+                                <td class="name">
+                                    <select id="authorities" name="authorities" multiple="multiple">
+                                    </select>
+                                </td>
+                            </tr>
                     </table>
                 </div>
                 <div class="dialog">
