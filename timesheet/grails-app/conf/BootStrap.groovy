@@ -1,4 +1,7 @@
+import com.ewconline.timesheet.ChargeCode 
+import com.ewconline.timesheet.LaborCategory 
 import com.ewconline.timesheet.Role;
+import com.ewconline.timesheet.Task 
 import com.ewconline.timesheet.User;
 
 import grails.util.Environment;
@@ -66,6 +69,29 @@ class BootStrap {
 		
 		Role.findByAuthority("self").addToPeople(user2)
 		Role.findByAuthority("approve").addToPeople(user2)
+		
+		def task1 = new Task(name:"Task 1", 
+			description:"Test Task 1"
+		).save()
+		def task2 = new Task(name:"Task 2",
+			description:"Test Task 2"
+		).save()
+		
+		def chargeCode1 = new ChargeCode(chargeNumber:"000-111-1111", 
+			description:"Test Charge Code 1"
+		).save()
+		def chargeCode2 = new ChargeCode(chargeNumber:"000-222-2222",
+			description:"Test Charge Code 2"
+		).save()
+		
+		def laborCategory1 = new LaborCategory( name: "Engineer 1",
+			description:"Test labor cat 1"
+		).save()
+		
+		user1.addToLaborCategories(laborCategory1)
+		user1.addToTasks(task1)
+		user1.addToChargeCodes(chargeCode1)
+		
 	}
 	
 }
