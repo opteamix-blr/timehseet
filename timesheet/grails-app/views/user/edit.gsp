@@ -114,7 +114,7 @@
                                   <label for="passwd"><g:message code="user.passwd.label" default="Passwd" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'passwd', 'errors')}">
-                                    <g:textField name="passwd" value="${userInstance?.passwd}" />
+                                    <g:passwordField name="passwd" value="${userInstance?.passwd}" />
                                 </td>
                             </tr>
                         
