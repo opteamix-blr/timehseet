@@ -31,6 +31,7 @@
 			<th>Thu</th>
 			<th>Fri</th>
 			<th>Sat</th>
+			<th>Total</th>
 		  </tr>
 		  <tr>
 			<td><g:textField name="task" value=""></g:textField></td>
@@ -43,6 +44,20 @@
 			<td><g:textField name="thu" value=""></g:textField></td>
 			<td><g:textField name="fri" value=""></g:textField></td>
 			<td><g:textField name="sat" value=""></g:textField></td>
+			<td><div></div></td>
+		  </tr>
+		  <tr>
+			<td></td>
+			<td></td>
+			<th>Total: </th>
+			<td><div></div></td>
+			<td><div></div></td>
+			<td><div></div></td>
+			<td><div></div></td>
+			<td><div></div></td>
+			<td><div></div></td>
+			<td><div></div></td>
+			<td><div></div></td>
 		  </tr>
 		</table>
 
