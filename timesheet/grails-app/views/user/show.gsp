@@ -42,14 +42,6 @@
                             <td valign="top" class="value">${fieldValue(bean: userInstance, field: "userRealName")}</td>
                             
                         </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.passwd.label" default="Passwd" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "passwd")}</td>
-                            
-                        </tr>
-                    
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="user.enabled.label" default="Enabled" /></td>
                             
@@ -63,7 +55,7 @@
                             <td valign="top" style="text-align: left;" class="value">
                                 <ul>
                                 <g:each in="${userInstance.authorities}" var="a">
-                                    <li><g:link controller="role" action="show" id="${a.id}">${a?.encodeAsHTML()}</g:link></li>
+                                    <li><g:link controller="role" action="show" id="${a.id}">${a?.authority?.encodeAsHTML()}</g:link></li>
                                 </g:each>
                                 </ul>
                             </td>
