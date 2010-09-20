@@ -194,31 +194,7 @@
                             </tr>
                     </table>
                 </div>
-                <div class="dialog">
-                	<table>
-                		<tbody>
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="user.tasks"><g:message code="user.tasks.label" default="Tasks" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'tasks', 'errors')}">
-                                    <g:select name="task.name"
-          										from="${allTasks}"
-          										optionValue="name"
-          										optionKey="id"
-          										multiple="true"/>
-                                </td>
-                                <td>
-                                	<input type="button" value="&#062;" onClick="moveSelectedOptions('task.name', 'tasks');"/><br/>
-                                	<input type="button" value="&#060;" onClick="moveSelectedOptions('tasks', 'task.name');"/>
-                                </td>
-                                <td class="name">
-                                    <select id="tasks" name="tasks" multiple="multiple">
-                                    </select>
-                                </td>
-                            </tr>
-                	</table>
-                </div>
+                
                 <div class="dialog">
                 	<table>
                 		<tbody>
@@ -245,6 +221,31 @@
                                 </td>
                             </tr>
                 	</table>
+                </div>
+                <div class="dialog">
+                    <table>
+                        <tbody>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="user.tasks"><g:message code="user.tasks.label" default="Tasks" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'tasks', 'errors')}">
+                                    <g:select name="task.name"
+                                                from="${allTasks}"
+                                                optionValue="name"
+                                                optionKey="id"
+                                                multiple="true"/>
+                                </td>
+                                <td>
+                                    <input type="button" value="&#062;" onClick="moveSelectedOptions('task.name', 'tasks');"/><br/>
+                                    <input type="button" value="&#060;" onClick="moveSelectedOptions('tasks', 'task.name');"/>
+                                </td>
+                                <td class="name">
+                                    <select id="tasks" name="tasks" multiple="multiple">
+                                    </select>
+                                </td>
+                            </tr>
+                    </table>
                 </div>
                 <div class="dialog">
                 	<table>

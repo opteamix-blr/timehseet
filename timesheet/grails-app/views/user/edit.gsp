@@ -13,6 +13,7 @@
         	selectItemsListBox('tasks');
         	selectItemsListBox('laborCategories');
         	selectItemsListBox('chargeCodes');
+        	selectItemsListBox('authorities');
         }
         
         function selectItemsListBox(selectedListBoxName) {
@@ -127,23 +128,7 @@
                                 </td>
                             </tr>
                         
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="authorities"><g:message code="user.authorities.label" default="Authorities" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'authorities', 'errors')}">
-                                    
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="chargeCodes"><g:message code="user.chargeCodes.label" default="Charge Codes" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'chargeCodes', 'errors')}">
-                                    <g:select name="chargeCodes" from="${com.ewconline.timesheet.ChargeCode.list()}" multiple="yes" optionKey="id" size="5" value="${userInstance?.chargeCodes*.id}" />
-                                </td>
-                            </tr>
+                            
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -171,62 +156,6 @@
                                     <g:checkBox name="emailShow" value="${userInstance?.emailShow}" />
                                 </td>
                             </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="laborCategories"><g:message code="user.laborCategories.label" default="Labor Categories" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'laborCategories', 'errors')}">
-                                    <g:select name="laborCategories" from="${com.ewconline.timesheet.LaborCategory.list()}" multiple="yes" optionKey="id" size="5" value="${userInstance?.laborCategories*.id}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="tasks"><g:message code="user.tasks.label" default="Tasks" /></label>
-                                </td>
-                                
-                                
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'tasks', 'errors')}">
-                                    <g:select name="task.name"
-          										from="${allTasks}"
-          										optionValue="name"
-          										optionKey="id"
-          										multiple="true"/>
-                                </td>
-                                <td>
-                                	<input type="button" value="&#062;" onClick="moveSelectedOptions('task.name', 'tasks');"/><br/>
-                                	<input type="button" value="&#060;" onClick="moveSelectedOptions('tasks', 'task.name');"/>
-                                </td>
-                                <td class="name">
-                                	<g:select name="tasks"
-          										from="${userInstance.tasks}"
-          										optionValue="name"
-          										optionKey="id"
-          										multiple="true"/>
-                                </td>
-                                
-                                
-                                
-                                
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="timesheets"><g:message code="user.timesheets.label" default="Timesheets" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'timesheets', 'errors')}">
-                                    
-<ul>
-<g:each in="${userInstance?.timesheets?}" var="t">
-    <li><g:link controller="timesheet" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></li>
-</g:each>
-</ul>
-<g:link controller="timesheet" action="create" params="['user.id': userInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'timesheet.label', default: 'Timesheet')])}</g:link>
-
-                                </td>
-                            </tr>
-                        
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="pass"><g:message code="user.pass.label" default="Pass" /></label>
@@ -237,6 +166,123 @@
                             </tr>
                         
                         </tbody>
+                    </table>
+                </div>
+                <div class="dialog">
+                    <table>
+                        <tbody>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="user.authorities"><g:message code="user.authorities.label" default="Authorities" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'authorities', 'errors')}">
+                                    <g:select name="role.authority"
+                                                from="${allRoles}"
+                                                optionValue="authority"
+                                                optionKey="id"
+                                                multiple="multiple"/>
+                                    
+                                </td>
+                                <td>
+                                    <input type="button" value="&#062;" onClick="moveSelectedOptions('role.authority', 'authorities');"/><br/>
+                                    <input type="button" value="&#060;" onClick="moveSelectedOptions('authorities', 'role.authority');"/>
+                                </td>
+                                <td class="name">
+                                    <g:select id="authorities" name="authorities"
+                                                from="${authorities}"
+                                                optionValue="authority"
+                                                optionKey="id"
+                                                multiple="multiple"/>
+                                </td>
+                            </tr>
+                    </table>
+                </div>
+                
+                <div class="dialog">
+                    <table>
+                        <tbody>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="user.laborCategories"><g:message code="user.laborCategories.label" default="Labor Categories" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'laborCategories', 'errors')}">
+                                    <g:select name="laborCategory.name"
+                                                from="${allLaborCategories}"
+                                                optionValue="name"
+                                                optionKey="id"
+                                                multiple="multiple"/>
+                                    
+                                </td>
+                                <td>
+                                    <input type="button" value="&#062;" onClick="moveSelectedOptions('laborCategory.name', 'laborCategories');"/><br/>
+                                    <input type="button" value="&#060;" onClick="moveSelectedOptions('laborCategories', 'laborCategory.name');"/>
+                                </td>
+                                <td class="name">
+                                    <g:select id="laborCategories" name="laborCategories" 
+                                                from="${laborCategories}"
+                                                optionValue="name"
+                                                optionKey="id"
+                                                multiple="multiple"/>
+                                </td>
+                            </tr>
+                    </table>
+                </div>
+                <div class="dialog">
+                    <table>
+                        <tbody>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="user.tasks"><g:message code="user.tasks.label" default="Tasks" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'tasks', 'errors')}">
+                                    <g:select name="task.name"
+                                                from="${allTasks}"
+                                                optionValue="name"
+                                                optionKey="id"
+                                                multiple="true"/>
+                                </td>
+                                <td>
+                                    <input type="button" value="&#062;" onClick="moveSelectedOptions('task.name', 'tasks');"/><br/>
+                                    <input type="button" value="&#060;" onClick="moveSelectedOptions('tasks', 'task.name');"/>
+                                </td>
+                                <td class="name">
+                                    <g:select id="tasks" name="tasks" 
+                                                from="${tasks}"
+                                                optionValue="name"
+                                                optionKey="id"
+                                                multiple="true"/>
+                                </td>
+                            </tr>
+                    </table>
+                </div>
+                <div class="dialog">
+                    <table>
+                        <tbody>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="user.chargeCodes"><g:message code="user.chargeCodes.label" default="Charge Codes" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'chargeCodes', 'errors')}">
+                                    <g:select name="chargeCode.chargeNumber"
+                                                from="${allChargeCodes}"
+                                                optionValue="chargeNumber"
+                                                optionKey="id"
+                                                multiple="true"/>
+                                </td>
+                                <td>
+                                    <input type="button" value="&#062;" onClick="moveSelectedOptions('chargeCode.chargeNumber', 'chargeCodes');"/><br/>
+                                    <input type="button" value="&#060;" onClick="moveSelectedOptions('chargeCodes', 'chargeCode.chargeNumber');"/>
+                                </td>
+                                <td class="name">
+                                    <g:select id="chargeCodes" name="chargeCodes" 
+                                                from="${chargeCodes}"
+                                                optionValue="chargeNumber"
+                                                optionKey="id"
+                                                multiple="true"/>
+                                </td>
+                            </tr>
                     </table>
                 </div>
                 <div class="buttons">
