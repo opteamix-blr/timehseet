@@ -48,32 +48,7 @@
                             <td valign="top" class="value"><g:formatBoolean boolean="${userInstance?.enabled}" /></td>
                             
                         </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.authorities.label" default="Authorities" /></td>
-                            
-                            <td valign="top" style="text-align: left;" class="value">
-                                <ul>
-                                <g:each in="${userInstance.authorities}" var="a">
-                                    <li><g:link controller="role" action="show" id="${a.id}">${a?.authority?.encodeAsHTML()}</g:link></li>
-                                </g:each>
-                                </ul>
-                            </td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.chargeCodes.label" default="Charge Codes" /></td>
-                            
-                            <td valign="top" style="text-align: left;" class="value">
-                                <ul>
-                                <g:each in="${userInstance.chargeCodes}" var="c">
-                                    <li><g:link controller="chargeCode" action="show" id="${c.id}">${c?.chargeNumber}</g:link></li>
-                                </g:each>
-                                </ul>
-                            </td>
-                            
-                        </tr>
+
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="user.description.label" default="Description" /></td>
@@ -95,7 +70,18 @@
                             <td valign="top" class="value"><g:formatBoolean boolean="${userInstance?.emailShow}" /></td>
                             
                         </tr>
-                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="user.authorities.label" default="Authorities" /></td>
+                            
+                            <td valign="top" style="text-align: left;" class="value">
+                                <ul>
+                                <g:each in="${userInstance.authorities}" var="a">
+                                    <li><g:link controller="role" action="show" id="${a.id}">${a?.authority?.encodeAsHTML()}</g:link></li>
+                                </g:each>
+                                </ul>
+                            </td>
+                            
+                        </tr>
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="user.laborCategories.label" default="Labor Categories" /></td>
                             
@@ -108,7 +94,6 @@
                             </td>
                             
                         </tr>
-                    
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="user.tasks.label" default="Tasks" /></td>
                             
@@ -121,27 +106,20 @@
                             </td>
                             
                         </tr>
-                    
+
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.timesheets.label" default="Timesheets" /></td>
+                            <td valign="top" class="name"><g:message code="user.chargeCodes.label" default="Charge Codes" /></td>
                             
                             <td valign="top" style="text-align: left;" class="value">
                                 <ul>
-                                <g:each in="${userInstance.timesheets}" var="t">
-                                    <li><g:link controller="timesheet" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></li>
+                                <g:each in="${userInstance.chargeCodes}" var="c">
+                                    <li><g:link controller="chargeCode" action="show" id="${c.id}">${c?.chargeNumber}</g:link></li>
                                 </g:each>
                                 </ul>
                             </td>
                             
                         </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.pass.label" default="Pass" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "pass")}</td>
-                            
-                        </tr>
-                    
+                      
                     </tbody>
                 </table>
             </div>
