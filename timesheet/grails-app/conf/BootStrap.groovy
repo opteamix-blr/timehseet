@@ -101,7 +101,7 @@ class BootStrap {
 		task2.save()
 		
 		//user1.addToLaborCategories(laborCategory1)
-		user1.addToTasks(task1)
+		user1.addToTasks(task1).save()
 		//user1.addToChargeCodes(chargeCode1)
 		
 	}

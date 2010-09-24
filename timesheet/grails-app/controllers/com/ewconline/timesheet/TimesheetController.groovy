@@ -39,9 +39,8 @@ class TimesheetController {
 			endDate:new Date(saturday.format("MM/DD/YYYY"))
 		)
 		def timesheetEntry
-		def user = session.user
-		user.attach()
-		user.tasks.attach()
+		def user = User.get(session.user.id)
+		
 		user.tasks.each{
 			timesheetEntry = new TimesheetEntry(task:it);
 			(0..6).each{ day ->
