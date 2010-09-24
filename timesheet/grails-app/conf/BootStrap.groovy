@@ -72,10 +72,10 @@ class BootStrap {
 		
 		def task1 = new Task(name:"Task 1", 
 			description:"Test Task 1"
-		).save()
+		)
 		def task2 = new Task(name:"Task 2",
 			description:"Test Task 2"
-		).save()
+		)
 		
 		def chargeCode1 = new ChargeCode(chargeNumber:"000-111-1111", 
 			description:"Test Charge Code 1"
@@ -88,9 +88,21 @@ class BootStrap {
 			description:"Test labor cat 1"
 		).save()
 		
-		user1.addToLaborCategories(laborCategory1)
+		def laborCategory2 = new LaborCategory( name: "Engineer 2",
+			description:"Test labor cat 2"
+		).save()
+		
+		task1.laborCategory = laborCategory1
+		task1.chargeCode = chargeCode1
+		task1.save()
+		
+		task2.laborCategory = laborCategory2
+		task2.chargeCode = chargeCode2
+		task2.save()
+		
+		//user1.addToLaborCategories(laborCategory1)
 		user1.addToTasks(task1)
-		user1.addToChargeCodes(chargeCode1)
+		//user1.addToChargeCodes(chargeCode1)
 		
 	}
 	
