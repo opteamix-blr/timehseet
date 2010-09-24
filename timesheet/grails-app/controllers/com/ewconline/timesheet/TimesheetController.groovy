@@ -38,6 +38,18 @@ class TimesheetController {
 			startDate:new Date(sunday.format("MM/DD/YYYY")), 
 			endDate:new Date(saturday.format("MM/DD/YYYY"))
 		)
+		def timesheetEntry
+		def user = session.user
+		user.attach()
+		user.tasks.attach()
+		user.tasks.each{
+			timesheetEntry = new TimesheetEntry(task:it);
+			(0..6).each{ day ->
+				timesheetEntry.addToWorkdays(new Workday(dateWorked:sunday.plusDays (day)))
+			}
+			ts.addToTimesheetEntries(timesheetEntry)
+		}
+		
 		[timesheet:ts]
 	}
 }
