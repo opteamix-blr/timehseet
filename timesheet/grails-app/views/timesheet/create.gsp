@@ -33,19 +33,22 @@
 			<th>Sat</th>
 			<th>Total</th>
 		  </tr>
-		  <tr>
-			<td><g:textField name="task" value=""></g:textField></td>
-			<td>read only labor cat</td>
-			<td><g:select from="['11111', '22222', '333']" name="chargeNum"></g:select> </td>
-			<td><g:textField name="sun" value=""></g:textField></td>
-			<td><g:textField name="mon" value=""></g:textField></td>
-			<td><g:textField name="tue" value=""></g:textField></td>
-			<td><g:textField name="wed" value=""></g:textField></td>
-			<td><g:textField name="thu" value=""></g:textField></td>
-			<td><g:textField name="fri" value=""></g:textField></td>
-			<td><g:textField name="sat" value=""></g:textField></td>
-			<td><div></div></td>
-		  </tr>
+	<g:each status="i" in="${timesheet.timesheetEntries}" var="timesheetEntry">
+	      <tr>
+            <td>${timesheetEntry?.taskAssignment?.task.name} </td>
+            <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
+            <td><g:hiddenField name="${i}_chargeCode" value="${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}" />${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
+            <td><g:textField name="${i}_sun" value=""></g:textField></td>
+            <td><g:textField name="${i}_mon" value=""></g:textField></td>
+            <td><g:textField name="${i}_tue" value=""></g:textField></td>
+            <td><g:textField name="${i}_wed" value=""></g:textField></td>
+            <td><g:textField name="${i}_thu" value=""></g:textField></td>
+            <td><g:textField name="${i}_fri" value=""></g:textField></td>
+            <td><g:textField name="${i}_sat" value=""></g:textField></td>
+            <td></td>
+          </tr>
+            
+    </g:each>
 		  <tr>
 			<td></td>
 			<td></td>
