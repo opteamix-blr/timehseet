@@ -47,21 +47,21 @@
                             <td valign="top" class="value"><g:link controller="task" action="show" id="${taskAssignmentInstance?.task?.id}">${taskAssignmentInstance?.task?.name?.encodeAsHTML()}</g:link></td>
                             
                         </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="taskAssignment.laborCategory.label" default="Labor Category" /></td>
-                            
-                            <td valign="top" class="value"><g:link controller="laborCategory" action="show" id="${taskAssignmentInstance?.laborCategory?.id}">${taskAssignmentInstance?.laborCategory?.name?.encodeAsHTML()}</g:link></td>
-                            
-                        </tr>
-                    
+                                        
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="taskAssignment.chargeCode.label" default="Charge Code" /></td>
                             
                             <td valign="top" class="value"><g:link controller="chargeCode" action="show" id="${taskAssignmentInstance?.chargeCode?.id}">${taskAssignmentInstance?.chargeCode?.chargeNumber?.encodeAsHTML()}</g:link></td>
                             
                         </tr>
-                    
+                        
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="taskAssignment.laborCategory.label" default="Labor Category" /></td>
+                            
+                            <td valign="top" class="value"><g:link controller="laborCategory" action="show" id="${taskAssignmentInstance?.laborCategory?.id}">${taskAssignmentInstance?.laborCategory?.name?.encodeAsHTML()}</g:link></td>
+                            
+                        </tr>
+                   
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="taskAssignment.notes.label" default="Notes" /></td>
                             

@@ -23,16 +23,16 @@
                         <tr>
                         
                             <g:sortableColumn property="id" title="${message(code: 'taskAssignment.id.label', default: 'Id')}" />
+                            
+                            <g:sortableColumn property="displayName" title="${message(code: 'taskAssignment.displayName.label', default: 'Display Name')}" />
                         
                             <g:sortableColumn property="enabled" title="${message(code: 'taskAssignment.enabled.label', default: 'Enabled')}" />
                         
                             <th><g:message code="taskAssignment.task.label" default="Task" /></th>
-                        
-                            <th><g:message code="taskAssignment.laborCategory.label" default="Labor Category" /></th>
-                        
+                            
                             <th><g:message code="taskAssignment.chargeCode.label" default="Charge Code" /></th>
                         
-                            <g:sortableColumn property="displayName" title="${message(code: 'taskAssignment.displayName.label', default: 'Display Name')}" />
+                            <th><g:message code="taskAssignment.laborCategory.label" default="Labor Category" /></th>
                         
                         </tr>
                     </thead>
@@ -42,16 +42,16 @@
                         
                             <td><g:link action="show" id="${taskAssignmentInstance.id}">${fieldValue(bean: taskAssignmentInstance, field: "id")}</g:link></td>
                         
+                            <td>${fieldValue(bean: taskAssignmentInstance, field: "displayName")}</td>
+                            
                             <td><g:formatBoolean boolean="${taskAssignmentInstance.enabled}" /></td>
                         
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "task.name")}</td>
                         
-                            <td>${fieldValue(bean: taskAssignmentInstance, field: "laborCategory.name")}</td>
-                        
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "chargeCode.chargeNumber")}</td>
                         
-                            <td>${fieldValue(bean: taskAssignmentInstance, field: "displayName")}</td>
-                        
+                            <td>${fieldValue(bean: taskAssignmentInstance, field: "laborCategory.name")}</td>
+                                                
                         </tr>
                     </g:each>
                     </tbody>
