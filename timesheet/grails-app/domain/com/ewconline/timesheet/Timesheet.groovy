@@ -1,8 +1,11 @@
+
 package com.ewconline.timesheet
 
 class Timesheet {
 
     Date dateCreated
+	Date lastUpdated
+
     Date startDate
     Date endDate
 
