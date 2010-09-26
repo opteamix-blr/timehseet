@@ -82,38 +82,14 @@
                             </td>
                             
                         </tr>
+                        
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.laborCategories.label" default="Labor Categories" /></td>
+                            <td valign="top" class="name"><g:message code="user.taskAssignments.label" default="TaskAssignments" /></td>
                             
                             <td valign="top" style="text-align: left;" class="value">
                                 <ul>
-                                <g:each in="${userInstance.laborCategories}" var="l">
-                                    <li><g:link controller="laborCategory" action="show" id="${l.id}">${l?.name}</g:link></li>
-                                </g:each>
-                                </ul>
-                            </td>
-                            
-                        </tr>
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.tasks.label" default="Tasks" /></td>
-                            
-                            <td valign="top" style="text-align: left;" class="value">
-                                <ul>
-                                <g:each in="${userInstance.tasks}" var="t">
-                                    <li><g:link controller="task" action="show" id="${t.id}">${t?.name.encodeAsHTML()}</g:link></li>
-                                </g:each>
-                                </ul>
-                            </td>
-                            
-                        </tr>
-
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.chargeCodes.label" default="Charge Codes" /></td>
-                            
-                            <td valign="top" style="text-align: left;" class="value">
-                                <ul>
-                                <g:each in="${userInstance.chargeCodes}" var="c">
-                                    <li><g:link controller="chargeCode" action="show" id="${c.id}">${c?.chargeNumber}</g:link></li>
+                                <g:each in="${userInstance.taskAssignments}" var="t">
+                                    <li><g:link controller="taskAssignment" action="show" id="${t.id}">${t?.displayName.encodeAsHTML()} ${t?.displayName.encodeAsHTML()}</g:link></li>
                                 </g:each>
                                 </ul>
                             </td>

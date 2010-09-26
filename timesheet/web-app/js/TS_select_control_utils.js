@@ -1,7 +1,6 @@
 // TS_select_control_utils.js
 		function selectAllListBoxesByIds(selectItemListIds) {
 			for (var i=0; i<selectItemListIds.length; i++) {
-	        	var selectControl = document.getElementById();
 	        	selectItemsListBox(selectItemListIds[i]);
         	}
         }
