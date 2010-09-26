@@ -29,9 +29,9 @@ class UserController {
         def userInstance = new User(params)
 		
 		println "avail taskassignments:"
-		for (ta in params.taskAssignments) {
-			println ">>>> " + ta
-		}
+//		for (ta in params.taskAssignments) {
+//			println ">>>> " + ta
+//		}
 		
 		
         if (userInstance.save(flush: true)) {
@@ -156,7 +156,4 @@ class UserController {
             redirect(action: "list")
         }
     }
-}
-class UserCommand extends User {
-	
 }

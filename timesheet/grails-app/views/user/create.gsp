@@ -7,69 +7,13 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
+        <g:javascript src="TS_select_control_utils.js" />
         <script language="JavaScript" type="text/javascript">
 
         function selectAllListBoxes() {
-        	selectItemsListBox('tasks');
-        	selectItemsListBox('laborCategories');
-        	selectItemsListBox('chargeCodes');
-        	selectItemsListBox('authorities');
+            var targetListBoxes = ['taskAssignments', 'authorities'];
+            selectAllListBoxesByIds(targetListBoxes);
         }
-        
-        function selectItemsListBox(selectedListBoxName) {
-            
-            selectedList = document.getElementById(selectedListBoxName);
-        	for (var i=(selectedList.options.length-1); i>=0; i--) {
-	        	var o = selectedList.options[i];
-	        	if (!o.selected) {
-	        		o.selected = true;
-	        	}
-        	}
-        }
-        
-        function moveSelectedOptions(from,to) {
-        	fromThis = document.getElementById(from)
-        	toThat = document.getElementById(to)
-        	// Unselect matching options, if required
-        	if (arguments.length>3) {
-	        	var regex = arguments[3];
-	        	if (regex != "") {
-	        		unSelectMatchingOptions(fromThis,regex);
-	        	}
-        	}
-        	// Move them over
-        	for (var i=0; i<fromThis.options.length; i++) {
-	        	var o = fromThis.options[i];
-	        	if (o.selected) {
-	        		toThat.options[toThat.options.length] = new Option( o.text, o.value, false, false);
-	        	}
-        	}
-        	// Delete them fromThis original
-        	for (var i=(fromThis.options.length-1); i>=0; i--) {
-	        	var o = fromThis.options[i];
-	        	if (o.selected) {
-	        		fromThis.options[i] = null;
-	        	}
-        	}
-//        	if ((arguments.length<3) || (arguments[2]==true)) {
-//	        	sortSelect(fromThis);
-//	        	sortSelect(toThat);
-//        	}
-        	fromThis.selectedIndex = -1;
-        	toThat.selectedIndex = -1;
-        }
-        
-		function moveToRight( leftListName, rightListName ) {
-			var leftList = document.getElementById(leftListName).options
-			var rightList = document.getElementById(rightListName).options
-			for (var i = leftList.length; i >=0; i--) {
-				if (leftList[i].selected) {
-					
-					rightList.add(leftList[i])
-				}
-			}
-		}
-        
         </script>
     </head>
     <body>
@@ -195,82 +139,31 @@
                     </table>
                 </div>
                 
-                <div class="dialog">
-                	<table>
-                		<tbody>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="user.laborCategories"><g:message code="user.laborCategories.label" default="Labor Categories" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'laborCategories', 'errors')}">
-                                    <g:select name="laborCategory.name"
-          										from="${allLaborCategories}"
-          										optionValue="name"
-          										optionKey="id"
-          										multiple="multiple"/>
-          							
-                                </td>
-                                <td>
-                                	<input type="button" value="&#062;" onClick="moveSelectedOptions('laborCategory.name', 'laborCategories');"/><br/>
-                                	<input type="button" value="&#060;" onClick="moveSelectedOptions('laborCategories', 'laborCategory.name');"/>
-                                </td>
-                                <td class="name">
-                                    <select id="laborCategories" name="laborCategories" multiple="multiple">
-                                    </select>
-                                </td>
-                            </tr>
-                	</table>
-                </div>
+                
                 <div class="dialog">
                     <table>
                         <tbody>
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="user.tasks"><g:message code="user.tasks.label" default="Tasks" /></label>
+                                    <label for="user.taskAssignments"><g:message code="user.taskAssignments.label" default="TaskAssignments" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'tasks', 'errors')}">
-                                    <g:select name="task.name"
-                                                from="${allTasks}"
-                                                optionValue="name"
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'taskAssignments', 'errors')}">
+                                    <g:select name="taskAssignment.id"
+                                                from="${allTaskAssignments}"
+                                                optionValue="displayName"
                                                 optionKey="id"
                                                 multiple="true"/>
                                 </td>
                                 <td>
-                                    <input type="button" value="&#062;" onClick="moveSelectedOptions('task.name', 'tasks');"/><br/>
-                                    <input type="button" value="&#060;" onClick="moveSelectedOptions('tasks', 'task.name');"/>
+                                    <input type="button" value="&#062;" onClick="moveSelectedOptions('taskAssignment.id', 'taskAssignments');"/><br/>
+                                    <input type="button" value="&#060;" onClick="moveSelectedOptions('taskAssignments', 'taskAssignment.id');"/>
                                 </td>
                                 <td class="name">
-                                    <select id="tasks" name="tasks" multiple="multiple">
+                                    <select id="taskAssignments" name="taskAssignments" multiple="multiple">
                                     </select>
                                 </td>
                             </tr>
                     </table>
-                </div>
-                <div class="dialog">
-                	<table>
-                		<tbody>
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="user.chargeCodes"><g:message code="user.chargeCodes.label" default="Charge Codes" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'chargeCodes', 'errors')}">
-                                    <g:select name="chargeCode.chargeNumber"
-          										from="${allChargeCodes}"
-          										optionValue="chargeNumber"
-          										optionKey="id"
-          										multiple="true"/>
-                                </td>
-                                <td>
-                                	<input type="button" value="&#062;" onClick="moveSelectedOptions('chargeCode.chargeNumber', 'chargeCodes');"/><br/>
-                                	<input type="button" value="&#060;" onClick="moveSelectedOptions('chargeCodes', 'chargeCode.chargeNumber');"/>
-                                </td>
-                                <td class="name">
-                                    <select id="chargeCodes" name="chargeCodes" multiple="multiple">
-                                    </select>
-                                </td>
-                            </tr>
-                	</table>
                 </div>
                 <div class="buttons">
                     <span class="button"><g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" /></span>
