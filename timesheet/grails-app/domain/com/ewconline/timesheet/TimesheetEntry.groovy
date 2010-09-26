@@ -5,10 +5,10 @@ package com.ewconline.timesheet
 class TimesheetEntry {
 	static belongsTo = [timesheet:Timesheet]
 	
-	Task task
+	TaskAssignment taskAssignment
 
     static constraints = {
-		task()
+		taskAssignment()
     }
     static hasMany = [workdays : Workday]
 

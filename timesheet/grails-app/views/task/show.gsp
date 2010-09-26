@@ -43,6 +43,32 @@
                             
                         </tr>
                     
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="task.chargeCodes.label" default="Charge Codes" /></td>
+                            
+                            <td valign="top" style="text-align: left;" class="value">
+                                <ul>
+                                <g:each in="${taskInstance.chargeCodes}" var="c">
+                                    <li><g:link controller="chargeCode" action="show" id="${c.id}">${c?.chargeNumber.encodeAsHTML()}</g:link></li>
+                                </g:each>
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="task.laborCategories.label" default="Labor Categories" /></td>
+                            
+                            <td valign="top" style="text-align: left;" class="value">
+                                <ul>
+                                <g:each in="${taskInstance.laborCategories}" var="l">
+                                    <li><g:link controller="laborCategory" action="show" id="${l.id}">${l?.name.encodeAsHTML()}</g:link></li>
+                                </g:each>
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                    
                     </tbody>
                 </table>
             </div>

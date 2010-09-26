@@ -1,13 +1,14 @@
 package com.ewconline.timesheet
 
 import com.ewconline.timesheet.Role
+import com.ewconline.timesheet.TaskAssignment
 
 /**
  * User domain class.
  */
 class User {
 	static transients = ['pass']
-	static hasMany = [authorities: Role, timesheets: Timesheet, tasks: Task ]
+	static hasMany = [authorities: Role, timesheets: Timesheet, taskAssignments: TaskAssignment ]
 	static belongsTo = [Role]
 
 	/** Username */

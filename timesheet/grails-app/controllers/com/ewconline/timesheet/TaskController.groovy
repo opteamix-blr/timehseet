@@ -1,5 +1,7 @@
 package com.ewconline.timesheet
 
+import org.codehaus.groovy.runtime.DefaultGroovyMethods 
+
 class TaskController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -16,11 +18,20 @@ class TaskController {
     def create = {
         def taskInstance = new Task()
         taskInstance.properties = params
-        return [taskInstance: taskInstance]
+		
+		def allChargeCodes = ChargeCode.list([sort: 'chargeNumber', order: 'asc'])
+		def allLaborCategories = LaborCategory.list([sort: 'name', order: 'asc'])
+		
+
+        return [taskInstance: taskInstance,
+			allChargeCodes:allChargeCodes,
+			allLaborCategories:allLaborCategories
+		]
     }
 
     def save = {
         def taskInstance = new Task(params)
+		
         if (taskInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'task.label', default: 'Task'), taskInstance.id])}"
             redirect(action: "show", id: taskInstance.id)
@@ -43,12 +54,24 @@ class TaskController {
 
     def edit = {
         def taskInstance = Task.get(params.id)
+		def allChargeCodes = ChargeCode.list([sort: 'chargeNumber', order: 'asc'])
+		def availChargeCodes = DefaultGroovyMethods.minus(allChargeCodes, taskInstance.chargeCodes)
+	
+		def allLaborCategories = LaborCategory.list([sort: 'name', order: 'asc'])
+		def availLaborCategories = DefaultGroovyMethods.minus(allLaborCategories, taskInstance.laborCategories)
+
         if (!taskInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'task.label', default: 'Task'), params.id])}"
             redirect(action: "list")
         }
         else {
-            return [taskInstance: taskInstance]
+			return [
+				taskInstance:taskInstance,
+				allChargeCodes:availChargeCodes,
+				allLaborCategories:availLaborCategories,
+				chargeCodes:taskInstance.chargeCodes,		
+				laborCategories:taskInstance.laborCategories
+			]
         }
     }
 
