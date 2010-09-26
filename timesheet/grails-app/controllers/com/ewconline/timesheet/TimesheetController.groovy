@@ -8,6 +8,7 @@ import hirondelle.date4j.DateTime;
 import com.ewconline.timesheet.Timesheet 
 
 class TimesheetController {
+	def timesheetManagerService
 	def scafold = true
     def index = { }
 	
@@ -31,25 +32,9 @@ class TimesheetController {
 		//   
 		// Doing the NO section.
 		// 
-		DateTime currentDay = DateTime.today(TimeZone.getDefault())
-		DateTime sunday = currentDay.minusDays(currentDay.getWeekDay() - 1)
-		DateTime saturday = sunday.plusDays(6)
-		Timesheet ts = new Timesheet(
-			startDate:new Date(sunday.format("MM/DD/YYYY")), 
-			endDate:new Date(saturday.format("MM/DD/YYYY"))
-		)
-		def timesheetEntry
-		
 		def user = User.get(session.user.id)
-		def taskAssignments = user.taskAssignments
-		for (ta in taskAssignments){
-			timesheetEntry = new TimesheetEntry(taskAssignment:ta);
-			for (x in (0..6)){
-				timesheetEntry.addToWorkdays(new Workday(dateWorked:sunday.plusDays (x)))
-			}
-			ts.addToTimesheetEntries(timesheetEntry)
-		}
-		
+		Timesheet ts = timesheetManagerService.generateWeeklyTimesheet(user)
+
 		[timesheet:ts]
 	}
 }
