@@ -39,12 +39,12 @@ class TimesheetController {
 			endDate:new Date(saturday.format("MM/DD/YYYY"))
 		)
 		def timesheetEntry
-		def user = User.get(session.user.id)
+		def tasks = Task.findAllByUser(session.user)
 		
-		user.tasks.each{
-			timesheetEntry = new TimesheetEntry(task:it);
-			(0..6).each{ day ->
-				timesheetEntry.addToWorkdays(new Workday(dateWorked:sunday.plusDays (day)))
+		for (task in tasks){
+			timesheetEntry = new TimesheetEntry(task:task);
+			for (x in (0..6)){
+				timesheetEntry.addToWorkdays(new Workday(dateWorked:sunday.plusDays (x)))
 			}
 			ts.addToTimesheetEntries(timesheetEntry)
 		}
