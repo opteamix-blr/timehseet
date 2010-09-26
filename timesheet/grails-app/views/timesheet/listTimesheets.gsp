@@ -23,9 +23,10 @@
 				<tr>
 					<g:sortableColumn property="id" title="Id" />
 					<g:sortableColumn property="dateCreated" title="Date Created" />
+					<g:sortableColumn property="lastUpdated" title="Last Modified" />
 					<g:sortableColumn property="startDate" title="Start Date" />
 					<g:sortableColumn property="endDate" title="End Date" />
-					<th>&nbsp;</th>
+					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -33,6 +34,7 @@
 				<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 					<td>${timesheet.id}</td>
 					<td>${timesheet.dateCreated?.encodeAsHTML()}</td>
+					<td>${timesheet.lastUpdated?.encodeAsHTML()}</td>
 					<td>${timesheet.startDate?.encodeAsHTML()}</td>
 					<td>${timesheet.endDate?.encodeAsHTML()}</td>
 					
