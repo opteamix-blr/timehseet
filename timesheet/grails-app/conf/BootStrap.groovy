@@ -2,6 +2,7 @@ import com.ewconline.timesheet.ChargeCode
 import com.ewconline.timesheet.LaborCategory 
 import com.ewconline.timesheet.Role;
 import com.ewconline.timesheet.Task 
+import com.ewconline.timesheet.TaskAssignment;
 import com.ewconline.timesheet.User;
 
 import grails.util.Environment;
@@ -61,6 +62,7 @@ class BootStrap {
 				description:"Employee"
 		)
 		Role.findByAuthority("self").addToPeople(user1)
+		
 		def user2 = new User(username:"approver1",
 			passwd:"p@ssw0rd1",
 			userRealName:"Jane Doe",
@@ -83,6 +85,9 @@ class BootStrap {
 		def chargeCode2 = new ChargeCode(chargeNumber:"000-222-2222",
 			description:"Test Charge Code 2"
 		).save()
+		def chargeCode3 = new ChargeCode(chargeNumber:"000-333-3333",
+			description:"Test Charge Code 3"
+		).save()
 		
 		def laborCategory1 = new LaborCategory( name: "Engineer 1",
 			description:"Test labor cat 1"
@@ -92,17 +97,42 @@ class BootStrap {
 			description:"Test labor cat 2"
 		).save()
 		
-		task1.laborCategory = laborCategory1
-		task1.chargeCode = chargeCode1
+		// note: tasks should never have the same charge codes
+		//       but they can have the same labor categories.
+		task1.addToLaborCategories(laborCategory1)
+		task1.addToLaborCategories(laborCategory2)
+		task1.addToChargeCodes(chargeCode1)
+		task1.addToChargeCodes(chargeCode2)
 		task1.save()
 		
-		task2.laborCategory = laborCategory2
-		task2.chargeCode = chargeCode2
+		task2.addToLaborCategories(laborCategory1)
+		task2.addToLaborCategories(laborCategory2)		
+		task2.addToChargeCodes(chargeCode3)
 		task2.save()
 		
-		//user1.addToLaborCategories(laborCategory1)
-		user1.addToTasks(task1).save()
-		//user1.addToChargeCodes(chargeCode1)
+		// user1 has work on two different tasks and two diff labor cats.
+		def taskAssignment1 = new TaskAssignment( displayName: "job1",
+			notes: "taskAssignment1 ",
+			task: task1,
+			chargeCode:chargeCode1,
+			laborCategory:laborCategory1
+		).save()
+		
+		// a second task assignment means the employee 
+		// will get two entries in their time sheet.
+		def taskAssignment2 = new TaskAssignment( displayName: "job2",
+			notes: "taskAssignment2 ",
+			task: task2,
+			chargeCode:chargeCode3,
+			laborCategory:laborCategory2
+		).save()
+		
+		
+		user1.addToTaskAssignments(taskAssignment1)
+		user1.addToTaskAssignments(taskAssignment2)
+		user1.save()
+
+		// @TODO: create task assignments for approvers.
 		
 	}
 	

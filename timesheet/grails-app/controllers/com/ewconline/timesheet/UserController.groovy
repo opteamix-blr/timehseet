@@ -19,15 +19,20 @@ class UserController {
     def create = {
         def userInstance = new User()
         userInstance.properties = params
-		def allTasks = Task.list([sort: 'name', order: 'asc'])
-		def allLaborCategories = LaborCategory.list([sort: 'name', order: 'asc'])
-		def allChargeCodes = ChargeCode.list([sort: 'chargeNumber', order: 'asc'])
 		def allRoles = Role.list([sort: 'authority', order: 'asc'])
-        return [userInstance: userInstance, allRoles:allRoles, allTasks:allTasks, allLaborCategories:allLaborCategories, allChargeCodes:allChargeCodes]
+		def allTaskAssignments = TaskAssignment.list([sort: 'displayName', order: 'asc'])
+		
+		return [userInstance: userInstance, allRoles:allRoles, allTaskAssignments:allTaskAssignments]
     }
 
     def save = {
         def userInstance = new User(params)
+		
+		println "avail taskassignments:"
+		for (ta in params.taskAssignments) {
+			println ">>>> " + ta
+		}
+		
 		
         if (userInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
@@ -51,15 +56,8 @@ class UserController {
 
     def edit = {
         def userInstance = User.get(params.id)
-		def allTasks = Task.list([sort: 'name', order: 'asc'])
-		def availTasks = DefaultGroovyMethods.minus(allTasks, userInstance.tasks)
-		
-		def allLaborCategories = LaborCategory.list([sort: 'name', order: 'asc'])
-		def availLaborCategories = DefaultGroovyMethods.minus(allLaborCategories, userInstance.laborCategories)
-		
-		def allChargeCodes = ChargeCode.list([sort: 'chargeNumber', order: 'asc'])
-		def availChargeCodes = DefaultGroovyMethods.minus(allChargeCodes, userInstance.chargeCodes)
-		
+		def allTaskAssignments = TaskAssignment.list([sort: 'displayName', order: 'asc'])
+		def availTaskAssignments = DefaultGroovyMethods.minus(allTaskAssignments, userInstance.taskAssignments)
 		
 		def allRoles = Role.list([sort: 'authority', order: 'asc'])
 		def availRoles = DefaultGroovyMethods.minus(allRoles, userInstance.authorities)
@@ -70,18 +68,13 @@ class UserController {
 		if (!userInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])}"
             redirect(action: "list")
-        }
-        else {
+        } else {
             return [userInstance: userInstance, 
-					allTasks:availTasks, 
-					allLaborCategories:availLaborCategories, 
-					allChargeCodes:availChargeCodes, 
 					allRoles:availRoles,
-					tasks:userInstance.tasks,
-					laborCategories:userInstance.laborCategories,
-					chargeCodes:userInstance.chargeCodes,
+					allTaskAssignments:availTaskAssignments,
+					taskAssignments:userInstance.taskAssignments,
 					authorities:userInstance.authorities
-					]
+			]
         }
     }
 
@@ -92,7 +85,6 @@ class UserController {
             if (params.version) {
                 def version = params.version.toLong()
                 if (userInstance.version > version) {
-                    
                     userInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'user.label', default: 'User')] as Object[], "Another user has updated this User while you were editing")
                     render(view: "edit", model: [userInstance: userInstance])
                     return
@@ -116,50 +108,21 @@ class UserController {
 				userInstance.addToAuthorities(role)
 			}
 
-			// Tasks
-			def transferUserTasks = params.tasks.collect { targetT ->
-				Task.get(targetT)
+			// TaskAssignments
+			def transferUserTaskAssignments = params.taskAssignments.collect { targetT ->
+				TaskAssignment.get(targetT)
 			}
-			def userCurTasks = userInstance.tasks
-			def taskRemoveList = DefaultGroovyMethods.minus(userCurTasks, transferUserTasks)
-			def taskAddList = DefaultGroovyMethods.minus(transferUserTasks, userCurTasks)
+			def userCurTaskAssignments = userInstance.taskAssignments
+			def taskAssignmentRemoveList = DefaultGroovyMethods.minus(userCurTaskAssignments, transferUserTaskAssignments)
+			def taskAssignmentAddList = DefaultGroovyMethods.minus(transferUserTaskAssignments, userCurTaskAssignments)
 			
-			for (task in taskRemoveList) {
-				userInstance.removeFromTasks(task)
+			for (taskAssignment in taskAssignmentRemoveList) {
+				userInstance.removeFromTaskAssignments(taskAssignment)
 			}
-			for (task in taskAddList) {
-				userInstance.addToTasks(task)
-			}
-			
-			// Labor Categories
-			def transferUserLabCats = params.laborCategories.collect { lc ->
-				LaborCategory.get(lc)
-			}
-			def userCurLabCats = userInstance.laborCategories
-			def labCatsRemoveList = DefaultGroovyMethods.minus(userCurLabCats, transferUserLabCats)
-			def labCatsAddList = DefaultGroovyMethods.minus(transferUserLabCats, userCurLabCats)
-			
-			for (lc in labCatsRemoveList) {
-				userInstance.removeFromLaborCategories(lc)
-			}
-			for (lc in labCatsAddList) {
-				userInstance.addToLaborCategories(lc)
+			for (taskAssignment in taskAssignmentAddList) {
+				userInstance.addToTaskAssignments(taskAssignment)
 			}
 			
-			// Charge codes
-			def transferUserChCodes = params.chargeCodes.collect { cc ->
-				ChargeCode.get(cc)
-			}
-			def userCurChCodes = userInstance.chargeCodes
-			def chCodeRemoveList = DefaultGroovyMethods.minus(userCurChCodes, transferUserChCodes)
-			def chCodeAddList = DefaultGroovyMethods.minus(transferUserChCodes, userCurChCodes)
-			
-			for (cc in chCodeRemoveList) {
-				userInstance.removeFromChargeCodes(cc)
-			}
-			for (cd in chCodeAddList) {
-				userInstance.addToLaborChargeCodes(cc)
-			}
 			
 			if (!userInstance.hasErrors() && userInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
