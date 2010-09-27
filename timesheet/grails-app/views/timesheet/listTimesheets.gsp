@@ -15,8 +15,8 @@
 	<div class="body">
 		<h1>Timesheet Listing</h1>
 		<g:if test="${flash.message}">
-		<div class="message">${flash.message}</div>
-		</g:if>
+        <div class="message">${flash.message}</div>
+        </g:if>
 		<div class="list">
 			<table>
 			<thead>
