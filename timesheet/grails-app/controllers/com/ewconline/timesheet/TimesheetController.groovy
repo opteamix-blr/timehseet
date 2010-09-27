@@ -16,8 +16,11 @@ class TimesheetController {
 	//  http://localhost:8080/Timesheet/timesheet/listTimesheets
 	def listTimesheets = {
 		def user = User.get(session.user.id)
-		// TODO use paging abilities pagination next, prev.
 		def timesheetList = timesheetManagerService.retrieveTimesheets(user)
+		// TODO use paging abilities pagination next, prev.
+		//		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		//		[userInstanceList: User.list(params), userInstanceTotal: User.count()]
+		
 		[timesheetList:timesheetList]
 	}
 	
@@ -65,6 +68,17 @@ class TimesheetController {
 		} catch (Exception e) {
 			flash.message = e.getMessage()
 			redirect(action: "listTimesheets", id: user.id)
+		}
+	}
+	
+	def show = {
+		def timesheetInstance = Timesheet.get(params.id)
+		if (!timesheetInstance) {
+			flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'Timesheet'), params.id])}"
+			redirect(action: "list")
+		}
+		else {
+			[timesheetInstance: timesheetInstance]
 		}
 	}
 }
