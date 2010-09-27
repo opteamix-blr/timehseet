@@ -45,9 +45,18 @@ class TimesheetManagerService {
 			 gt("endDate", currentDay)
 		}
 		if (previousTimesheet.size() > 0) {
-			throw new RuntimeException("The current or weekly timesheet already exists.")
+			throw new RuntimeException("The current or weekly timesheet was already created.")
 		}
 		return timesheet.save(flush:true)
+	}
+	
+	def retrieveTimesheets(User user) {
+		def c = Timesheet.createCriteria()
+		def allUserTimesheets = c.list {
+			eq("user.id", user.id)
+			order("startDate", "desc")
+	    }
+		return allUserTimesheets
 	}
 	
 }
