@@ -51,12 +51,41 @@ class TimesheetController {
 		// obtain params
 		
 //		println "avail taskassignments:"
-//		timesheetInstance.timesheetEntries.eachWithIndex { 
-//			listValue, index -> println ">>>> chargeCode${index}" + params["chargeCode${index}"] 
+		// populate from form hours for each timesheet entry.
+
+		timesheetInstance.timesheetEntries.eachWithIndex { 
+			tse, index -> println ">>>> chargeCode${index}" + params["chargeCode${index}"]
+			def daysOfWeek = [ params["day1_${index}"],
+				params["day2_${index}"],
+				params["day3_${index}"],
+				params["day4_${index}"],
+				params["day5_${index}"],
+				params["day6_${index}"],
+				params["day7_${index}"]
+			]
+			
+			tse.workdays.eachWithIndex { workday, indx ->
+				
+				if (daysOfWeek[indx] == "") {
+					workday.hoursWorked = 0
+				} else {
+					try {
+						workday.hoursWorked = daysOfWeek[indx].toDouble()
+					} catch (Exception e) {
+						workday.hoursWorked = 0
+					}
+				}
+				
+			} // clean up bad numbers.
+		}
+		
+//		// debug to display hours
+//		for (te in timesheetInstance.timesheetEntries) {
+//			for (wd in te.workdays) {
+//				println "wd >>>> " + wd.hoursWorked
+//			}
 //		}
-//		for (ta in ts.taskAssignments) {
-//			println ">>>> " + params["id"]
-//		}
+		
 		try {
 			if (timesheetManagerService.createWeeklyTimesheet(timesheetInstance)){
 				flash.message = "${message(code: 'default.created.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), user.id])}"
