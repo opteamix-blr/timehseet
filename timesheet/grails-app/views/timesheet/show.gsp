@@ -61,19 +61,24 @@
                             <td valign="top" class="name"><g:message code="timesheet.timesheetEntries.label" default="Timesheet Entries" /></td>
                             
                             <td valign="top" style="text-align: left;" class="value">
-                                <ul>
-                                <g:each in="${timesheetInstance.timesheetEntries}" var="t">
-                                    <li><g:link controller="timesheetEntry" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></li>
-                                </g:each>
-                                </ul>
+                                <table>
+                                    <tr>
+                                        <th>Task</th>
+                                        <th>Charge Number</th>
+                                        <th>Labor Category</th>
+                                        
+                                    </tr>
+                                    <g:each in="${timesheetInstance.timesheetEntries}" var="t">
+                                    <tr>
+                                        <td>${t?.taskAssignment?.task?.name.encodeAsHTML()}</td>
+                                        <td>${t?.taskAssignment?.chargeCode?.chargeNumber?.encodeAsHTML()}</td>
+                                        <td>${t?.taskAssignment?.laborCategory?.name?.encodeAsHTML()}</td>
+                                        
+                                    </tr>
+                                    </g:each>
+                                </table>
+                        
                             </td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="timesheet.user.label" default="User" /></td>
-                            
-                            <td valign="top" class="value"><g:link controller="user" action="show" id="${timesheetInstance?.user?.id}">${timesheetInstance?.user?.encodeAsHTML()}</g:link></td>
                             
                         </tr>
                     
