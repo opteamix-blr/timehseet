@@ -26,10 +26,29 @@ class TimesheetManagerService {
 		for (ta in taskAssignments){
 			def timesheetEntry = new TimesheetEntry(taskAssignment:ta);
 			for (x in (0..6)){
-				timesheetEntry.addToWorkdays(new Workday(dateWorked:sunday.plusDays (x)))
+				timesheetEntry.addToWorkdays(new Workday(dateWorked:new Date(sunday.plusDays(x).getMilliseconds(TimeZone.getDefault()))))
 			}
 			ts.addToTimesheetEntries(timesheetEntry)
 		}
 		return ts
     }
+	
+	def createWeeklyTimesheet(Timesheet timesheet) {
+		// TODO validate duplicate timesheet.
+		Date currentDay = new Date()
+		
+		
+		def c = Timesheet.createCriteria()
+		def previousTimesheet = c.list {
+			 eq("user.id", timesheet.user.id)
+			 lt("startDate", currentDay)
+			 gt("endDate", currentDay)
+		}
+		if (previousTimesheet.size() > 0) {
+			throw new RuntimeException("The current or weekly timesheet already exists.")
+		}
+		return timesheet.save(flush:true)
+	}
+	
 }
+

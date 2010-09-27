@@ -1,10 +1,8 @@
 <head>
     
 	<meta name="layout" content="main" />
-	<!-- http://localhost:8080/Timesheet/timesheet/create -->
 	<title>Create a Timesheet</title>
 </head>
-
 <body>
 
 	<div class="nav">
@@ -18,7 +16,12 @@
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>
 		</g:if>
-		<form action="">
+		<g:hasErrors bean="${timesheetInstance}">
+            <div class="errors">
+                <g:renderErrors bean="${timesheetInstance}" as="list" />
+            </div>
+        </g:hasErrors>
+		<g:form action="save" method="post" >
 		<table>
 		  <tr>
 			<th>Task</th>
@@ -33,18 +36,18 @@
 			<th>Sat</th>
 			<th>Total</th>
 		  </tr>
-	<g:each status="i" in="${timesheet.timesheetEntries}" var="timesheetEntry">
+	<g:each status="i" in="${timesheetInstance?.timesheetEntries}" var="timesheetEntry">
 	      <tr>
-            <td>${timesheetEntry?.taskAssignment?.task.name} </td>
+            <td><g:hiddenField name="timesheetEntries" value="${timesheetEntry?.id}" />${timesheetEntry?.taskAssignment?.task.name} </td>
             <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
-            <td><g:hiddenField name="${i}_chargeCode" value="${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}" />${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
-            <td><g:textField name="${i}_sun" value=""></g:textField></td>
-            <td><g:textField name="${i}_mon" value=""></g:textField></td>
-            <td><g:textField name="${i}_tue" value=""></g:textField></td>
-            <td><g:textField name="${i}_wed" value=""></g:textField></td>
-            <td><g:textField name="${i}_thu" value=""></g:textField></td>
-            <td><g:textField name="${i}_fri" value=""></g:textField></td>
-            <td><g:textField name="${i}_sat" value=""></g:textField></td>
+            <td><g:hiddenField name="chargeCode${i}" value="${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}" />${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
+            <td><g:textField name="sun${i}" value=""></g:textField></td>
+            <td><g:textField name="mon${i}" value=""></g:textField></td>
+            <td><g:textField name="tue${i}" value=""></g:textField></td>
+            <td><g:textField name="wed${i}" value=""></g:textField></td>
+            <td><g:textField name="thu${i}" value=""></g:textField></td>
+            <td><g:textField name="fri${i}" value=""></g:textField></td>
+            <td><g:textField name="sat${i}" value=""></g:textField></td>
             <td></td>
           </tr>
             
@@ -68,6 +71,7 @@
 			<g:actionSubmit value="Save" action="save"></g:actionSubmit>
 			<g:actionSubmit value="Cancel" action="cancelCreate"></g:actionSubmit>
 		</div>
-		</form>
+		</g:form>
 	</div>
+
 </body>

@@ -20,6 +20,8 @@ class TimesheetController {
 	}
 	
 	def create = {
+		log.info "User agent: " + request.getHeader("User-Agent")
+		
 		// TODO Validate is user allowed to create a timesheet?
 		// >validate "Am I allowed to create a timesheet?"
 		// >is it in a prior timesheet
@@ -35,6 +37,35 @@ class TimesheetController {
 		def user = User.get(session.user.id)
 		Timesheet ts = timesheetManagerService.generateWeeklyTimesheet(user)
 
-		[timesheet:ts]
+		[timesheetInstance:ts]
+	}
+	
+	def save = {
+		def user = User.get(session.user.id)
+		
+		// @todo must validate to not allow duplicates
+		Timesheet timesheetInstance = timesheetManagerService.generateWeeklyTimesheet(user)
+		timesheetInstance.user=user
+		// obtain params
+		
+//		println "avail taskassignments:"
+//		timesheetInstance.timesheetEntries.eachWithIndex { 
+//			listValue, index -> println ">>>> chargeCode${index}" + params["chargeCode${index}"] 
+//		}
+//		for (ta in ts.taskAssignments) {
+//			println ">>>> " + params["id"]
+//		}
+		try {
+			if (timesheetManagerService.createWeeklyTimesheet(timesheetInstance)){
+				flash.message = "${message(code: 'default.created.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), user.id])}"
+				redirect(action: "listTimesheets", id: user.id)
+			}
+			else {
+				render(view: "create", model: [timesheetInstance: timesheetInstance])
+			}
+		} catch (Exception e) {
+			flash.message = e.getMessage()
+			redirect(action: "listTimesheets", id: user.id)
+		}
 	}
 }
