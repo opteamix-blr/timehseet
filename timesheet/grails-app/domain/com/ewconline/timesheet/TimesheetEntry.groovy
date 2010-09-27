@@ -4,7 +4,7 @@ package com.ewconline.timesheet
 */
 class TimesheetEntry {
 	static belongsTo = [timesheet:Timesheet]
-	
+	SortedSet workdays
 	TaskAssignment taskAssignment
 
     static constraints = {

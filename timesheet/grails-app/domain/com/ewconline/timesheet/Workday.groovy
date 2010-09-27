@@ -1,6 +1,6 @@
 package com.ewconline.timesheet
 
-class Workday {
+class Workday  implements Comparable {
 	
 	Date dateWorked
 	double hoursWorked
@@ -9,4 +9,7 @@ class Workday {
 	
     static constraints = {
     }
+	int compareTo(obj) {
+		dateWorked.compareTo(obj.dateWorked)
+	}
 }
