@@ -30,7 +30,7 @@ class AccessController {
 		// 1) ldap authenticate
 		// 2) check database if user exists
 		// 3) create session with user object in session.
-		
+		log.info "User agent: " + request.getHeader("User-Agent")
 		// check database for user exists.
 		log.debug "user name is : " + params.username
 		
