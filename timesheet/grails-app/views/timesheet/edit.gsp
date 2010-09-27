@@ -24,7 +24,7 @@
                 <g:renderErrors bean="${timesheetInstance}" as="list" />
             </div>
             </g:hasErrors>
-            <g:form method="post" >
+            <g:form action="update" method="post" >
                 <g:hiddenField name="id" value="${timesheetInstance?.id}" />
                 <g:hiddenField name="version" value="${timesheetInstance?.version}" />
                 <div class="dialog">
@@ -69,13 +69,9 @@
 							            <td><g:hiddenField name="timesheetEntries" value="${timesheetEntry?.id}" />${timesheetEntry?.taskAssignment?.task.name} </td>
 							            <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
 							            <td><g:hiddenField name="chargeCode${i}" value="${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}" />${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
-							            <td><g:textField name="day1_${i}" value=""></g:textField></td>
-							            <td><g:textField name="day2_${i}" value=""></g:textField></td>
-							            <td><g:textField name="day3_${i}" value=""></g:textField></td>
-							            <td><g:textField name="day4_${i}" value=""></g:textField></td>
-							            <td><g:textField name="day5_${i}" value=""></g:textField></td>
-							            <td><g:textField name="day6_${i}" value=""></g:textField></td>
-							            <td><g:textField name="day7_${i}" value=""></g:textField></td>
+							            <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">
+							             <td><g:textField name="day${j+1}_${i}" value="${wd.hoursWorked}"></g:textField></td>
+							            </g:each>
 							            <td></td>
 							          </tr>
 							            
@@ -101,7 +97,6 @@
 				                    <span class="actionButton"><g:link action="listTimesheets" id="${timesheetInstance.id}">Cancel</g:link></span>
 				                </div>
                             </tr>
-                            
                         </tbody>
                     </table>
                 </div>

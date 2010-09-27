@@ -112,20 +112,65 @@ class TimesheetController {
 	}
 	
 	def edit = {
-		// >validate "Am I allowed to create a timesheet?"
-		// >is it in a prior timesheet
-		// >  Yes,
-		// >     any timesheets?
-		// >     get the most recent and check if it falls in date range.
-		//   No,
-		//      Create a work week Mon-Sun (the timesheet).
-		//      calculate from current date to closest monday in the past (could be today).
-		//
-		// Doing the NO section.
-		//
+
+		
 		def user = User.get(session.user.id)
-		Timesheet ts = timesheetManagerService.generateWeeklyTimesheet(user)
+		def ts = Timesheet.get(params.id)
+		if (ts.user.id != user.id) {
+			throw new RuntimeException("Attempting to update a timesheet assigned to a different user.")
+		}
 
 		[timesheetInstance:ts]
+	}
+	
+	def update = {
+		def user = User.get(session.user.id)
+		Timesheet timesheetInstance = Timesheet.get(params.id)
+		
+		
+		if (params.version) {
+			def version = params.version.toLong()
+			if (timesheetInstance.version > version) {
+				timesheetInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'timesheet.label', default: 'Timesheet')] as Object[], "Another user has updated this Timesheet while you were editing")
+				render(view: "edit", model: [timesheetInstance: timesheetInstance])
+				return
+			}
+		}
+		
+		
+		timesheetInstance.timesheetEntries.eachWithIndex {
+			tse, index -> 
+			def daysOfWeek = [ params["day1_${index}"],
+				params["day2_${index}"],
+				params["day3_${index}"],
+				params["day4_${index}"],
+				params["day5_${index}"],
+				params["day6_${index}"],
+				params["day7_${index}"]
+			]
+			
+			tse.workdays.eachWithIndex { workday, indx ->
+				
+				if (daysOfWeek[indx] == "") {
+					workday.hoursWorked = 0
+				} else {
+					try {
+						workday.hoursWorked = daysOfWeek[indx].toDouble()
+					} catch (Exception e) {
+						workday.hoursWorked = 0
+					}
+				}
+				
+			} // clean up bad numbers.
+		}
+		
+		if (!timesheetInstance.hasErrors() && timesheetInstance.save(flush: true)) {
+			flash.message = "${message(code: 'default.updated.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), timesheetInstance.id])}"
+			redirect(action: "show", id: timesheetInstance.id)
+		}
+		else {
+			render(view: "edit", model: [timesheetInstance: timesheetInstance])
+		}
+		
 	}
 }
