@@ -15,14 +15,13 @@ class TimesheetController {
 	
 	//  http://localhost:8080/Timesheet/timesheet/listTimesheets
 	def listTimesheets = {
-		def timesheetList = Timesheet.list()
+		def user = User.get(session.user.id)
+		// TODO use paging abilities pagination next, prev.
+		def timesheetList = timesheetManagerService.retrieveTimesheets(user)
 		[timesheetList:timesheetList]
 	}
 	
 	def create = {
-		log.info "User agent: " + request.getHeader("User-Agent")
-		
-		// TODO Validate is user allowed to create a timesheet?
 		// >validate "Am I allowed to create a timesheet?"
 		// >is it in a prior timesheet
 		// >  Yes,
