@@ -36,7 +36,7 @@
                                   <label for="startDate"><g:message code="timesheet.startDate.label" default="Start Date" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'startDate', 'errors')}">
-                                    <g:datePicker name="startDate" precision="day" value="${timesheetInstance?.startDate}"  />
+                                    ${timesheetInstance?.startDate}
                                 </td>
                             </tr>
                         
@@ -45,42 +45,67 @@
                                   <label for="endDate"><g:message code="timesheet.endDate.label" default="End Date" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'endDate', 'errors')}">
-                                    <g:datePicker name="endDate" precision="day" value="${timesheetInstance?.endDate}"  />
+                                    ${timesheetInstance?.endDate}
                                 </td>
                             </tr>
-                        
                             <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="timesheetEntries"><g:message code="timesheet.timesheetEntries.label" default="Timesheet Entries" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'timesheetEntries', 'errors')}">
-                                    
-<ul>
-<g:each in="${timesheetInstance?.timesheetEntries?}" var="t">
-    <li><g:link controller="timesheetEntry" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></li>
-</g:each>
-</ul>
-<g:link controller="timesheetEntry" action="create" params="['timesheet.id': timesheetInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'timesheetEntry.label', default: 'TimesheetEntry')])}</g:link>
-
-                                </td>
+                                <div class="dialog">
+							        <table>
+							          <tr>
+							            <th>Task</th>
+							            <th>Labor Category</th>
+							            <th>Charge #</th>
+							            <th>Sun</th>
+							            <th>Mon</th>
+							            <th>Tue</th>
+							            <th>Wed</th>
+							            <th>Thu</th>
+							            <th>Fri</th>
+							            <th>Sat</th>
+							            <th>Total</th>
+							          </tr>
+							    <g:each status="i" in="${timesheetInstance?.timesheetEntries}" var="timesheetEntry">
+							          <tr>
+							            <td><g:hiddenField name="timesheetEntries" value="${timesheetEntry?.id}" />${timesheetEntry?.taskAssignment?.task.name} </td>
+							            <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
+							            <td><g:hiddenField name="chargeCode${i}" value="${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}" />${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
+							            <td><g:textField name="day1_${i}" value=""></g:textField></td>
+							            <td><g:textField name="day2_${i}" value=""></g:textField></td>
+							            <td><g:textField name="day3_${i}" value=""></g:textField></td>
+							            <td><g:textField name="day4_${i}" value=""></g:textField></td>
+							            <td><g:textField name="day5_${i}" value=""></g:textField></td>
+							            <td><g:textField name="day6_${i}" value=""></g:textField></td>
+							            <td><g:textField name="day7_${i}" value=""></g:textField></td>
+							            <td></td>
+							          </tr>
+							            
+							    </g:each>
+							          <tr>
+							            <td></td>
+							            <td></td>
+							            <th>Total: </th>
+							            <td><div></div></td>
+							            <td><div></div></td>
+							            <td><div></div></td>
+							            <td><div></div></td>
+							            <td><div></div></td>
+							            <td><div></div></td>
+							            <td><div></div></td>
+							            <td><div></div></td>
+							          </tr>
+							        </table>
+							    </div>
+							    <div class="buttons">
+				                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" /></span>
+				                    <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" /></span>
+				                    <span class="actionButton"><g:link action="listTimesheets" id="${timesheetInstance.id}">Cancel</g:link></span>
+				                </div>
                             </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="user"><g:message code="timesheet.user.label" default="User" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'user', 'errors')}">
-                                    <g:select name="user.id" from="${com.ewconline.timesheet.User.list()}" optionKey="id" value="${timesheetInstance?.user?.id}"  />
-                                </td>
-                            </tr>
-                        
+                            
                         </tbody>
                     </table>
                 </div>
-                <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" /></span>
-                    <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" /></span>
-                </div>
+
             </g:form>
         </div>
     </body>

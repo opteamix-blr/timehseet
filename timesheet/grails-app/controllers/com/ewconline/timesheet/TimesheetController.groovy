@@ -110,4 +110,22 @@ class TimesheetController {
 			[timesheetInstance: timesheetInstance]
 		}
 	}
+	
+	def edit = {
+		// >validate "Am I allowed to create a timesheet?"
+		// >is it in a prior timesheet
+		// >  Yes,
+		// >     any timesheets?
+		// >     get the most recent and check if it falls in date range.
+		//   No,
+		//      Create a work week Mon-Sun (the timesheet).
+		//      calculate from current date to closest monday in the past (could be today).
+		//
+		// Doing the NO section.
+		//
+		def user = User.get(session.user.id)
+		Timesheet ts = timesheetManagerService.generateWeeklyTimesheet(user)
+
+		[timesheetInstance:ts]
+	}
 }

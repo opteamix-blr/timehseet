@@ -22,6 +22,7 @@
             </div>
         </g:hasErrors>
 		<g:form action="save" method="post" >
+		<div class="dialog">
 		<table>
 		  <tr>
 			<th>Task</th>
@@ -66,11 +67,13 @@
 			<td><div></div></td>
 		  </tr>
 		</table>
-
-		<div class="button-primary">
-			<g:actionSubmit value="Save" action="save"></g:actionSubmit>
-			<g:actionSubmit value="Cancel" action="cancelCreate"></g:actionSubmit>
-		</div>
+        </div>
+		<div class="buttons">
+          <span class="button"><g:actionSubmit class="save" action="save" value="${message(code: 'default.button.save.label', default: 'Save')}" /></span>
+          <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" /></span>
+          <span class="button"><g:actionSubmit class="cancel" action="listTimesheets" value="${message(code: 'default.button.cancel.label', default: 'Cancel')}" onclick="return confirm('${message(code: 'default.button.cancel.confirm.message', default: 'Are you sure?')}');" /></span>
+        </div>
+		
 		</g:form>
 	</div>
 
