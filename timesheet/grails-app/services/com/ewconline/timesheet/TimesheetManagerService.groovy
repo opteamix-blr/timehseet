@@ -22,6 +22,7 @@ class TimesheetManagerService {
 			endDate:new Date(saturday.format("MM/DD/YYYY"))
 		)
 		
+		
 		def taskAssignments = user.taskAssignments
 		for (ta in taskAssignments){
 			def timesheetEntry = new TimesheetEntry(taskAssignment:ta);
@@ -59,5 +60,10 @@ class TimesheetManagerService {
 		return allUserTimesheets
 	}
 	
+	Timesheet getDuplicateTimesheet(Timesheet tsToCheck, User user){
+		Timesheet duplicateTimesheet = Timesheet.findByUserAndStartDate(user, tsToCheck.startDate)
+		
+		return duplicateTimesheet
+	}
 }
 

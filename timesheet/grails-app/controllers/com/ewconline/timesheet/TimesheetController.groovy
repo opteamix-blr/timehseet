@@ -39,7 +39,13 @@ class TimesheetController {
 		def user = User.get(session.user.id)
 		Timesheet ts = timesheetManagerService.generateWeeklyTimesheet(user)
 
-		[timesheetInstance:ts]
+		Timesheet duplicateTimesheet = timesheetManagerService.getDuplicateTimesheet(ts, user)
+		
+		if(duplicateTimesheet){
+			redirect(action:"edit", params:[id:duplicateTimesheet.id])
+		} else {
+			[timesheetInstance:ts]
+		}
 	}
 	
 	def save = {
@@ -113,13 +119,11 @@ class TimesheetController {
 	
 	def edit = {
 
-		
 		def user = User.get(session.user.id)
 		def ts = Timesheet.get(params.id)
 		if (ts.user.id != user.id) {
 			throw new RuntimeException("Attempting to update a timesheet assigned to a different user.")
 		}
-
 		[timesheetInstance:ts]
 	}
 	
