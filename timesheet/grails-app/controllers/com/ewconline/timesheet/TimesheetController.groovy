@@ -54,14 +54,14 @@ class TimesheetController {
 		// populate from form hours for each timesheet entry.
 
 		timesheetInstance.timesheetEntries.eachWithIndex { 
-			tse, index -> println ">>>> chargeCode${index}" + params["chargeCode${index}"]
-			def daysOfWeek = [ params["day1_${index}"],
-				params["day2_${index}"],
-				params["day3_${index}"],
-				params["day4_${index}"],
-				params["day5_${index}"],
-				params["day6_${index}"],
-				params["day7_${index}"]
+			tse, index -> //println ">>>> chargeCode${index}" + params["chargeCode${index}"]
+			def daysOfWeek = [ params["day1_${tse?.taskAssignment?.chargeCode.id}"],
+				params["day2_${tse?.taskAssignment?.chargeCode.id}"],
+				params["day3_${tse?.taskAssignment?.chargeCode.id}"],
+				params["day4_${tse?.taskAssignment?.chargeCode.id}"],
+				params["day5_${tse?.taskAssignment?.chargeCode.id}"],
+				params["day6_${tse?.taskAssignment?.chargeCode.id}"],
+				params["day7_${tse?.taskAssignment?.chargeCode.id}"]
 			]
 			
 			tse.workdays.eachWithIndex { workday, indx ->
@@ -140,13 +140,13 @@ class TimesheetController {
 		
 		timesheetInstance.timesheetEntries.eachWithIndex {
 			tse, index -> 
-			def daysOfWeek = [ params["day1_${index}"],
-				params["day2_${index}"],
-				params["day3_${index}"],
-				params["day4_${index}"],
-				params["day5_${index}"],
-				params["day6_${index}"],
-				params["day7_${index}"]
+			def daysOfWeek = [ params["day1_${tse.taskAssignment?.chargeCode.id}"],
+				params["day2_${tse.taskAssignment?.chargeCode.id}"],
+				params["day3_${tse.taskAssignment?.chargeCode.id}"],
+				params["day4_${tse.taskAssignment?.chargeCode.id}"],
+				params["day5_${tse.taskAssignment?.chargeCode.id}"],
+				params["day6_${tse.taskAssignment?.chargeCode.id}"],
+				params["day7_${tse.taskAssignment?.chargeCode.id}"]
 			]
 			
 			tse.workdays.eachWithIndex { workday, indx ->

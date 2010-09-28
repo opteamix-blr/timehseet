@@ -2,7 +2,7 @@ package com.ewconline.timesheet
 
 /** This represents a row on a time sheet.
 */
-class TimesheetEntry {
+class TimesheetEntry implements Comparable{
 	static belongsTo = [timesheet:Timesheet]
 	SortedSet workdays
 	TaskAssignment taskAssignment
@@ -11,6 +11,9 @@ class TimesheetEntry {
 		taskAssignment()
     }
     static hasMany = [workdays : Workday]
-
+	
+	int compareTo(obj) {
+		taskAssignment?.task?.name.compareTo(obj.taskAssignment?.task?.name)
+	}
     
 }

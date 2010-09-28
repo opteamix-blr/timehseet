@@ -70,7 +70,7 @@
 							            <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
 							            <td><g:hiddenField name="chargeCode${i}" value="${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}" />${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
 							            <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">
-							             <td><g:textField name="day${j+1}_${i}" value="${wd.hoursWorked}"></g:textField></td>
+							             <td><g:textField name="day${j+1}_${timesheetEntry?.taskAssignment?.chargeCode.id}" value="${wd.hoursWorked}"></g:textField></td>
 							            </g:each>
 							            <td></td>
 							          </tr>
