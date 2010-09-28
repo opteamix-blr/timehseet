@@ -1,6 +1,8 @@
 
 package com.ewconline.timesheet
 
+import java.util.SortedSet;
+
 class Timesheet {
 
     Date dateCreated
@@ -13,6 +15,7 @@ class Timesheet {
         startDate(blank:false)
         endDate(blank:false)
     }
+	SortedSet timesheetEntries
     static hasMany = [timesheetEntries: TimesheetEntry]
 
     static belongsTo = [user:User]

@@ -42,13 +42,13 @@
             <td><g:hiddenField name="timesheetEntries" value="${timesheetEntry?.id}" />${timesheetEntry?.taskAssignment?.task.name} </td>
             <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
             <td><g:hiddenField name="chargeCode${i}" value="${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}" />${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
-            <td><g:textField name="day1_${i}" value=""></g:textField></td>
-            <td><g:textField name="day2_${i}" value=""></g:textField></td>
-            <td><g:textField name="day3_${i}" value=""></g:textField></td>
-            <td><g:textField name="day4_${i}" value=""></g:textField></td>
-            <td><g:textField name="day5_${i}" value=""></g:textField></td>
-            <td><g:textField name="day6_${i}" value=""></g:textField></td>
-            <td><g:textField name="day7_${i}" value=""></g:textField></td>
+            <td><g:textField name="day1_${timesheetEntry.taskAssignment?.chargeCode.id}" value=""></g:textField></td>
+            <td><g:textField name="day2_${timesheetEntry.taskAssignment?.chargeCode.id}" value=""></g:textField></td>
+            <td><g:textField name="day3_${timesheetEntry.taskAssignment?.chargeCode.id}" value=""></g:textField></td>
+            <td><g:textField name="day4_${timesheetEntry.taskAssignment?.chargeCode.id}" value=""></g:textField></td>
+            <td><g:textField name="day5_${timesheetEntry.taskAssignment?.chargeCode.id}" value=""></g:textField></td>
+            <td><g:textField name="day6_${timesheetEntry.taskAssignment?.chargeCode.id}" value=""></g:textField></td>
+            <td><g:textField name="day7_${timesheetEntry.taskAssignment?.chargeCode.id}" value=""></g:textField></td>
             <td></td>
           </tr>
             
