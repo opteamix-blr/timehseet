@@ -72,7 +72,7 @@
 							            <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">
 							             <td><g:textField name="day${j+1}_${timesheetEntry?.taskAssignment?.chargeCode.id}" value="${wd.hoursWorked}"></g:textField></td>
 							            </g:each>
-							            <td></td>
+							            <td><gt:timesheetEntryTotal days="${timesheetEntry.workdays}"/></td>
 							          </tr>
 							            
 							    </g:each>
