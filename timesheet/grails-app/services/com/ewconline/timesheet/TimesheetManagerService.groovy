@@ -34,6 +34,20 @@ class TimesheetManagerService {
 		return ts
     }
 	
+	def retrieveCurrentTimesheet(User user) {
+		
+		def c = Timesheet.createCriteria()
+		Date currentDay = new Date()
+		def previousTimesheet = c.list {
+			eq("user.id", user.id)
+			lt("startDate", currentDay)
+			gt("endDate", currentDay)
+		}
+		if (previousTimesheet.size() > 0) {
+			return previousTimesheet[0]
+		}
+	}
+	
 	def createWeeklyTimesheet(Timesheet timesheet) {
 		// TODO validate duplicate timesheet.
 		Date currentDay = new Date()
