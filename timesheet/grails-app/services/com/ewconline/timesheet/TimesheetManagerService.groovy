@@ -49,19 +49,12 @@ class TimesheetManagerService {
 	}
 	
 	def createWeeklyTimesheet(Timesheet timesheet) {
-		// TODO validate duplicate timesheet.
-		Date currentDay = new Date()
-		
-		
-		def c = Timesheet.createCriteria()
-		def previousTimesheet = c.list {
-			 eq("user.id", timesheet.user.id)
-			 lt("startDate", currentDay)
-			 gt("endDate", currentDay)
-		}
-		if (previousTimesheet.size() > 0) {
+
+		def ts = retrieveCurrentTimesheet(timesheet.user)
+		if (ts != null) {
 			throw new RuntimeException("The current or weekly timesheet was already created.")
 		}
+
 		return timesheet.save(flush:true)
 	}
 	
