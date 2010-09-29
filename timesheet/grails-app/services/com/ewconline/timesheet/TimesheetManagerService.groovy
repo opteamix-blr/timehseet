@@ -66,11 +66,6 @@ class TimesheetManagerService {
 	    }
 		return allUserTimesheets
 	}
-	
-	Timesheet getDuplicateTimesheet(Timesheet tsToCheck, User user){
-		Timesheet duplicateTimesheet = Timesheet.findByUserAndStartDate(user, tsToCheck.startDate)
-		
-		return duplicateTimesheet
-	}
+
 }
 
