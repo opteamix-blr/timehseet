@@ -46,38 +46,18 @@
 		        <!-- Left Menu options -->
 		        <table>
 		          <tr>
-			          <td style="padding-left: 5px; padding-top: 10px; padding-bottom: 10px;">
-			          <font face="arial" color="#000000" size="3"> 
-			          	<a href="${createLinkTo(dir:'', file:'timesheet/listTimesheets')}">List Timesheets </a>
-			          </font>
+			          <td>			          
+			          	<a href="${createLinkTo(dir:'', file:'timesheet/listTimesheets')}">My Timesheets </a>
 			          </td>
 			      </tr>
 			      <tr>
-			          <td style="padding-left: 5px; padding-top: 10px; padding-bottom: 10px;">
-			          	<font face="arial" color="#000000" size="3">
-			          		<a href="index.gsp">Lookup Timesheets </a>
-			          	</font>
+			          <td>
+			          	<a href="index.gsp">Lookup Timesheets </a>
 			          </td>
 			      </tr>
 			      <tr>
-			          <td style="padding-left: 5px; padding-top: 10px; padding-bottom: 10px;">
-			          	<font face="arial" color="#000000" size="3">
-			          	  <a href="index.gsp">View Current Timesheet </a>
-			          	</font>
-			          </td>
-			      </tr>
-			      <tr>
-			          <td style="padding-left: 5px; padding-top: 10px; padding-bottom: 10px;">
-			          	<font face="arial" color="#000000" size="3">
-			          	  <a href="index.gsp">Create a Timesheet </a>
-			          	</font>
-			          </td>
-			      </tr>
-			      <tr>
-			          <td style="padding-left: 5px; padding-top: 10px; padding-bottom: 10px;">
-			          	<font face="arial" color="#000000" size="3">
+			          <td>
 			          	<a href="${createLinkTo(dir:'', file:'access/logout')}">Logout</a>
-			          	</font>
 			          </td>
 		          </tr>
 		        </table>
