@@ -8,7 +8,7 @@
 <body>
 
 	<div class="nav">
-		<span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
+		<span class="menuButton"><a class="home" href="${createLinkTo(dir:'timesheet/listTimesheets')}">Home</a></span>
 		<span class="menuButton"><g:link class="create" action="create">Create New Timesheet</g:link></span>
 	</div>
 
