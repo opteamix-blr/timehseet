@@ -45,8 +45,14 @@ class AccessController {
 		if (user) {
 			// obtain a session
 			if (!session || !session.user) {
-				 
 				 session.user = user
+				 for ( r in user.authorities ) {
+				    if (r.authority == "approve") {
+						session.approvalRole = true;
+					} else if (r.authority == "all") {
+						session.adminRole = true;
+					}
+				 }
 				 log.debug "user named " + session.user.username + " is logged in"
 			}
 			
