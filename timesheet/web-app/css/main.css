@@ -84,10 +84,22 @@ input:focus, select:focus, textarea:focus {
     text-transform: uppercase;
     text-decoration: none;
     border-bottom: none;
-    border: 1px dashed #999;
+    border: 1px;
     padding: 7px 5px 7px 30px;
     display: block;
     background-color: #E7E7E7;
+    background-position: 0 2px;
+    zoom: 1;
+}
+#mainNav p {
+    color: #000;
+    font-size: 13px;
+    text-decoration: underline;
+    border-bottom: none;
+    border: 1px;
+    padding: 5px 2px 5px 3px;
+    display: block;
+    background-color: #959595;
     background-position: 0 2px;
     zoom: 1;
 }
