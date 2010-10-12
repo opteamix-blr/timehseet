@@ -51,7 +51,7 @@
 					<li><a href="index.gsp">Lookup Timesheets </a></li>
                     <g:if test="${session?.approvalRole || session?.adminRole}">
                         <li><p>Approver</p></li>
-                        <li><a href="${createLinkTo(dir:'', file:'approve/list')}">Approvals</a></li>
+                        <li><a href="${createLinkTo(dir:'', file:'approver/approverListTimesheet')}">Approvals</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'reports/list')}">Reporting</a></li>
                     </g:if>
                     <g:if test="${session?.adminRole}">

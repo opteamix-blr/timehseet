@@ -13,6 +13,15 @@
             <span class="menuButton"><a class="home" href="${createLink(uri: '/timesheet/listTimesheets')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
+            <g:if test="${timesheetInstance.approveState == 'open'}">
+                <span class="menuButton"><g:link class="approver_open" controller="approver" action="userApprove" id="${timesheetInstance?.id}">Approve</g:link></span>
+            </g:if>
+            <g:if test="${timesheetInstance.approveState == 'pending'}">
+                <span class="menuButton"><g:link class="approver_pending" >Pending</g:link></span>
+            </g:if>
+            <g:if test="${timesheetInstance.approveState == 'approved'}">
+                <span class="menuButton"><g:link class="approver_approved" controller="approver" action="accountantApprove">Approved</g:link></span>
+            </g:if>
         </div>
         <div class="body">
             <h1><g:message code="default.edit.label" args="[entityName]" /></h1>
