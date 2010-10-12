@@ -26,7 +26,10 @@ environments {
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:hsqldb:file:prodDb;shutdown=true"
+			driverClassName = "com.mysql.jdbc.Driver"
+			username = "timesheet"
+			password = "timesheet"
+            url = "jdbc:mysql://dev.bct-llc.com:3306/timesheet"
         }
     }
 }
