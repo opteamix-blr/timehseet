@@ -5,7 +5,7 @@
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
         <g:layoutHead />
         <g:javascript library="application" />
-	     
+	    
 	</head>
 	<body bgcolor="#999999">
 		<div align="center"> 
@@ -44,23 +44,11 @@
 
 		      <td bgcolor="#FFFFFF" valign="top" width="168" style="padding-left: 5px;">
 		        <!-- Left Menu options -->
-		        <table>
-		          <tr>
-			          <td>			          
-			          	<a href="${createLinkTo(dir:'', file:'timesheet/listTimesheets')}">My Timesheets </a>
-			          </td>
-			      </tr>
-			      <tr>
-			          <td>
-			          	<a href="index.gsp">Lookup Timesheets </a>
-			          </td>
-			      </tr>
-			      <tr>
-			          <td>
-			          	<a href="${createLinkTo(dir:'', file:'access/logout')}">Logout</a>
-			          </td>
-		          </tr>
-		        </table>
+                <ul id="mainNav">			          
+					<li><a href="${createLinkTo(dir:'', file:'timesheet/listTimesheets')}">My Timesheets </a></li>
+					<li><a href="index.gsp">Lookup Timesheets </a></li>
+					<li><a href="${createLinkTo(dir:'', file:'access/logout')}">Logout</a></li>
+                </ul>
 		      </td>
 		      
 		      <td style="padding-left: 5px;" bgcolor="#ffffff" width="768" valign="top">

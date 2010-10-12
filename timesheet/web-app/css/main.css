@@ -72,6 +72,26 @@ input:focus, select:focus, textarea:focus {
     padding: 7px 12px;
 }
 
+#mainNav {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#mainNav a {
+    color: #000;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: none;
+    border: 1px dashed #999;
+    padding: 7px 5px 7px 30px;
+    display: block;
+    background-color: #E7E7E7;
+    background-position: 0 2px;
+    zoom: 1;
+}
+
 .menuButton {
     font-size: 10px;
     padding: 0 5px;
