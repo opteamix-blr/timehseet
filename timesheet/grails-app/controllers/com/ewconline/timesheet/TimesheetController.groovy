@@ -121,6 +121,14 @@ class TimesheetController {
 
 		def user = User.get(session.user.id)
 		def ts = Timesheet.get(params.id)
+		if (ts == null) {
+			ts = timesheetManagerService.retrieveCurrentTimesheet(user)
+			if (ts == null) {
+				flash.message = "No current timesheet. Please create a new timesheet for the week."
+				redirect(action: "listTimesheets")
+				return
+			}
+		}
 		if (ts.user.id != user.id) {
 			throw new RuntimeException("Attempting to update a timesheet assigned to a different user.")
 		}
