@@ -10,6 +10,8 @@ class Timesheet {
 
     Date startDate
     Date endDate
+	/* open, pending, approved */
+	String approveState = "open"
 
     static constraints = {
         startDate(blank:false)
