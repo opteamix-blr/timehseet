@@ -18,7 +18,8 @@ class Timesheet {
         endDate(blank:false)
     }
 	SortedSet timesheetEntries
-    static hasMany = [timesheetEntries: TimesheetEntry]
+    static hasMany = [timesheetEntries: TimesheetEntry,
+					  notes: Note]
 
     static belongsTo = [user:User]
 }
