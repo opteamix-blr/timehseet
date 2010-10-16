@@ -10,7 +10,8 @@ class TimesheetEntry implements Comparable{
     static constraints = {
 		taskAssignment()
     }
-    static hasMany = [workdays : Workday]
+    static hasMany = [workdays : Workday,
+					  notes: Note]
 	
 	int compareTo(obj) {
 		taskAssignment?.task?.name.compareTo(obj.taskAssignment?.task?.name)
