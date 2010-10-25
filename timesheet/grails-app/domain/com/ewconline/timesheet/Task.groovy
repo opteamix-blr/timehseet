@@ -2,7 +2,7 @@ package com.ewconline.timesheet
 
 class Task {
 
-    String name
+    String name 
     String description
 	
 	static hasMany = [chargeCodes: ChargeCode, laborCategories: LaborCategory ]
