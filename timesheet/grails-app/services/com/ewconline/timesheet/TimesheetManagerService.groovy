@@ -14,12 +14,12 @@ class TimesheetManagerService {
     def generateWeeklyTimesheet(User user) {
 		
 		DateTime currentDay = DateTime.today(TimeZone.getDefault())
-		DateTime sunday = currentDay.minusDays(currentDay.getWeekDay() - 1)
-		DateTime saturday = sunday.plusDays(6)
+		DateTime saturday = currentDay.minusDays(currentDay.getWeekDay() - 2)
+		DateTime friday = saturday.plusDays(5)
 
 		Timesheet ts = new Timesheet(
-			startDate:new Date(sunday.format("MM/DD/YYYY")), 
-			endDate:new Date(saturday.format("MM/DD/YYYY"))
+			startDate:new Date(saturday.format("MM/DD/YYYY")), 
+			endDate:new Date(friday.format("MM/DD/YYYY"))
 		)
 		
 		
@@ -27,7 +27,7 @@ class TimesheetManagerService {
 		for (ta in taskAssignments){
 			def timesheetEntry = new TimesheetEntry(taskAssignment:ta);
 			for (x in (0..6)){
-				timesheetEntry.addToWorkdays(new Workday(dateWorked:new Date(sunday.plusDays(x).getMilliseconds(TimeZone.getDefault()))))
+				timesheetEntry.addToWorkdays(new Workday(dateWorked:new Date(saturday.plusDays(x).getMilliseconds(TimeZone.getDefault()))))
 			}
 			ts.addToTimesheetEntries(timesheetEntry)
 		}

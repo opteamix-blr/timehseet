@@ -28,13 +28,13 @@
 			<th>Task</th>
 			<th>Labor Category</th>
 			<th>Charge #</th>
+			<th>Sat</th>
 			<th>Sun</th>
 			<th>Mon</th>
 			<th>Tue</th>
 			<th>Wed</th>
 			<th>Thu</th>
 			<th>Fri</th>
-			<th>Sat</th>
 			<th>Total</th>
 		  </tr>
 	<g:each status="i" in="${timesheetInstance?.timesheetEntries}" var="timesheetEntry">
