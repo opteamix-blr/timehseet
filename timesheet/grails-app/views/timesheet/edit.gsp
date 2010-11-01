@@ -13,15 +13,16 @@
             <span class="menuButton"><a class="home" href="${createLink(uri: '/timesheet/listTimesheets')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
-            <g:if test="${timesheetInstance.approveState == 'open'}">
+            <g:if test="${timesheetInstance.currentState == ''}">
                 <span class="menuButton"><g:link class="approver_open" controller="approver" action="userApprove" id="${timesheetInstance?.id}">Approve</g:link></span>
             </g:if>
-            <g:if test="${timesheetInstance.approveState == 'pending'}">
+            <g:if test="${timesheetInstance.currentState == 'pending'}">
                 <span class="menuButton"><g:link class="approver_pending" >Pending</g:link></span>
             </g:if>
-            <g:if test="${timesheetInstance.approveState == 'approved'}">
+            <g:if test="${timesheetInstance.currentState == 'approved'}">
                 <span class="menuButton"><g:link class="approver_approved" controller="approver" action="accountantApprove">Approved</g:link></span>
             </g:if>
+            <span class="menuButton">Current status: ${timesheetInstance.currentState}</span>
         </div>
         <div class="body">
             <h1><g:message code="default.edit.label" args="[entityName]" /></h1>
@@ -33,7 +34,7 @@
                 <g:renderErrors bean="${timesheetInstance}" as="list" />
             </div>
             </g:hasErrors>
-            <g:form action="update" method="post" >
+            <g:form action="update" method="post">
                 <g:hiddenField name="id" value="${timesheetInstance?.id}" />
                 <g:hiddenField name="version" value="${timesheetInstance?.version}" />
                 <div class="dialog">

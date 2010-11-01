@@ -93,6 +93,8 @@ class TimesheetController {
 //		}
 		
 		try {
+			// update state of the timesheet
+			timesheetInstance.currentState = timesheetManagerService.determineState(timesheetInstance.currentState, timesheetManagerService.saving)
 			if (timesheetManagerService.createWeeklyTimesheet(timesheetInstance)){
 				flash.message = "${message(code: 'default.created.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), user.id])}"
 				redirect(action: "listTimesheets", id: user.id)
@@ -175,7 +177,7 @@ class TimesheetController {
 				
 			} // clean up bad numbers.
 		}
-		
+		timesheetInstance.currentState = timesheetManagerService.determineState(timesheetInstance.currentState, timesheetManagerService.saving)
 		if (!timesheetInstance.hasErrors() && timesheetInstance.save(flush: true)) {
 			flash.message = "${message(code: 'default.updated.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), timesheetInstance.id])}"
 			redirect(action: "show", id: timesheetInstance.id)
