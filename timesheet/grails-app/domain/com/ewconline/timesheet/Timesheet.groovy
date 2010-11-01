@@ -10,8 +10,24 @@ class Timesheet {
 
     Date startDate
     Date endDate
-	/* open, pending, approved */
-	String approveState = "open"
+	
+	/* STATES: new timesheet, saved, changed, signed, approved, pending, complete */
+	/*
+	 * newtimesheet - save - saved
+	 * saved - sign - signed 
+	 * saved - modified - changed
+	 * changed - cancel - saved
+	 * signed - disapprove - saved
+	 * signed - modified - changed
+	 * signed - approve - approved
+	 * approved - make ready - pending
+	 * approved - override - saved
+	 * pending - override - approved
+	 * pending - finalize - completed
+	 * 
+	 */
+	//String previousState = "newtimesheet"
+	String currentState = "NEWTIMESHEET"
 
     static constraints = {
         startDate(blank:false)

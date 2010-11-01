@@ -27,7 +27,7 @@
 					<g:sortableColumn property="startDate" title="Start Date" />
 					<g:sortableColumn property="endDate" title="End Date" />
 					<th>Action</th>
-					<th>Approve State</th>
+					<th>Status</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -44,7 +44,7 @@
 							<g:link action="show" id="${timesheet.id}">Show</g:link>
 						</span>
 					</td>
-					<td>${timesheet?.approveState}</td>
+					<td>${timesheet?.currentState}</td>
 				</tr>
 			</g:each>
 			</tbody>
