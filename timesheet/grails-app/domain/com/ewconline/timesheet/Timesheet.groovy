@@ -26,12 +26,12 @@ class Timesheet {
 	 * pending - finalize - completed
 	 * 
 	 */
-	//String previousState = "newtimesheet"
-	String currentState = "NEWTIMESHEET"
+	String currentState
 
     static constraints = {
         startDate(blank:false)
         endDate(blank:false)
+		currentState(blank:false)
     }
 	SortedSet timesheetEntries
     static hasMany = [timesheetEntries: TimesheetEntry,

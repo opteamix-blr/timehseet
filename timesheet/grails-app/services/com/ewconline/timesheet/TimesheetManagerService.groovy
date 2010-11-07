@@ -65,7 +65,9 @@ class TimesheetManagerService {
 
 		Timesheet ts = new Timesheet(
 			startDate:new Date(saturday.format("MM/DD/YYYY")), 
-			endDate:new Date(friday.format("MM/DD/YYYY"))
+			endDate:new Date(friday.format("MM/DD/YYYY")),
+			user: user,
+			currentState: NEWTIMESHEET
 		)
 		
 		
@@ -81,15 +83,15 @@ class TimesheetManagerService {
     }
 	
 	def retrieveCurrentTimesheet(User user) {
-		
+		def systemUser = User.get(user.id)
 		def c = Timesheet.createCriteria()
 		Date currentDay = new Date()
 		def previousTimesheet = c.list {
-			eq("user.id", user.id)
+			eq("user.id", systemUser.id)
 			lt("startDate", currentDay)
 			gt("endDate", currentDay)
 		}
-		if (previousTimesheet.size() > 0) {
+		if (previousTimesheet && previousTimesheet.size() > 0) {
 			return previousTimesheet[0]
 		}
 	}
@@ -100,7 +102,16 @@ class TimesheetManagerService {
 		if (ts != null) {
 			throw new RuntimeException("The current or weekly timesheet was already created.")
 		}
+		updateState(timesheet, saving)
+			
 
+		return timesheet.save(flush:true)
+	}
+	
+	def update(Timesheet timesheet) {
+		
+		updateState(timesheet, saving)
+		
 		return timesheet.save(flush:true)
 	}
 	
@@ -113,10 +124,17 @@ class TimesheetManagerService {
 		return allUserTimesheets
 	}
 	
-	def determineState(String state, String transition) {
+	def updateState(Timesheet ts, String transition) {
 		
-		def resultantState = STATE_MAP[(state+transition)]
+		def resultantState = STATE_MAP[(ts.currentState+transition)]
+		//TODO if null is returned its an illegal state !!! 
+		// example the user tried to save after it was approved.
+		if (!resultantState) {
+			throw new RuntimeException("Current state of the timesheet is ${ts.currentState} you were ${transition} timesheet.")
+		}
+		ts.currentState = resultantState
 		
+		return resultantState
 		/* newtimesheet - saving - saved
 		* saved - signing - signed
 		* saved - modified - changed
