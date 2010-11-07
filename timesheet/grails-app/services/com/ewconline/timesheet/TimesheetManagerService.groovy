@@ -114,6 +114,12 @@ class TimesheetManagerService {
 		
 		return timesheet.save(flush:true)
 	}
+	def sign(Timesheet timesheet) {
+		
+		updateState(timesheet, signing)
+		
+		return timesheet.save(flush:true)
+	}
 	
 	def retrieveTimesheets(User user) {
 		def c = Timesheet.createCriteria()
