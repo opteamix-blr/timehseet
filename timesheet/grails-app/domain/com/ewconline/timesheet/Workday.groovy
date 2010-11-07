@@ -3,7 +3,7 @@ package com.ewconline.timesheet
 class Workday  implements Comparable {
 	
 	Date dateWorked
-	double hoursWorked
+	Float hoursWorked
 	
 	static hasMany = [notes: Note]
 	
@@ -11,7 +11,7 @@ class Workday  implements Comparable {
 	
     static constraints = {
 		dateWorked()
-		hoursWorked()
+		hoursWorked(nullable: true)
 		notes(nullable: true)
     }
 	int compareTo(obj) {

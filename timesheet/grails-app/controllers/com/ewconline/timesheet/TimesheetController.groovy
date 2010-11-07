@@ -53,48 +53,10 @@ class TimesheetController {
 		
 		// @todo must validate to not allow duplicates
 		Timesheet timesheetInstance = timesheetManagerService.generateWeeklyTimesheet(user)
-		timesheetInstance.user=user
-		// obtain params
-		
-//		println "avail taskassignments:"
-		// populate from form hours for each timesheet entry.
-
-		timesheetInstance.timesheetEntries.eachWithIndex { 
-			tse, index -> //println ">>>> chargeCode${index}" + params["chargeCode${index}"]
-			def daysOfWeek = [ params["day1_${tse?.taskAssignment?.chargeCode.id}"],
-				params["day2_${tse?.taskAssignment?.chargeCode.id}"],
-				params["day3_${tse?.taskAssignment?.chargeCode.id}"],
-				params["day4_${tse?.taskAssignment?.chargeCode.id}"],
-				params["day5_${tse?.taskAssignment?.chargeCode.id}"],
-				params["day6_${tse?.taskAssignment?.chargeCode.id}"],
-				params["day7_${tse?.taskAssignment?.chargeCode.id}"]
-			]
-			
-			tse.workdays.eachWithIndex { workday, indx ->
-				
-				if (daysOfWeek[indx] == "") {
-					workday.hoursWorked = 0
-				} else {
-					try {
-						workday.hoursWorked = daysOfWeek[indx].toDouble()
-					} catch (Exception e) {
-						workday.hoursWorked = 0
-					}
-				}
-				
-			} // clean up bad numbers.
-		}
-		
-//		// debug to display hours
-//		for (te in timesheetInstance.timesheetEntries) {
-//			for (wd in te.workdays) {
-//				println "wd >>>> " + wd.hoursWorked
-//			}
-//		}
+		populateWorkdaysFromForm(timesheetInstance)
 		
 		try {
 			// update state of the timesheet
-			timesheetInstance.currentState = timesheetManagerService.determineState(timesheetInstance.currentState, timesheetManagerService.saving)
 			if (timesheetManagerService.createWeeklyTimesheet(timesheetInstance)){
 				flash.message = "${message(code: 'default.created.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), user.id])}"
 				redirect(action: "listTimesheets", id: user.id)
@@ -141,7 +103,6 @@ class TimesheetController {
 		def user = User.get(session.user.id)
 		Timesheet timesheetInstance = Timesheet.get(params.id)
 		
-		
 		if (params.version) {
 			def version = params.version.toLong()
 			if (timesheetInstance.version > version) {
@@ -151,40 +112,49 @@ class TimesheetController {
 			}
 		}
 		
-		
+		// update from form
+		populateWorkdaysFromForm(timesheetInstance)
+		try {
+			if (!timesheetInstance.hasErrors()) {
+				timesheetManagerService.update(timesheetInstance)
+				redirect(action: "show", id: timesheetInstance.id)
+			} else {
+				render(view: "edit", model: [timesheetInstance: timesheetInstance])
+			}
+		} catch (Exception e) {
+			flash.message = "${message(code: 'default.updated.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), timesheetInstance.id])}"
+			redirect(action: "show", id: timesheetInstance.id)
+		}
+	}
+	
+	def obtainWeekdays(taskAssignment) {
+		[ params["day1_${taskAssignment?.chargeCode.id}"],
+			params["day2_${taskAssignment?.chargeCode.id}"],
+			params["day3_${taskAssignment?.chargeCode.id}"],
+			params["day4_${taskAssignment?.chargeCode.id}"],
+			params["day5_${taskAssignment?.chargeCode.id}"],
+			params["day6_${taskAssignment?.chargeCode.id}"],
+			params["day7_${taskAssignment?.chargeCode.id}"]
+		]
+	}
+	
+	def populateWorkdaysFromForm(timesheetInstance){
 		timesheetInstance.timesheetEntries.eachWithIndex {
-			tse, index -> 
-			def daysOfWeek = [ params["day1_${tse.taskAssignment?.chargeCode.id}"],
-				params["day2_${tse.taskAssignment?.chargeCode.id}"],
-				params["day3_${tse.taskAssignment?.chargeCode.id}"],
-				params["day4_${tse.taskAssignment?.chargeCode.id}"],
-				params["day5_${tse.taskAssignment?.chargeCode.id}"],
-				params["day6_${tse.taskAssignment?.chargeCode.id}"],
-				params["day7_${tse.taskAssignment?.chargeCode.id}"]
-			]
-			
+			tse, index ->
+			def daysOfWeek = obtainWeekdays(tse.taskAssignment)
 			tse.workdays.eachWithIndex { workday, indx ->
 				
 				if (daysOfWeek[indx] == "") {
-					workday.hoursWorked = 0
+					workday.hoursWorked = null
 				} else {
 					try {
-						workday.hoursWorked = daysOfWeek[indx].toDouble()
+						workday.hoursWorked = daysOfWeek[indx].toFloat()
 					} catch (Exception e) {
-						workday.hoursWorked = 0
+						workday.hoursWorked = null
 					}
 				}
 				
 			} // clean up bad numbers.
 		}
-		timesheetInstance.currentState = timesheetManagerService.determineState(timesheetInstance.currentState, timesheetManagerService.saving)
-		if (!timesheetInstance.hasErrors() && timesheetInstance.save(flush: true)) {
-			flash.message = "${message(code: 'default.updated.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), timesheetInstance.id])}"
-			redirect(action: "show", id: timesheetInstance.id)
-		}
-		else {
-			render(view: "edit", model: [timesheetInstance: timesheetInstance])
-		}
-		
-	}
+	}	
 }

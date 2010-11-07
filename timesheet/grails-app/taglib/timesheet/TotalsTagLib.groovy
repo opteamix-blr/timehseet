@@ -7,8 +7,10 @@ class TotalsTagLib {
 	def timesheetEntryTotal = { attrs ->
 		def totalHours = 0 
 		for(d in attrs.days){
-			totalHours += d.hoursWorked
+			if (d.hoursWorked) {
+				totalHours += d.hoursWorked
+			}
 		}
-		out << totalHours
+		out << String.format("%.2f", totalHours)
 	}
 }
