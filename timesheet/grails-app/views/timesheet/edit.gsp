@@ -103,7 +103,7 @@
 							    </div>
 							    <div class="buttons">
 				                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" /></span>
-									<span class="button"><g:actionSubmit class="sign" action="signForm" value="${message(code: 'default.button.sign.label', default: 'Sign')}" /></span>
+									<span class="button"><g:link class="sign" controller="timesheet" action="signform" value="${message(code: 'default.button.sign.label', default: 'Sign')}" >Sign</g:link></span>
 				                    <span class="button"><g:link action="listTimesheets" id="${timesheetInstance.id}">Cancel</g:link></span>
 				                </div>
                             </tr>

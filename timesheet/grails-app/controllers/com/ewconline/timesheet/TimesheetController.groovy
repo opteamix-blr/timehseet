@@ -157,4 +157,41 @@ class TimesheetController {
 			} // clean up bad numbers.
 		}
 	}	
+	def signform = {
+		def user = User.get(session.user.id)
+		def tsId = params['timesheetId']
+		def ts
+		if (tsId) {
+			ts = Timesheet.get(tsId)
+		} else {
+			ts = timesheetManagerService.retrieveCurrentTimesheet(user)
+		}
+		[timesheet:ts]
+	}
+	def sign = {
+		def user = User.get(session.user.id)
+		
+		// @todo must validate to not allow duplicates
+		def tsId = params['timesheetId']
+		def ts
+		if (tsId) {
+			ts = Timesheet.get(tsId)
+		} else {
+			ts = timesheetManagerService.retrieveCurrentTimesheet(user)
+		}
+		
+		try {
+			// update state of the timesheet
+			if (timesheetManagerService.sign(ts)){
+				flash.message = "${message(code: 'timesheet signed successfully', args: [message(code: 'timesheet.label', default: 'Timesheet'), user.id])}"
+				redirect(action: "listTimesheets", id: user.id)
+			}
+			else {
+				render(view: "edit", model: [timesheetInstance: ts])
+			}
+		} catch (Exception e) {
+			flash.message = e.getMessage()
+			redirect(action: "listTimesheets", id: user.id)
+		}
+	}
 }
