@@ -38,14 +38,14 @@
 					<td>${timesheet?.endDate?.encodeAsHTML()}</td>
 					
 					<td class="actionButtons">
-						<g:if test="${timesheet?.approveState == 'pending'}">
+						<g:if test="${timesheet?.currentState == 'SIGNED'}">
                             <span class="menuButton"><g:link class="approver_open" controller="approver" action="accountantApprove" id="${timesheet?.id}">Approve</g:link></span>
                         </g:if>
-                        <g:if test="${timesheet?.approveState == 'pending'}">
+                        <g:if test="${timesheet?.currentState == 'SIGNED'}">
                             <span class="menuButton"><g:link class="approver_disapprove" controller="approver" action="accountantDisapprove" id="${timesheet?.id}">Disapprove</g:link></span>
                         </g:if>
 					</td>
-					<td>${timesheet?.approveState}</td>
+					<td>${timesheet?.currentState}</td>
 				</tr>
 			</g:each>
 			</tbody>
