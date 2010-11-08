@@ -5,12 +5,21 @@ class TotalsTagLib {
 	static namespace="gt"
 	
 	def timesheetEntryTotal = { attrs ->
-		def totalHours = 0 
-		for(d in attrs.days){
-			if (d.hoursWorked) {
-				totalHours += d.hoursWorked
+		Float totalHours = new Float(0) 
+
+		// add horizontal across
+		if (!attrs.totalAcross || attrs.totalAcross == "true") {
+			TimesheetEntry tse = TimesheetEntry.get(attrs.timesheetEntryId)
+			tse.workdays.each { wd ->
+				if (wd.hoursWorked) {
+					totalHours += wd.hoursWorked
+				}
 			}
+		} else {
+			Timesheet ts = Timesheet.get(attrs.timesheetId)
+			// TODO attribute to add by day of week
 		}
+
 		out << String.format("%.2f", totalHours)
 	}
 }

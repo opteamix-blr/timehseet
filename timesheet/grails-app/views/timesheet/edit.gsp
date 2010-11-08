@@ -74,7 +74,7 @@
 							            <th>Fri</th>
 							            <th>Total</th>
 							          </tr>
-							    <g:each status="i" in="${timesheetInstance?.timesheetEntries}" var="timesheetEntry">
+							    <g:each status="i" in="${timesheetInstance?.timesheetEntries}" var="timesheetEntry" >
 							          <tr>
 							            <td><g:hiddenField name="timesheetEntries" value="${timesheetEntry?.id}" />${timesheetEntry?.taskAssignment?.task.name} </td>
 							            <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
@@ -82,7 +82,7 @@
 							            <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">
 							             <td><g:textField size="5" name="day${j+1}_${timesheetEntry?.taskAssignment?.chargeCode.id}" value="${wd.hoursWorked}"></g:textField></td>
 							            </g:each>
-							            <td><gt:timesheetEntryTotal days="${timesheetEntry.workdays}"/></td>
+							            <td><gt:timesheetEntryTotal timesheetId="${timesheetInstance.id}" timesheetEntryId="${timesheetEntry.id}" totalAcross="true" ></gt:timesheetEntryTotal></td>
 							          </tr>
 							            
 							    </g:each>
@@ -103,7 +103,7 @@
 							    </div>
 							    <div class="buttons">
 				                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" /></span>
-									<span class="button"><g:link class="sign" controller="timesheet" action="signform" value="${message(code: 'default.button.sign.label', default: 'Sign')}" >Sign</g:link></span>
+									<span class="button"><g:actionSubmit class="sign" action="signform" value="Sign Form" ></g:actionSubmit></span>
 				                    <span class="button"><g:link action="listTimesheets" id="${timesheetInstance.id}">Cancel</g:link></span>
 				                </div>
                             </tr>
