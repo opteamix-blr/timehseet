@@ -121,6 +121,20 @@ class TimesheetManagerService {
 		return timesheet.save(flush:true)
 	}
 	
+	def approve(Timesheet timesheet) {
+		
+		updateState(timesheet, approve)
+		
+		return timesheet.save(flush:true)
+	}
+	
+	def disapprove(Timesheet timesheet) {
+		
+		updateState(timesheet, disapprove)
+		
+		return timesheet.save(flush:true)
+	}
+	
 	def retrieveTimesheets(User user) {
 		def c = Timesheet.createCriteria()
 		def allUserTimesheets = c.list {
