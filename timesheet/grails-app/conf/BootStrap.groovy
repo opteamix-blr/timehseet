@@ -59,7 +59,8 @@ class BootStrap {
 		def user1 = new User(username:"emp1",
 				passwd:"p@ssw0rd1",
 				userRealName:"John Doe",
-				description:"Employee"
+				description:"Employee",
+				email:"test@test.com"
 		)
 		Role.findByAuthority("self").addToPeople(user1)
 		

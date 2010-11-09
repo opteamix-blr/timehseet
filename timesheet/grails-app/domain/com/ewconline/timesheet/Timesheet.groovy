@@ -27,11 +27,13 @@ class Timesheet {
 	 * 
 	 */
 	String currentState
+	Long signature
 
     static constraints = {
         startDate(blank:false)
         endDate(blank:false)
 		currentState(blank:false)
+		signature(nullable:true)
     }
 	SortedSet timesheetEntries
     static hasMany = [timesheetEntries: TimesheetEntry,

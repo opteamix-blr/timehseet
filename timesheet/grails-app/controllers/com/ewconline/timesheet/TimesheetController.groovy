@@ -9,6 +9,7 @@ import com.ewconline.timesheet.Timesheet
 
 class TimesheetController {
 	def timesheetManagerService
+	def signatureService
 	def scafold = true
     def index = { }
 	
@@ -157,7 +158,7 @@ class TimesheetController {
 			} // clean up bad numbers.
 		}
 	}	
-	def signform = {
+	def signForm = {
 		def user = User.get(session.user.id)
 		def tsId = params['timesheetId']
 		def ts
@@ -166,8 +167,10 @@ class TimesheetController {
 		} else {
 			ts = timesheetManagerService.retrieveCurrentTimesheet(user)
 		}
+		
 		[timesheet:ts]
 	}
+	
 	def sign = {
 		def user = User.get(session.user.id)
 		
@@ -182,6 +185,8 @@ class TimesheetController {
 		
 		try {
 			// update state of the timesheet
+			//@TODO need to validate pw before continuing
+			signatureService.signTimesheet(ts, user)
 			if (timesheetManagerService.sign(ts)){
 				flash.message = "${message(code: 'timesheet signed successfully', args: [message(code: 'timesheet.label', default: 'Timesheet'), user.id])}"
 				redirect(action: "listTimesheets", id: user.id)

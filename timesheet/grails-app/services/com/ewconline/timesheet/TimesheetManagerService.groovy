@@ -3,8 +3,8 @@ package com.ewconline.timesheet
 import hirondelle.date4j.DateTime 
 import java.util.TimeZone
 class TimesheetManagerService {
-
-    static transactional = true
+	
+	static transactional = true
 	/* newtimesheet - saving - saved
 	* saved - signing - signed
 	* saved - modify - changed
