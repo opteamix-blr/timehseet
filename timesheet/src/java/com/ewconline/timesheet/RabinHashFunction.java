@@ -52,7 +52,7 @@ import java.net.URL;
  *
  */
 
-public class RabinHashFunction implements Serializable {
+public class RabinHashFunction implements Serializable, Hash {
 	private final static int P_DEGREE = 64;
 	private final static int READ_BUFFER_SIZE = 2048;
 	private final static int X_P_DEGREE = 1 << (P_DEGREE - 1);
