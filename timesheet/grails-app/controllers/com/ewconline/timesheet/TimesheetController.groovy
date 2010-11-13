@@ -158,25 +158,24 @@ class TimesheetController {
 			} // clean up bad numbers.
 		}
 	}	
-	def signForm = {
+	def signform = {
 		def user = User.get(session.user.id)
-		def tsId = params['timesheetId']
+		def tsId = params['id']
 		def ts
 		if (tsId) {
 			ts = Timesheet.get(tsId)
 		} else {
 			ts = timesheetManagerService.retrieveCurrentTimesheet(user)
 		}
-		
-		[timesheet:ts]
+		[timesheetId:tsId]
 	}
-	
 	def sign = {
 		def user = User.get(session.user.id)
 		
 		// @todo must validate to not allow duplicates
 		def tsId = params['timesheetId']
-		def ts
+		
+		Timesheet ts
 		if (tsId) {
 			ts = Timesheet.get(tsId)
 		} else {
