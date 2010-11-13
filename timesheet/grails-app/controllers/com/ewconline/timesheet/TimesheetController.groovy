@@ -169,6 +169,7 @@ class TimesheetController {
 		}
 		[timesheetId:tsId]
 	}
+	
 	def sign = {
 		def user = User.get(session.user.id)
 		
