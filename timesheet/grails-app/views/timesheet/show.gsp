@@ -89,7 +89,7 @@
                 <g:form>
                     <g:hiddenField name="id" value="${timesheetInstance?.id}" />
                     <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code: 'default.button.edit.label', default: 'Edit')}" /></span>
-                    <span class="button"><g:actionSubmit class="sign" action="signForm" value="${message(code: 'default.button.sign.label', default: 'Sign')}" /></span>
+                    <span class="button"><g:actionSubmit class="sign" action="signform" value="${message(code: 'default.button.sign.label', default: 'Sign')}" /></span>
                 </g:form>
             </div>
         </div>
