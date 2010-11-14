@@ -26,6 +26,7 @@
 					<g:sortableColumn property="startDate" title="Start Date" />
 					<g:sortableColumn property="endDate" title="End Date" />
 					<th>Action</th>
+					<th>Status</th>
 				</tr>
 			</thead>
 			<tbody>
