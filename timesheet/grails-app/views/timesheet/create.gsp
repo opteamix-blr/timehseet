@@ -2,6 +2,9 @@
     
 	<meta name="layout" content="main" />
 	<title>Create a Timesheet</title>
+	<g:javascript library="prototype"/>
+	<g:javascript library="timesheet"/>
+	
 </head>
 <body>
 
@@ -44,9 +47,9 @@
             <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
             <td><g:hiddenField name="chargeCode${i}" value="${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}" />${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
             <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">
-             <td><g:textField size="5" name="day${j+1}_${timesheetEntry?.taskAssignment?.chargeCode.id}" value=""></g:textField></td>
+             <td><g:textField size="5" name="day${j+1}_${timesheetEntry?.taskAssignment?.chargeCode.id}" id="day${j+1}_${timesheetEntry?.taskAssignment?.chargeCode.id}" value="" onChange="updateTotals(${j+1},${timesheetEntry?.taskAssignment?.chargeCode.id})"></g:textField></td>
             </g:each>
-            <td></td>
+            <td><div id="row_${timesheetEntry?.taskAssignment?.chargeCode.id}"></div></td>
           </tr>
             
     </g:each>
@@ -54,14 +57,14 @@
 			<td></td>
 			<td></td>
 			<th>Total: </th>
-			<td><div></div></td>
-			<td><div></div></td>
-			<td><div></div></td>
-			<td><div></div></td>
-			<td><div></div></td>
-			<td><div></div></td>
-			<td><div></div></td>
-			<td><div></div></td>
+			<td><div id="day1"></div></td>
+			<td><div id="day2"></div></td>
+			<td><div id="day3"></div></td>
+			<td><div id="day4"></div></td>
+			<td><div id="day5"></div></td>
+			<td><div id="day6"></div></td>
+			<td><div id="day7"></div></td>
+			<td><div id="grandTotal"></div></td>
 		  </tr>
 		</table>
         </div>

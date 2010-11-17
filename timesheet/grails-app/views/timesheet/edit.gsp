@@ -74,15 +74,18 @@
 							            <th>Fri</th>
 							            <th>Total</th>
 							          </tr>
+							          <g:hiddenField name="totalEntries" value="{$timesheetEntries.size}" />
 							    <g:each status="i" in="${timesheetInstance?.timesheetEntries}" var="timesheetEntry" >
 							          <tr>
 							            <td><g:hiddenField name="timesheetEntries" value="${timesheetEntry?.id}" />${timesheetEntry?.taskAssignment?.task.name} </td>
 							            <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
 							            <td><g:hiddenField name="chargeCode${i}" value="${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}" />${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
 							            <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">
-							             <td><g:textField size="5" name="day${j+1}_${timesheetEntry?.taskAssignment?.chargeCode.id}" value="${wd.hoursWorked}"></g:textField></td>
+							             <td><g:textField size="5" name="day${j+1}_${timesheetEntry?.taskAssignment?.chargeCode.id}" value="${wd.hoursWorked}"
+							             		id="day${j+1}_${timesheetEntry?.taskAssignment?.chargeCode.id}" onChange="updateTotals()"></g:textField></td>
 							            </g:each>
-							            <td><gt:timesheetEntryTotal timesheetId="${timesheetInstance.id}" timesheetEntryId="${timesheetEntry.id}" totalAcross="true" ></gt:timesheetEntryTotal></td>
+							            <!-- <td><gt:timesheetEntryTotal timesheetId="${timesheetInstance.id}" timesheetEntryId="${timesheetEntry.id}" totalAcross="true" ></gt:timesheetEntryTotal></td> -->
+							            <td><p id="row_${timesheetEntry?.taskAssignment?.chargeCode.id}"></p></td>
 							          </tr>
 							            
 							    </g:each>
