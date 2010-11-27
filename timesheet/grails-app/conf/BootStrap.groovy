@@ -28,19 +28,29 @@ class BootStrap {
 
 	void createRolesIfRequired() {
 		def employeeRole = new Role(description:"Employee Role",
-			authority:"self"
+			authority:"self_role"
 		).save()
 		
 		def approverRole = new Role(description:"Approver Role",
-			authority:"approve"
+			authority:"approver_role"
 		).save()
+		
+		def accountantRole = new Role(description:"Accountant Role",
+			authority:"accountant_role"
+		).save()
+		
+		def assistantAccountantRole = new Role(description:"Accounting Assistant Role",
+			authority:"accounting_assistant_role"
+		).save()
+		
+
 	}
 
 	void createAdminUserIfRequired() {
 		if (!User.findByUsername("admin")) {
 			println "Creating an admin user for $Environment.current environment"
-			def adminRole = new Role(description:"Admin Role",
-				authority:"all"
+			def adminRole = new Role(description:"Administrator Role",
+				authority:"administrator_role"
 			).save()
 
 			def user = new User(username:"admin",
@@ -62,7 +72,7 @@ class BootStrap {
 				description:"Employee",
 				email:"test@test.com"
 		)
-		Role.findByAuthority("self").addToPeople(user1)
+		Role.findByAuthority("self_role").addToPeople(user1)
 		
 		def user2 = new User(username:"approver1",
 			passwd:"p@ssw0rd1",
@@ -70,8 +80,19 @@ class BootStrap {
 			description:"Employee and Approver"
 		)
 		
-		Role.findByAuthority("self").addToPeople(user2)
-		Role.findByAuthority("approve").addToPeople(user2)
+		Role.findByAuthority("self_role").addToPeople(user2)
+		Role.findByAuthority("approver_role").addToPeople(user2)
+		user2.save();
+		
+		def user3 = new User(username:"accountant1",
+			passwd:"p@ssw0rd1",
+			userRealName:"Fred Sanford",
+			description:"Employee and Accountant"
+		)
+		
+		Role.findByAuthority("self_role").addToPeople(user3)
+		Role.findByAuthority("accountant_role").addToPeople(user3)
+		user3.save();
 		
 		def task1 = new Task(name:"Task 1", 
 			description:"Test Task 1"
