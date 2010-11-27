@@ -70,11 +70,11 @@ class TimesheetManagerService {
 	def retrieveCurrentTimesheet(User user) {
 		def systemUser = User.get(user.id)
 		def c = Timesheet.createCriteria()
-		Date currentDay = new Date()
+		DateTime currentDay = DateTime.today(TimeZone.getDefault())
+		DateTime saturday = currentDay.minusDays(currentDay.getWeekDay())
 		def previousTimesheet = c.list {
 			eq("user.id", systemUser.id)
-			lt("startDate", currentDay)
-			gt("endDate", currentDay)
+			eq("startDate", new Date(saturday.format("MM/DD/YYYY"))) 
 		}
 		if (previousTimesheet && previousTimesheet.size() > 0) {
 			return previousTimesheet[0]
