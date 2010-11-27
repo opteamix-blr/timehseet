@@ -5,51 +5,36 @@ import java.util.TimeZone
 class TimesheetManagerService {
 	
 	static transactional = true
-	/* newtimesheet - saving - saved
-	* saved - signing - signed
-	* saved - modify - changed
-	* saved - saving - saved
-	* changed - cancel - saved
-	* signed - disapprove - saved
-	* signed - modify - changed
-	* signed - approve - approved
-	* approved - make ready - pending
-	* approved - override - saved
-	* pending - override - approved
-	* pending - finalize - completed
+   /* 
+	* NOT_STARTED - saving - OPEN_SAVED
+	* OPEN_SAVED - signing - SIGNED
+	* OPEN_SAVED - saving - OPEN_SAVED
+	* SIGNED - approving - APPROVED
+	* SIGNED - disapproving - OPEN_NOT_SAVED
+	* APPROVED - disapproving - OPEN_NOT_SAVED
+	* OPEN_NOT_SAVED - saving - OPEN_SAVED
 	*/
+
 	// States
-	static NEWTIMESHEET = "NEWTIMESHEET"
-	static SAVED = "SAVED"
-	static CHANGED = "CHANGED"
+	static NOT_STARTED = "NOT_STARTED"
+	static OPEN_SAVED = "OPEN_SAVED"
 	static SIGNED = "SIGNED"
 	static APPROVED = "APPROVED"
-	static PENDING = "PENDING" 
-	static COMPLETED = "COMPLETED"
-	
+	static OPEN_NOT_SAVED = "OPEN_NOT_SAVED"
+
 	// transitions
 	static saving = "saving"
 	static signing = "signing"
-	static modify = "modify"
-	static cancel = "cancel"
-	static disapprove = "disapprove"
-	static approve = "approve"
-	static makeReady = "makeready"
-	static override = "override"
-	static finalize = "finalize"
+	static approving = "approving"
+	static disapproving = "disapproving"
 
-	static STATE_MAP = [(NEWTIMESHEET+saving) :SAVED,
-						(SAVED+signing): SIGNED,
-						(SAVED+modify): CHANGED,
-						(SAVED+saving): SAVED,
-						(CHANGED+cancel): SAVED,
-						(SIGNED+disapprove): SAVED,
-						(SIGNED+modify): CHANGED,
-						(SIGNED+approve): APPROVED,
-						(APPROVED+makeReady): PENDING,
-						(APPROVED+override): SAVED,
-						(PENDING+override): APPROVED,
-						(PENDING+finalize): COMPLETED
+	static STATE_MAP = [(NOT_STARTED+saving) : OPEN_SAVED,
+						(OPEN_SAVED+signing): SIGNED,
+						(OPEN_SAVED+saving): OPEN_SAVED,
+						(SIGNED+approving): APPROVED,
+						(SIGNED+disapproving): OPEN_NOT_SAVED,
+						(APPROVED+disapproving): OPEN_NOT_SAVED,
+						(OPEN_NOT_SAVED+saving): OPEN_SAVED
 	]
 	
 	/**
@@ -67,7 +52,7 @@ class TimesheetManagerService {
 			startDate:new Date(saturday.format("MM/DD/YYYY")), 
 			endDate:new Date(friday.format("MM/DD/YYYY")),
 			user: user,
-			currentState: NEWTIMESHEET
+			currentState: NOT_STARTED
 		)
 		
 		
@@ -103,35 +88,25 @@ class TimesheetManagerService {
 			throw new RuntimeException("The current or weekly timesheet was already created.")
 		}
 		updateState(timesheet, saving)
-			
-
 		return timesheet.save(flush:true)
 	}
 	
 	def update(Timesheet timesheet) {
-		
 		updateState(timesheet, saving)
-		
 		return timesheet.save(flush:true)
 	}
 	def sign(Timesheet timesheet) {
-		
 		updateState(timesheet, signing)
-		
 		return timesheet.save(flush:true)
 	}
 	
 	def approve(Timesheet timesheet) {
-		
-		updateState(timesheet, approve)
-		
+		updateState(timesheet, approving)
 		return timesheet.save(flush:true)
 	}
 	
 	def disapprove(Timesheet timesheet) {
-		
-		updateState(timesheet, disapprove)
-		
+		updateState(timesheet, disapproving)
 		return timesheet.save(flush:true)
 	}
 	
@@ -155,19 +130,15 @@ class TimesheetManagerService {
 		ts.currentState = resultantState
 		
 		return resultantState
-		/* newtimesheet - saving - saved
-		* saved - signing - signed
-		* saved - modified - changed
-		* saved - saving - saved
-		* changed - cancel - saved
-		* signed - disapprove - saved
-		* signed - modified - changed
-		* signed - approve - approved
-		* approved - make ready - pending
-		* approved - override - saved
-		* pending - override - approved
-		* pending - finalize - completed
-		*/
+   /* 
+	* NOT_STARTED - saving - OPEN_SAVED
+	* OPEN_SAVED - signing - SIGNED
+	* OPEN_SAVED - saving - OPEN_SAVED
+	* SIGNED - approving - APPROVED
+	* SIGNED - disapproving - OPEN_NOT_SAVED
+	* APPROVED - disapproving - OPEN_NOT_SAVED
+	* OPEN_NOT_SAVED - saving - OPEN_SAVED
+	*/
 		
 	}
 
