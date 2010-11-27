@@ -49,7 +49,7 @@
                     <li><a href="${createLinkTo(dir:'', file:'timesheet/edit')}">Current Timesheet</a></li>		          
 					<li><a href="${createLinkTo(dir:'', file:'timesheet/listTimesheets')}">Timesheets </a></li>
 					<li><a href="index.gsp">Lookup Timesheets </a></li>
-                    <g:if test="${session?.approvalRole || session?.adminRole}">
+                    <g:if test="${session?.approverRole || session?.adminRole}">
                         <li><p>Approver</p></li>
                         <li><a href="${createLinkTo(dir:'', file:'approver/approverListTimesheet')}">Recently Signed</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'reports/list')}">Reporting</a></li>
