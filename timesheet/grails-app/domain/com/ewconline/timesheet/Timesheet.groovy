@@ -11,21 +11,15 @@ class Timesheet {
     Date startDate
     Date endDate
 	
-	/* STATES: new timesheet, saved, changed, signed, approved, pending, complete */
-	/*
-	 * newtimesheet - save - saved
-	 * saved - sign - signed 
-	 * saved - modified - changed
-	 * changed - cancel - saved
-	 * signed - disapprove - saved
-	 * signed - modified - changed
-	 * signed - approve - approved
-	 * approved - make ready - pending
-	 * approved - override - saved
-	 * pending - override - approved
-	 * pending - finalize - completed
-	 * 
-	 */
+   /* State - transition - State
+	* NOT_STARTED - saving - OPEN_SAVED
+	* OPEN_SAVED - signing - SIGNED
+	* OPEN_SAVED - saving - OPEN_SAVED
+	* SIGNED - approving - APPROVED
+	* SIGNED - disapproving - OPEN_NOT_SAVED
+	* APPROVED - disapproving - OPEN_NOT_SAVED
+	* OPEN_NOT_SAVED - saving - OPEN_SAVED
+	*/
 	String currentState
 	Long signature
 
