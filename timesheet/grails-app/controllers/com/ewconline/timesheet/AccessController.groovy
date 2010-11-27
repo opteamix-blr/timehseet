@@ -47,9 +47,11 @@ class AccessController {
 			if (!session || !session.user) {
 				 session.user = user
 				 for ( r in user.authorities ) {
-				    if (r.authority == "approve") {
-						session.approvalRole = true;
-					} else if (r.authority == "all") {
+				    if (r.authority == "approver_role" || 
+						r.authority == "accountant_role" ||
+						r.authority == "accounting_assistant_role") {
+						session.approverRole = true;
+					} else if (r.authority == "administrator_role") {
 						session.adminRole = true;
 					}
 				 }
