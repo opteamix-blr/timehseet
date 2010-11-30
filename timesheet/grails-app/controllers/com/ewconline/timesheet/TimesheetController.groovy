@@ -22,7 +22,7 @@ class TimesheetController {
 		//		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		//		[userInstanceList: User.list(params), userInstanceTotal: User.count()]
 		
-		[timesheetList:timesheetList]
+		[timesheetList:timesheetList, timesheetInstanceTotal:timesheetList.count()]
 	}
 	
 	def create = {
@@ -123,7 +123,8 @@ class TimesheetController {
 				render(view: "edit", model: [timesheetInstance: timesheetInstance])
 			}
 		} catch (Exception e) {
-			flash.message = "${message(code: 'default.updated.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), timesheetInstance.id])}"
+			flash.message = e.getMessage()
+//			flash.message = "${message(code: 'default.updated.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), timesheetInstance.id])}"
 			redirect(action: "show", id: timesheetInstance.id)
 		}
 	}
@@ -167,6 +168,7 @@ class TimesheetController {
 		} else {
 			ts = timesheetManagerService.retrieveCurrentTimesheet(user)
 		}
+		flash.message = ""
 		[timesheetId:tsId]
 	}
 	
@@ -185,18 +187,48 @@ class TimesheetController {
 		
 		try {
 			// update state of the timesheet
-			//@TODO need to validate pw before continuing
-			signatureService.signTimesheet(ts, user)
-			if (timesheetManagerService.sign(ts)){
-				flash.message = "${message(code: 'timesheet signed successfully', args: [message(code: 'timesheet.label', default: 'Timesheet'), user.id])}"
-				redirect(action: "listTimesheets", id: user.id)
-			}
-			else {
+			def authenticateUser = User.findByUsernameAndPasswd(params.username, params.passwd)
+			if (!authenticateUser) {
+				flash.message = "Authenticate failure, unable to sign timesheet"
 				render(view: "edit", model: [timesheetInstance: ts])
+			} else {
+				signatureService.signTimesheet(ts, user)
+				if (timesheetManagerService.sign(ts)){
+					flash.message = "${message(code: 'timesheet signed successfully', args: [message(code: 'timesheet.label', default: 'Timesheet'), user.id])}"
+					redirect(action: "listTimesheets", id: user.id)
+				}
+				else {
+					render(view: "edit", model: [timesheetInstance: ts])
+				}
 			}
 		} catch (Exception e) {
 			flash.message = e.getMessage()
 			redirect(action: "listTimesheets", id: user.id)
 		}
+	}
+	
+	
+	def lookupSearchForm = {
+		
+	}
+	
+	def lookupMyTimesheets = {
+		
+		// TODO OBTAIN THE DATE RANGES
+		
+		def user = User.get(session.user.id)
+		def timesheetList = timesheetManagerService.retrieveTimesheets(user)
+		
+		render(view: "listTimesheets", model: [timesheetList:timesheetList, timesheetInstanceTotal:timesheetList.count()])
+	}
+	def viewTimesheet = {
+		def user = User.get(session.user.id)
+		def ts = Timesheet.get(params.id)
+		if (ts) {
+			if (ts.user.id != session.user.id) {
+				throw new RuntimeException("Access denied. This is not your timesheet")
+			}
+		}
+		[timesheetInstance:ts]
 	}
 }
