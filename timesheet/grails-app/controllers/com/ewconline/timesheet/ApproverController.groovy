@@ -6,9 +6,15 @@ class ApproverController {
 	
 	def approverListTimesheet = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		def timesheetList = Timesheet.createCriteria().list {
+			and {
+				eq('currentState', 'SIGNED')
+			}
+			maxResults(params.max)
+			order('lastUpdated', 'desc')
+		}
 		
-		def timesheetList = [Timesheet.findByCurrentState(timesheetManagerService.SIGNED)]
-        [timesheetList: timesheetList, timesheetInstanceTotal: timesheetList.size()]
+        [timesheetList: timesheetList, timesheetInstanceTotal: timesheetList.count()]
     }
 	
 	def userApprove = {
@@ -67,5 +73,22 @@ class ApproverController {
 				redirect(action: "approverListTimesheet")
 			}
 	}
+	
+	def approvedTimesheets = {
+		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+		
+		def timesheets = Timesheet.createCriteria().list {
+			and {
+				eq('currentState', 'APPROVED')	
+			}
+			maxResults(params.max)
+			order('lastUpdated', 'desc')
+		}
+		[timesheetList: timesheets, timesheetInstanceTotal: timesheets.count()]
+	}
 
+	def viewTimesheet = {
+		def ts = Timesheet.get(params.id)
+		[timesheetInstance:ts]
+	}
 }
