@@ -73,7 +73,14 @@
                                     <g:select optionValue="name" name="laborCategory.id" from="${com.ewconline.timesheet.LaborCategory.list()}" optionKey="id" value="${taskAssignmentInstance?.laborCategory?.id}"  />
                                 </td>
                             </tr>
-                       
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="laborIdReference"><g:message code="taskAssignment.laborIdReference.label" default="Labor ID Reference" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: taskAssignmentInstance, field: 'laborIdReference.id', 'errors')}">
+                                    <g:select multiple="true" optionValue="name" name="laborIdReference.id" from="${com.ewconline.timesheet.LaborIdReference.list()}" optionKey="id" value="${taskAssignmentInstance?.laborIdReference?.id}"  />
+                                </td>
+                            </tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="notes"><g:message code="taskAssignment.notes.label" default="Notes" /></label>

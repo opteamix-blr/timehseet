@@ -45,6 +45,15 @@
                                     <g:textArea name="description" cols="40" rows="5" value="${laborIdReferenceInstance?.description}" />
                                 </td>
                             </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="enabled"><g:message code="user.enabled.label" default="Enabled" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: laborIdReferenceInstance, field: 'enabled', 'errors')}">
+                                    <g:checkBox name="enabled" value="${laborIdReferenceInstance?.enabled}" />
+                                </td>
+                            </tr>
                         
                         </tbody>
                     </table>
