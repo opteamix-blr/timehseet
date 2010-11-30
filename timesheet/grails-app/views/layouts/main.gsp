@@ -48,10 +48,11 @@
                     <li><p>My Timesheet</p></li>
                     <li><a href="${createLinkTo(dir:'', file:'timesheet/edit')}">Current Timesheet</a></li>		          
 					<li><a href="${createLinkTo(dir:'', file:'timesheet/listTimesheets')}">Timesheets </a></li>
-					<li><a href="index.gsp">Lookup Timesheets </a></li>
+					<li><a href="${createLinkTo(dir:'', file:'timesheet/lookupSearchForm')}">Lookup Timesheets </a></li>
                     <g:if test="${session?.approverRole || session?.adminRole}">
                         <li><p>Approver</p></li>
                         <li><a href="${createLinkTo(dir:'', file:'approver/approverListTimesheet')}">Recently Signed</a></li>
+                        <li><a href="${createLinkTo(dir:'', file:'approver/approvedTimesheets')}">Approved Timesheets</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'reports/list')}">Reporting</a></li>
                     </g:if>
                     <g:if test="${session?.adminRole}">
@@ -61,6 +62,7 @@
                         <li><a href="${createLinkTo(dir:'', file:'task/list')}">Tasks</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'chargeCode/list')}">Charge Codes</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'laborCategory/list')}">Labor Categories</a></li>
+                        <li><a href="${createLinkTo(dir:'', file:'laborIdReference/list')}">Labor Id References</a></li>
                     </g:if>
                     <li><p></p></li>
 					<li><a href="${createLinkTo(dir:'', file:'access/logout')}">Logout</a></li>
