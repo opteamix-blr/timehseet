@@ -326,4 +326,12 @@ th.desc a {
     background: transparent url(../images/skin/timesheet_sign.png) 5px 50% no-repeat;
     padding-left: 28px;
 }
+.buttons input.approve {
+    background: transparent url(../images/skin/approver_open.png) 5px 50% no-repeat;
+    padding-left: 28px;
+}
+.buttons input.disapprove {
+    background: transparent url(../images/skin/approver_disapprove.png) 5px 50% no-repeat;
+    padding-left: 28px;
+}
 
