@@ -188,7 +188,7 @@ class TimesheetController {
 		try {
 			// update state of the timesheet
 			def authenticateUser = User.findByUsernameAndPasswd(params.username, params.passwd)
-			if (!authenticateUser) {
+			if (!authenticateUser || authenticateUser.id != user.id) {
 				flash.message = "Authenticate failure, unable to sign timesheet"
 				render(view: "edit", model: [timesheetInstance: ts])
 			} else {
