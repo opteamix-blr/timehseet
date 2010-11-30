@@ -21,7 +21,7 @@
 			<thead>
 				<tr>
 					<g:sortableColumn property="id" title="Id" />
-					<g:sortableColumn property="dateCreated" title="Date Created" />
+					<th>Employee</th>
 					<g:sortableColumn property="lastUpdated" title="Last Modified" />
 					<g:sortableColumn property="startDate" title="Start Date" />
 					<g:sortableColumn property="endDate" title="End Date" />
@@ -32,8 +32,8 @@
 			<tbody>
 			<g:each in="${timesheetList}" status="i" var="timesheet">
 				<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-					<td>${timesheet?.id}</td>
-					<td>${timesheet?.dateCreated?.encodeAsHTML()}</td>
+					<td><g:link action="viewTimesheet" id="${timesheet.id}">${fieldValue(bean: timesheet, field: "id")}</g:link></td>
+					<td><g:link action="viewTimesheet" id="${timesheet.id}">${fieldValue(bean: timesheet, field: "user.userRealName")}</g:link></td>
 					<td>${timesheet?.lastUpdated?.encodeAsHTML()}</td>
 					<td>${timesheet?.startDate?.encodeAsHTML()}</td>
 					<td>${timesheet?.endDate?.encodeAsHTML()}</td>
@@ -54,7 +54,7 @@
 		</div>
 
 		<div class="paginateButtons">
-			<g:paginate total="0" />
+			<g:paginate total="${timesheetInstanceTotal}" />
 		</div>
 
 	</div>
