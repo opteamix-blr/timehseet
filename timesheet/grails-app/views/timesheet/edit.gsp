@@ -11,7 +11,6 @@
     <body>
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLink(uri: '/timesheet/listTimesheets')}"><g:message code="default.home.label"/></a></span>
-            <span class="menuButton"><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
             <span class="menuButton">Current status: ${timesheetInstance.currentState}</span>
         </div>
@@ -96,8 +95,8 @@
 							        </table>
 							    </div>
 							    <div class="buttons">
-				                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" /></span>
-									<span class="button"><g:actionSubmit class="sign" action="signform" value="Sign Form" ></g:actionSubmit></span>
+				                    <span class="button"><g:actionSubmit class="save" action="update" value="Save" /></span>
+									<span class="button"><g:actionSubmit class="sign" action="signform" value="Sign" ></g:actionSubmit></span>
 				                    <span class="button"><g:link action="listTimesheets" id="${timesheetInstance.id}">Cancel</g:link></span>
 				                </div>
                             </tr>
