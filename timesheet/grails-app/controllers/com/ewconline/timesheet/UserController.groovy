@@ -20,7 +20,13 @@ class UserController {
         def userInstance = new User()
         userInstance.properties = params
 		def allRoles = Role.list([sort: 'authority', order: 'asc'])
-		def allTaskAssignments = TaskAssignment.list([sort: 'displayName', order: 'asc'])
+
+		def allTaskAssignments = TaskAssignment.createCriteria().list {
+			and {
+				eq('enabled', true)
+			}
+			order('displayName', 'asc')
+		}
 		
 		return [userInstance: userInstance, allRoles:allRoles, allTaskAssignments:allTaskAssignments]
     }
@@ -56,7 +62,12 @@ class UserController {
 
     def edit = {
         def userInstance = User.get(params.id)
-		def allTaskAssignments = TaskAssignment.list([sort: 'displayName', order: 'asc'])
+		def allTaskAssignments = TaskAssignment.createCriteria().list {
+			and {
+				eq('enabled', true)
+			}
+			order('displayName', 'asc')
+		}
 		def availTaskAssignments = DefaultGroovyMethods.minus(allTaskAssignments, userInstance.taskAssignments)
 		
 		def allRoles = Role.list([sort: 'authority', order: 'asc'])
