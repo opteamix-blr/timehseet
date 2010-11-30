@@ -125,7 +125,7 @@ class TimesheetManagerService {
 		//TODO if null is returned its an illegal state !!! 
 		// example the user tried to save after it was approved.
 		if (!resultantState) {
-			throw new RuntimeException("Current state of the timesheet is ${ts.currentState} you were ${transition} timesheet.")
+			throw new RuntimeException("${transition} timesheet is not allowed. Current state of the timesheet is ${ts.currentState}.")
 		}
 		ts.currentState = resultantState
 		
