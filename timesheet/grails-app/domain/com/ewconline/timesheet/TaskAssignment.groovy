@@ -7,6 +7,7 @@ class TaskAssignment {
 	Task task
     LaborCategory laborCategory
 	ChargeCode chargeCode
+	LaborIdReference laborIdReference
     
     static constraints = {
 		displayName(blank:false, maxSize:50)
@@ -15,6 +16,7 @@ class TaskAssignment {
         task()
 		laborCategory()
 		chargeCode()
+		laborIdReference(nullable:true)
     }
 
 }
