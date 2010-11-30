@@ -26,11 +26,12 @@ class TaskAssignmentController {
 		def chargeCode = ChargeCode.get(params?.chargeCode.id)
 		def laborCategory = LaborCategory.get(params?.laborCategory.id)
 		def task = Task.get(params?.task.id)
+		def laborIdReference = LaborIdReference.get(params?.laborIdReference.id)
 
 		taskAssignmentInstance.task = task
 		taskAssignmentInstance.chargeCode = chargeCode
 		taskAssignmentInstance.laborCategory = laborCategory
-		
+		taskAssignmentInstance.laborIdReference = laborIdReference
         if (taskAssignmentInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'taskAssignment.label', default: 'TaskAssignment'), taskAssignmentInstance.id])}"
             redirect(action: "show", id: taskAssignmentInstance.id)

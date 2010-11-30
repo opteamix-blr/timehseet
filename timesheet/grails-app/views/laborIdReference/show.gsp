@@ -42,6 +42,12 @@
                             <td valign="top" class="value">${fieldValue(bean: laborIdReferenceInstance, field: "description")}</td>
                             
                         </tr>
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="laborIdReference.enabled.label" default="Enabled" /></td>
+                            
+                            <td valign="top" class="value"><g:formatBoolean boolean="${laborIdReferenceInstance?.enabled}" /></td>
+                            
+                        </tr>
                     
                     </tbody>
                 </table>

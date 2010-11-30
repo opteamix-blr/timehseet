@@ -33,6 +33,7 @@
                             <th><g:message code="taskAssignment.chargeCode.label" default="Charge Code" /></th>
                         
                             <th><g:message code="taskAssignment.laborCategory.label" default="Labor Category" /></th>
+                        	<th><g:message code="taskAssignment.laborIdReference.label" default="Labor ID Reference" /></th>
                         
                         </tr>
                     </thead>
@@ -51,7 +52,8 @@
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "chargeCode.chargeNumber")}</td>
                         
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "laborCategory.name")}</td>
-                                                
+                            <td>${fieldValue(bean: taskAssignmentInstance, field: "laborIdReference.name")}</td>
+                                               
                         </tr>
                     </g:each>
                     </tbody>
