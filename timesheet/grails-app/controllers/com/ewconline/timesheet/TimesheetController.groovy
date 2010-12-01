@@ -112,6 +112,10 @@ class TimesheetController {
 			}
 		}
 		// validate from form 
+		def weekdaysModified = validateWorkdaysFromForm(timesheetInstance)
+		if (weekdaysModified.count()> 0) {
+			println (" " + weekdaysModified.count())
+		}
 		
 		// update from form
 		populateWorkdaysFromForm(timesheetInstance)
@@ -128,30 +132,30 @@ class TimesheetController {
 			redirect(action: "show", id: timesheetInstance.id)
 		}
 	}
-//	def validateWorkdaysFromForm(timesheetInstance){
-//		timesheetInstance.timesheetEntries.eachWithIndex {
-//			tse, index ->
-//			def daysOfWeek = obtainWeekdays(tse.taskAssignment)
-//			def weekdayModified = []
-//			tse.workdays.eachWithIndex { workday, indx ->
-//				if (daysOfWeek[indx] != workday.hoursWorked.toString()) {
-//					Workday changedWorkday = new Work(dateWorked:workday.dateWorked,
-//						hoursWorked)
-//					weekdayModified.add e
-//				}
-//				if (daysOfWeek[indx] == "") {
-//					workday.hoursWorked = null
-//				} else {
-//					try {
-//						workday.hoursWorked = daysOfWeek[indx].toFloat()
-//					} catch (Exception e) {
-//						workday.hoursWorked = null
-//					}
-//				}
-//				
-//			} // clean up bad numbers.
-//		}
-//	}
+	def validateWorkdaysFromForm(timesheetInstance){
+		def weekdaysModified = []
+		
+		timesheetInstance.timesheetEntries.eachWithIndex {
+			tse, index ->
+			def daysOfWeek = obtainWeekdays(tse.taskAssignment)
+			tse.workdays.eachWithIndex { workday, indx ->
+				def sysHoursWorked = workday?.hoursWorked
+				if (sysHoursWorked == null) {
+					sysHoursWorked = ""
+				}
+				if (daysOfWeek[indx] != sysHoursWorked.toString()) {
+					Workday changedWorkday = new Workday()
+					changedWorkday.dateWorked = workday?.dateWorked
+					changedWorkday.hoursWorked = daysOfWeek[indx].toFloat()
+						
+					weekdaysModified.add changedWorkday
+					println ("changedWorkday day" + indx + " value: was "  + workday?.hoursWorked)
+					println ("changedWorkday day" + indx + " value: to  "  + changedWorkday.hoursWorked)
+				}	
+			}
+		}
+		return weekdaysModified
+	}
 	def obtainWeekdays(taskAssignment) {
 		[ params["day1_${taskAssignment?.id}"],
 			params["day2_${taskAssignment?.id}"],
