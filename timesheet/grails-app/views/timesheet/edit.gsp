@@ -1,13 +1,9 @@
-
-
-<%@ page import="com.ewconline.timesheet.Timesheet" %>
-<html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="layout" content="main" />
-        <g:set var="entityName" value="${message(code: 'timesheet.label', default: 'Timesheet')}" />
-        <title><g:message code="default.edit.label" args="[entityName]" /></title>
-    </head>
+		<meta name="layout" content="main" />
+		<title>Edit a Timesheet</title>
+		<g:javascript library="prototype"/>
+		<g:javascript library="timesheet"/>	
+	</head>
     <body>
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLink(uri: '/timesheet/listTimesheets')}"><g:message code="default.home.label"/></a></span>
@@ -71,26 +67,24 @@
 							            <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
 							            <td></td>
 							            <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">
-							             <td><g:textField size="5" name="day${j+1}_${timesheetEntry?.taskAssignment?.id}" value="${wd.hoursWorked}"
-							             		id="day${j+1}_${timesheetEntry?.taskAssignment?.id}" onChange="updateTotals()"></g:textField></td>
+							             <td><g:textField size="5" name="day${j+1}_${timesheetEntry?.taskAssignment?.id}" value="${wd.hoursWorked}" id="day${j+1}_${timesheetEntry?.taskAssignment?.id}" onChange="updateTotals(${j+1},${timesheetEntry?.taskAssignment?.id})"></g:textField></td>
 							            </g:each>
 							            <!-- <td><gt:timesheetEntryTotal timesheetId="${timesheetInstance.id}" timesheetEntryId="${timesheetEntry.id}" totalAcross="true" ></gt:timesheetEntryTotal></td> -->
-							            <td><p id="row_${timesheetEntry?.taskAssignment?.id}"></p></td>
+							            <td><div id="row_${timesheetEntry?.taskAssignment?.id}"></div></td>
 							          </tr>
-							            
 							    </g:each>
 							          <tr>
 							            <td></td>
 							            <td></td>
 							            <th>Total: </th>
-							            <td><div></div></td>
-							            <td><div></div></td>
-							            <td><div></div></td>
-							            <td><div></div></td>
-							            <td><div></div></td>
-							            <td><div></div></td>
-							            <td><div></div></td>
-							            <td><div></div></td>
+										<td><div id="day1"></div></td>
+										<td><div id="day2"></div></td>
+										<td><div id="day3"></div></td>
+										<td><div id="day4"></div></td>
+										<td><div id="day5"></div></td>
+										<td><div id="day6"></div></td>
+										<td><div id="day7"></div></td>
+										<td><div id="grandTotal"></div></td>
 							          </tr>
 							        </table>
 							    </div>
@@ -107,4 +101,3 @@
             </g:form>
         </div>
     </body>
-</html>
