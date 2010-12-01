@@ -16,5 +16,13 @@ class TimesheetEntry implements Comparable{
 	int compareTo(obj) {
 		taskAssignment?.task?.name.compareTo(obj.taskAssignment?.task?.name)
 	}
-    
+    def sumHours() {
+		float total=0.0
+		workdays.each { wd ->
+			if (wd.hoursWorked){
+				total = total +  wd.hoursWorked
+			}
+		}
+		total.round(2)
+	}
 }
