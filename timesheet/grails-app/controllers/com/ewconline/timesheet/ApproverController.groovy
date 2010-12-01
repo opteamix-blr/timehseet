@@ -41,9 +41,13 @@ class ApproverController {
 			
 			
 			if (!timesheetInstance.hasErrors()) {
-				timesheetManagerService.approve(timesheetInstance)
-				flash.message = "${message(code: 'default.updated.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), timesheetInstance.id])}"
-				redirect(action: "approverListTimesheet")
+				try {
+					timesheetManagerService.approve(timesheetInstance)
+				} catch (Exception e) {
+					flash.message = e.getMessage()
+					redirect(action: "approverListTimesheet")
+				}
+				
 			}
 	}
 
