@@ -70,7 +70,7 @@
 							             <td><g:textField size="5" name="day${j+1}_${timesheetEntry?.taskAssignment?.id}" value="${wd.hoursWorked}" id="day${j+1}_${timesheetEntry?.taskAssignment?.id}" onChange="updateTotals(${j+1},${timesheetEntry?.taskAssignment?.id})"></g:textField></td>
 							            </g:each>
 							            <!-- <td><gt:timesheetEntryTotal timesheetId="${timesheetInstance.id}" timesheetEntryId="${timesheetEntry.id}" totalAcross="true" ></gt:timesheetEntryTotal></td> -->
-							            <td><div id="row_${timesheetEntry?.taskAssignment?.id}"></div></td>
+							            <td><div id="row_${timesheetEntry?.taskAssignment?.id}">${timesheetEntry?.sumHours()}</div></td>
 							          </tr>
 							    </g:each>
 							          <tr>
