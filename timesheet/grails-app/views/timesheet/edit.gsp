@@ -1,6 +1,7 @@
     <head>
 		<meta name="layout" content="main" />
 		<title>Edit a Timesheet</title>
+		<g:set var="entityName" value="${message(code: 'timesheet.label', default: 'Timesheet')}" />
 		<g:javascript library="prototype"/>
 		<g:javascript library="timesheet"/>	
 	</head>
@@ -11,7 +12,7 @@
             <span class="menuButton">Current status: ${timesheetInstance.currentState}</span>
         </div>
         <div class="body">
-            <h1><g:message code="default.edit.label" args="[entityName]" /></h1>
+            <h1>Edit Timesheet</h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
