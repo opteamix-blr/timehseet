@@ -45,13 +45,12 @@
 	      <tr>
             <td><g:hiddenField name="timesheetEntries" value="${timesheetEntry?.id}" />${timesheetEntry?.taskAssignment?.task.name} </td>
             <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
-            <td><g:hiddenField name="chargeCode${i}" value="${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}" />${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
+            <td>${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
             <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">
-             <td><g:textField size="5" name="day${j+1}_${timesheetEntry?.taskAssignment?.chargeCode.id}" id="day${j+1}_${timesheetEntry?.taskAssignment?.chargeCode.id}" value="" onChange="updateTotals(${j+1},${timesheetEntry?.taskAssignment?.chargeCode.id})"></g:textField></td>
+             <td><g:textField size="5" name="day${j+1}_${timesheetEntry?.taskAssignment?.id}" id="day${j+1}_${timesheetEntry?.taskAssignment?.id}" value="" onChange="updateTotals(${j+1},${timesheetEntry?.taskAssignment?.id})"></g:textField></td>
             </g:each>
-            <td><div id="row_${timesheetEntry?.taskAssignment?.chargeCode.id}"></div></td>
+            <td><div id="row_${timesheetEntry?.taskAssignment?.id}"></div></td>
           </tr>
-            
     </g:each>
 		  <tr>
 			<td></td>

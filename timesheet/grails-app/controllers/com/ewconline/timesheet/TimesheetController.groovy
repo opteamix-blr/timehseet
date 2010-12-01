@@ -52,7 +52,6 @@ class TimesheetController {
 	def save = {
 		def user = User.get(session.user.id)
 		
-		// @todo must validate to not allow duplicates
 		Timesheet timesheetInstance = timesheetManagerService.generateWeeklyTimesheet(user)
 		populateWorkdaysFromForm(timesheetInstance)
 		
@@ -112,6 +111,7 @@ class TimesheetController {
 				return
 			}
 		}
+		// validate from form 
 		
 		// update from form
 		populateWorkdaysFromForm(timesheetInstance)
@@ -128,15 +128,38 @@ class TimesheetController {
 			redirect(action: "show", id: timesheetInstance.id)
 		}
 	}
-	
+//	def validateWorkdaysFromForm(timesheetInstance){
+//		timesheetInstance.timesheetEntries.eachWithIndex {
+//			tse, index ->
+//			def daysOfWeek = obtainWeekdays(tse.taskAssignment)
+//			def weekdayModified = []
+//			tse.workdays.eachWithIndex { workday, indx ->
+//				if (daysOfWeek[indx] != workday.hoursWorked.toString()) {
+//					Workday changedWorkday = new Work(dateWorked:workday.dateWorked,
+//						hoursWorked)
+//					weekdayModified.add e
+//				}
+//				if (daysOfWeek[indx] == "") {
+//					workday.hoursWorked = null
+//				} else {
+//					try {
+//						workday.hoursWorked = daysOfWeek[indx].toFloat()
+//					} catch (Exception e) {
+//						workday.hoursWorked = null
+//					}
+//				}
+//				
+//			} // clean up bad numbers.
+//		}
+//	}
 	def obtainWeekdays(taskAssignment) {
-		[ params["day1_${taskAssignment?.chargeCode.id}"],
-			params["day2_${taskAssignment?.chargeCode.id}"],
-			params["day3_${taskAssignment?.chargeCode.id}"],
-			params["day4_${taskAssignment?.chargeCode.id}"],
-			params["day5_${taskAssignment?.chargeCode.id}"],
-			params["day6_${taskAssignment?.chargeCode.id}"],
-			params["day7_${taskAssignment?.chargeCode.id}"]
+		[ params["day1_${taskAssignment?.id}"],
+			params["day2_${taskAssignment?.id}"],
+			params["day3_${taskAssignment?.id}"],
+			params["day4_${taskAssignment?.id}"],
+			params["day5_${taskAssignment?.id}"],
+			params["day6_${taskAssignment?.id}"],
+			params["day7_${taskAssignment?.id}"]
 		]
 	}
 	
