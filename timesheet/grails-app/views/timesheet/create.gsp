@@ -4,6 +4,35 @@
 	<title>Create a Timesheet</title>
 	<g:javascript library="prototype"/>
 	<g:javascript library="timesheet"/>
+	<script type="text/javascript">
+
+function grandTotal() {
+	var arr=new Array();
+<%
+  int x=0;
+  for (te in timesheetInstance?.timesheetEntries){
+     out.println("   arr[" + x + "]=" + te.taskAssignment.id + ";\n")
+	 x++
+  }	
+%>
+  var grandTotal = 0;
+  var currentValue = 0;
+  for (var j=1; j<=7; j++) {
+    var subTotal = 0;
+    for(var i=0; i<arr.length; i++) {
+       var divName= "day" + j +"_" + arr[i];
+       currentValue = parseFloat( document.getElementById(divName).value);
+       if(isNaN(currentValue)) {
+          currentValue = 0.0;
+       }
+       subTotal=subTotal+currentValue;
+    }
+    document.getElementById("day" + j).innerHTML = "<b>" + subTotal + "</b>"
+    grandTotal = grandTotal + subTotal
+  }
+  document.getElementById("grandTotal").innerHTML = "<b>" + grandTotal + "</b>"
+} // grandTotal()
+</script>
 	
 </head>
 <body>
@@ -47,7 +76,7 @@
             <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
             <td>${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
             <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">
-             <td><g:textField size="5" name="day${j+1}_${timesheetEntry?.taskAssignment?.id}" id="day${j+1}_${timesheetEntry?.taskAssignment?.id}" value="" onChange="updateTotals(${j+1},${timesheetEntry?.taskAssignment?.id})"></g:textField></td>
+             <td><g:textField size="5" name="day${j+1}_${timesheetEntry?.taskAssignment?.id}" id="day${j+1}_${timesheetEntry?.taskAssignment?.id}" value="${wd.hoursWorked}" onChange="updateTotals(${j+1},${timesheetEntry?.taskAssignment?.id});grandTotal();"></g:textField></td>
             </g:each>
             <td><div id="row_${timesheetEntry?.taskAssignment?.id}"></div></td>
           </tr>

@@ -53,6 +53,14 @@ class TimesheetController {
 		def user = User.get(session.user.id)
 		
 		Timesheet timesheetInstance = timesheetManagerService.generateWeeklyTimesheet(user)
+		try {
+			validateHoursPerDay(timesheetInstance) 
+		} catch (Exception e) {
+			flash.message = "Invalid value. Must be a decimal from 0.0 to 24.0"
+			populateWorkdaysFromForm(timesheetInstance)
+			render(view: "create", model: [timesheetInstance: timesheetInstance])
+			return
+		}
 		populateWorkdaysFromForm(timesheetInstance)
 		
 		try {
@@ -112,7 +120,15 @@ class TimesheetController {
 			}
 		}
 		// validate from form 
-		def weekdaysModified = validateWorkdaysFromForm(timesheetInstance)
+		try {
+			validateHoursPerDay(timesheetInstance) 
+		}catch(Exception e) {
+			flash.message = "Invalid value. Must be a decimal from 0.0 to 24.0"
+			populateWorkdaysFromForm(timesheetInstance)
+			render(view: "edit", model: [timesheetInstance: timesheetInstance])
+			return
+		}
+		def weekdaysModified = validatePriorWorkDayChanged(timesheetInstance)
 		if (weekdaysModified.count()> 0) {
 			println (" " + weekdaysModified.count())
 		}
@@ -132,7 +148,7 @@ class TimesheetController {
 			redirect(action: "show", id: timesheetInstance.id)
 		}
 	}
-	def validateWorkdaysFromForm(timesheetInstance){
+	def validatePriorWorkDayChanged(timesheetInstance){
 		def weekdaysModified = []
 		
 		timesheetInstance.timesheetEntries.eachWithIndex {
@@ -166,7 +182,24 @@ class TimesheetController {
 			params["day7_${taskAssignment?.id}"]
 		]
 	}
-	
+	def validateHoursPerDay(timesheetInstance) {
+		timesheetInstance.timesheetEntries.eachWithIndex {  tse, index ->
+			def daysOfWeek = obtainWeekdays(tse.taskAssignment)
+			tse.workdays.eachWithIndex { workday, indx ->
+				
+				if (daysOfWeek[indx] != "") {
+					try {
+						float hours = daysOfWeek[indx].toFloat()
+						if (hours < 0 || hours > 24.0) {
+							throw new RuntimeException();
+						}
+					} catch (Exception e) {
+						throw new RuntimeException();
+					}
+				}
+			} // clean up bad numbers.
+		}
+	}
 	def populateWorkdaysFromForm(timesheetInstance){
 		timesheetInstance.timesheetEntries.eachWithIndex {
 			tse, index ->
