@@ -51,6 +51,7 @@ function grandTotal() {
             </div>
             </g:hasErrors>
             <g:form action="update" method="post">
+            	<g:hiddenField name="workaround_notes" value="${workaround_notes}" />
                 <g:hiddenField name="id" value="${timesheetInstance?.id}" />
                 <g:hiddenField name="version" value="${timesheetInstance?.version}" />
                 <div class="dialog">
@@ -116,8 +117,77 @@ function grandTotal() {
 										<td><div id="day7"></div></td>
 										<td><div id="grandTotal"></div></td>
 							          </tr>
+							           <tr>
+							            <td colspan="10"><hr></hr></td>
+							            <td></td>
+							            <th></th>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+							          </tr>
+							         <g:each status="i" in="${weekdaysModified}" var="weekDay" >
+							          <tr>
+							            <td>${weekDay.timesheetEntry?.taskAssignment?.task?.name}</td>
+							            <td>${weekDay.timesheetEntry?.taskAssignment?.laborCategory?.name}</td>
+							            <td></td>
+							            <td><% 
+										  
+										  java.text.DateFormat df = new java.text.SimpleDateFormat("EEE");
+							          	  out.print(df.format(weekDay.dateWorked))
+											
+											Calendar calendar = Calendar.getInstance() 
+											calendar.setTime(weekDay.dateWorked)
+											int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+											
+							          	%></td>
+										<td colspan="2">Changed to ${weekDay.hoursWorked} hours</td>
+										<td colspan="3"><textarea name="modDay${dayOfWeek}_${timesheetEntry?.taskAssignment?.id}_note"></textarea></td>
+										
+										
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+							          </tr>
+							          <tr align="TOP">
+							          	<td colspan="2"></td>
+							            <td></td>
+							            <td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+							          </tr>
+							          <tr align="TOP">
+							          	<td></td>
+							            <td></td>
+							            <td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+							          </tr>
+							          </g:each>
+							          
+							          
+							          
 							        </table>
 							    </div>
+
 							    <div class="buttons">
 				                    <span class="button"><g:actionSubmit class="save" action="update" value="Save" /></span>
 									<span class="button"><g:actionSubmit class="sign" action="signform" value="Sign" ></g:actionSubmit></span>
