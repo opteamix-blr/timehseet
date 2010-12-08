@@ -1,9 +1,8 @@
 package com.ewconline.timesheet
 
 
-import java.util.TimeZone;
-
-import hirondelle.date4j.DateTime;
+import hirondelle.date4j.DateTime 
+import java.util.TimeZone
 
 import com.ewconline.timesheet.Timesheet 
 
@@ -26,17 +25,7 @@ class TimesheetController {
 	}
 	
 	def create = {
-		// >validate "Am I allowed to create a timesheet?"
-		// >is it in a prior timesheet
-		// >  Yes,
-		// >     any timesheets?
-		// >     get the most recent and check if it falls in date range.
-		//   No,
-		//      Create a work week Mon-Sun (the timesheet).
-		//      calculate from current date to closest monday in the past (could be today).
-		//   
-		// Doing the NO section.
-		// 
+
 		def user = User.get(session.user.id)
 		Timesheet ts = timesheetManagerService.generateWeeklyTimesheet(user)
 
@@ -123,16 +112,21 @@ class TimesheetController {
 		try {
 			validateHoursPerDay(timesheetInstance) 
 		}catch(Exception e) {
-			flash.message = "Invalid value. Must be a decimal from 0.0 to 24.0"
+			flash.message = "Invalid value. Each day can only add up to 24 hours. Must be a decimal between 0.0 to 24.0"
 			populateWorkdaysFromForm(timesheetInstance)
 			render(view: "edit", model: [timesheetInstance: timesheetInstance])
 			return
 		}
 		def weekdaysModified = validatePriorWorkDayChanged(timesheetInstance)
-		if (weekdaysModified.count()> 0) {
-			println (" " + weekdaysModified.count())
+
+		if (! params["workaround_notes"]) {
+			if (weekdaysModified.size()> 0 ) {
+				println (" " + weekdaysModified.size())
+				flash.message = "Modified work hours on a prior date requires a reason."
+				render(view: "edit", model: [timesheetInstance: timesheetInstance, weekdaysModified:weekdaysModified, workaround_notes:"workaround_notes" ])
+				return
+			}
 		}
-		
 		// update from form
 		populateWorkdaysFromForm(timesheetInstance)
 		try {
@@ -148,30 +142,7 @@ class TimesheetController {
 			redirect(action: "show", id: timesheetInstance.id)
 		}
 	}
-	def validatePriorWorkDayChanged(timesheetInstance){
-		def weekdaysModified = []
-		
-		timesheetInstance.timesheetEntries.eachWithIndex {
-			tse, index ->
-			def daysOfWeek = obtainWeekdays(tse.taskAssignment)
-			tse.workdays.eachWithIndex { workday, indx ->
-				def sysHoursWorked = workday?.hoursWorked
-				if (sysHoursWorked == null) {
-					sysHoursWorked = ""
-				}
-				if (daysOfWeek[indx] != sysHoursWorked.toString()) {
-					Workday changedWorkday = new Workday()
-					changedWorkday.dateWorked = workday?.dateWorked
-					changedWorkday.hoursWorked = daysOfWeek[indx].toFloat()
-						
-					weekdaysModified.add changedWorkday
-					println ("changedWorkday day" + indx + " value: was "  + workday?.hoursWorked)
-					println ("changedWorkday day" + indx + " value: to  "  + changedWorkday.hoursWorked)
-				}	
-			}
-		}
-		return weekdaysModified
-	}
+
 	def obtainWeekdays(taskAssignment) {
 		[ params["day1_${taskAssignment?.id}"],
 			params["day2_${taskAssignment?.id}"],
@@ -182,24 +153,7 @@ class TimesheetController {
 			params["day7_${taskAssignment?.id}"]
 		]
 	}
-	def validateHoursPerDay(timesheetInstance) {
-		timesheetInstance.timesheetEntries.eachWithIndex {  tse, index ->
-			def daysOfWeek = obtainWeekdays(tse.taskAssignment)
-			tse.workdays.eachWithIndex { workday, indx ->
-				
-				if (daysOfWeek[indx] != "") {
-					try {
-						float hours = daysOfWeek[indx].toFloat()
-						if (hours < 0 || hours > 24.0) {
-							throw new RuntimeException();
-						}
-					} catch (Exception e) {
-						throw new RuntimeException();
-					}
-				}
-			} // clean up bad numbers.
-		}
-	}
+
 	def populateWorkdaysFromForm(timesheetInstance){
 		timesheetInstance.timesheetEntries.eachWithIndex {
 			tse, index ->
@@ -290,5 +244,61 @@ class TimesheetController {
 			}
 		}
 		[timesheetInstance:ts]
+	}
+	
+	def validateHoursPerDay(timesheetInstance) {
+		// go through 7 days
+		for (day in 1..7) {
+			def subTotal = 0.0;
+			timesheetInstance.timesheetEntries.eachWithIndex {  tse, index ->
+				def dayField = params["day${day}_${tse?.taskAssignment?.id}"]
+				if (dayField != "") {
+					try {
+						float hours = dayField.toFloat()
+						if (hours < 0 || hours > 24.0) {
+							throw new RuntimeException();
+						}
+						subTotal = subTotal + hours;
+					} catch (Exception e) {
+						throw new RuntimeException();
+					}
+				}
+			}
+			if (subTotal < 0 || subTotal > 24.0) {
+				throw new RuntimeException();
+			}
+		}
+	}
+	
+	def validatePriorWorkDayChanged(timesheetInstance){
+		def weekdaysModified = []
+		
+		timesheetInstance.timesheetEntries.eachWithIndex {
+			tse, index ->
+			def daysOfWeek = obtainWeekdays(tse.taskAssignment)
+			tse.workdays.eachWithIndex { workday, indx ->
+				def sysHoursWorked = workday?.hoursWorked
+				if (sysHoursWorked == null) {
+					sysHoursWorked = ""
+				}
+				DateTime currentDay = DateTime.today(TimeZone.getDefault())
+				currentDay = currentDay.getEndOfDay().truncate(DateTime.Unit.SECOND)
+				DateTime dtWorkday = new DateTime(workday.dateWorked.toString()).getEndOfDay().truncate(DateTime.Unit.SECOND)
+				//println("currday=" + currentDay)
+				//println("dtWorkday=" + dtWorkday)
+				if (!currentDay.equals(dtWorkday)) {
+					if (daysOfWeek[indx] != sysHoursWorked.toString()) {
+						Workday changedWorkday = new Workday()
+						changedWorkday.dateWorked = workday?.dateWorked
+						changedWorkday.hoursWorked = daysOfWeek[indx].toFloat()
+						changedWorkday.timesheetEntry = tse
+						weekdaysModified.add changedWorkday
+						//println ("changedWorkday day" + indx + " value: was "  + workday?.hoursWorked)
+						//println ("changedWorkday day" + indx + " value: to  "  + changedWorkday.hoursWorked)
+					}
+				}
+			}
+		}
+		return weekdaysModified
 	}
 }
