@@ -34,7 +34,7 @@ function grandTotal() {
 } // grandTotal()
 </script>
 	</head>
-    <body>
+    <body onload="grandTotal()">
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLink(uri: '/timesheet/listTimesheets')}"><g:message code="default.home.label"/></a></span>
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
@@ -146,9 +146,7 @@ function grandTotal() {
 											
 							          	%></td>
 										<td colspan="2">Changed to ${weekDay.hoursWorked} hours</td>
-										<td colspan="3"><textarea name="modDay${dayOfWeek}_${timesheetEntry?.taskAssignment?.id}_note"></textarea></td>
-										
-										
+										<td colspan="3"><textarea name="modDay${dayOfWeek}_${timesheetEntry.taskAssignment?.id}_note"></textarea></td>
 										<td></td>
 										<td></td>
 										<td></td>
@@ -182,9 +180,6 @@ function grandTotal() {
 										<td></td>
 							          </tr>
 							          </g:each>
-							          
-							          
-							          
 							        </table>
 							    </div>
 
