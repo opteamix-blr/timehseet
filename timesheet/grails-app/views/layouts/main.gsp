@@ -6,8 +6,7 @@
         <g:layoutHead />
         <g:javascript library="application" />
 	    
-	</head>
-	<body bgcolor="#999999">
+	</head><body onload="${pageProperty(name:'body.onload')}" bgcolor="#999999">
 		<div align="center"> 
 		<!-- Header area -->
 		  <table bgcolor="#477BB6" width="900" cellspacing="0" cellpadding="0" style="padding-top: 10px; padding-bottom: 15px;">
