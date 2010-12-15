@@ -149,7 +149,7 @@ function grandTotal() {
 											}
 							          	%></td>
 										<td colspan="2">Changed to ${weekDay.hoursWorked} hours <g:hiddenField name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_hrs" value="${weekDay.hoursWorked}" /></td>
-										<td colspan="3"><textarea name="modDay${i+1}_${weekDay?.timesheetEntry?.taskAssignment?.id}_note"></textarea></td>
+										<td colspan="3"><textarea name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_note"></textarea></td>
 										<td></td>
 										<td></td>
 										<td></td>
