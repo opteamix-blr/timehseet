@@ -51,8 +51,7 @@ function grandTotal() {
             </div>
             </g:hasErrors>
             <g:form action="update" method="post">
-            	<g:hiddenField name="workaround_notes" value="${workaround_notes}" />
-                <g:hiddenField name="id" value="${timesheetInstance?.id}" />
+            	<g:hiddenField name="id" value="${timesheetInstance?.id}" />
                 <g:hiddenField name="version" value="${timesheetInstance?.version}" />
                 <div class="dialog">
                     <table>
@@ -143,10 +142,14 @@ function grandTotal() {
 											Calendar calendar = Calendar.getInstance() 
 											calendar.setTime(weekDay.dateWorked)
 											int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-											
+											if (dayOfWeek == 7){
+												dayOfWeek = 1
+											} else {
+												dayOfWeek++
+											}
 							          	%></td>
-										<td colspan="2">Changed to ${weekDay.hoursWorked} hours</td>
-										<td colspan="3"><textarea name="modDay${dayOfWeek}_${timesheetEntry.taskAssignment?.id}_note"></textarea></td>
+										<td colspan="2">Changed to ${weekDay.hoursWorked} hours <g:hiddenField name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_hrs" value="${weekDay.hoursWorked}" /></td>
+										<td colspan="3"><textarea name="modDay${i+1}_${weekDay?.timesheetEntry?.taskAssignment?.id}_note"></textarea></td>
 										<td></td>
 										<td></td>
 										<td></td>
