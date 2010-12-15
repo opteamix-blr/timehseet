@@ -25,30 +25,29 @@ class ApproverController {
 	
 	def accountantApprove = {
 		
-			def user = User.get(session.user.id)
-			
-			Timesheet timesheetInstance = Timesheet.get(params.id)
-			
-			
-			if (params.version) {
-				def version = params.version.toLong()
-				if (timesheetInstance.version > version) {
-					timesheetInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'timesheet.label', default: 'Timesheet')] as Object[], "Another user has updated this Timesheet while you were editing")
-					render(view: "edit", model: [timesheetInstance: timesheetInstance])
-					return
-				}
+		def user = User.get(session.user.id)
+		
+		Timesheet timesheetInstance = Timesheet.get(params.id)
+		
+		
+		if (params.version) {
+			def version = params.version.toLong()
+			if (timesheetInstance.version > version) {
+				timesheetInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'timesheet.label', default: 'Timesheet')] as Object[], "Another user has updated this Timesheet while you were editing")
+				render(view: "edit", model: [timesheetInstance: timesheetInstance])
+				return
 			}
-			
-			
-			if (!timesheetInstance.hasErrors()) {
-				try {
-					timesheetManagerService.approve(timesheetInstance)
-				} catch (Exception e) {
-					flash.message = e.getMessage()
-					redirect(action: "approverListTimesheet")
-				}
-				
+		}
+		
+		
+		if (!timesheetInstance.hasErrors()) {
+			try {
+				timesheetManagerService.approve(timesheetInstance)
+			} catch (Exception e) {
+				flash.message = e.getMessage()
 			}
+		}
+		redirect(action: "approverListTimesheet")
 	}
 
 	def accountantDisapprove = {
