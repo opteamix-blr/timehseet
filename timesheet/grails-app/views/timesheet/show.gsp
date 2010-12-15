@@ -25,35 +25,35 @@
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="timesheet.id.label" default="Id" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: timesheetInstance, field: "id")}</td>
+                            <td valign="top" class="value"><g:link action="viewTimesheet" id="${timesheetInstance.id}">${fieldValue(bean: timesheetInstance, field: "id")} (VIEW)</g:link></td>
                             
                         </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="timesheet.startDate.label" default="Start Date" /></td>
                             
-                            <td valign="top" class="value"><g:formatDate date="${timesheetInstance?.startDate}" /></td>
+                            <td valign="top" class="value"><g:formatDate format="MMM-dd-yyyy" date="${timesheetInstance?.startDate}" /></td>
                             
                         </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="timesheet.endDate.label" default="End Date" /></td>
                             
-                            <td valign="top" class="value"><g:formatDate date="${timesheetInstance?.endDate}" /></td>
+                            <td valign="top" class="value"><g:formatDate format="MMM-dd-yyyy" date="${timesheetInstance?.endDate}"/></td>
                             
                         </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="timesheet.dateCreated.label" default="Date Created" /></td>
                             
-                            <td valign="top" class="value"><g:formatDate date="${timesheetInstance?.dateCreated}" /></td>
+                            <td valign="top" class="value"><g:formatDate format="MMM-dd-yyyy hh:mm:ss" date="${timesheetInstance?.dateCreated}" /></td>
                             
                         </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="timesheet.lastUpdated.label" default="Last Updated" /></td>
                             
-                            <td valign="top" class="value"><g:formatDate date="${timesheetInstance?.lastUpdated}" /></td>
+                            <td valign="top" class="value"><g:formatDate format="MMM-dd-yyyy hh:mm:ss" date="${timesheetInstance?.lastUpdated}" /></td>
                             
                         </tr>
                     

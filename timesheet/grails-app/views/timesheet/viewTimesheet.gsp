@@ -40,7 +40,7 @@
                                   <label for="startDate"><g:message code="timesheet.startDate.label" default="Start Date" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'startDate', 'errors')}">
-                                    ${timesheetInstance?.startDate}
+                                    <g:formatDate format="MMM-dd-yyyy" date="${timesheetInstance?.startDate}"/>
                                 </td>
                             </tr>
                         
@@ -49,7 +49,7 @@
                                   <label for="endDate"><g:message code="timesheet.endDate.label" default="End Date" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'endDate', 'errors')}">
-                                    ${timesheetInstance?.endDate}
+                                    <g:formatDate format="MMM-dd-yyyy" date="${timesheetInstance?.endDate}"/>
                                 </td>
                             </tr>
                             <tr class="prop">
@@ -59,27 +59,26 @@
 							            <th>Task</th>
 							            <th>Labor Category</th>
 							            <th>Charge #</th>
-							            <th>Sat</th>
-							            <th>Sun</th>
-							            <th>Mon</th>
-							            <th>Tue</th>
-							            <th>Wed</th>
-							            <th>Thu</th>
-							            <th>Fri</th>
+							            <th>Sat <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate}"/></th>
+							            <th>Sun <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 1}"/></th>
+							            <th>Mon <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 2}"/></th>
+							            <th>Tue <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 3}"/></th>
+							            <th>Wed <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 4}"/></th>
+							            <th>Thu <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 5}"/></th>
+							            <th>Fri <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 6}"/></th>
 							            <th>Total</th>
 							          </tr>
-							          <g:hiddenField name="totalEntries" value="${timesheetInstance?.timesheetEntries.size()}" />
-							    <g:each status="i" in="${timesheetInstance?.timesheetEntries}" var="timesheetEntry" >
+							          <g:hiddenField name="totalEntries" value="${timesheetInstance?.timesheetEntries.size() }" />
+							    <g:each status="i" in="${timesheetInstance?.timesheetEntries }" var="timesheetEntry">
 							          <tr>
 							            <td><g:hiddenField name="timesheetEntries" value="${timesheetEntry?.id}" />${timesheetEntry?.taskAssignment?.task.name} </td>
 							            <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
-							            <td><g:hiddenField name="chargeCode${i}" value="${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}" />${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
+							            <td><g:hiddenField name="chargeCode${i }" value="${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}" />${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
 							            <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">
 							             <td>${wd.hoursWorked}</td>
 							            </g:each>
 							            <td><p></p></td>
-							          </tr>
-							            
+							          </tr>						           
 							    </g:each>
 							          <tr>
 							            <td></td>
@@ -94,6 +93,35 @@
 							            <td><div></div></td>
 							            <td><div></div></td>
 							          </tr>
+							         
+							        </table>
+							        <table>
+							         <tr>
+							            <th colspan="4">Modifications:</th>
+							            
+							          </tr>	
+							         <tr>
+							            <th>Day</th>
+							            <th>Labor Category</th>
+							            <th>Charge #</th>
+							            <th width="40%">Reason</th>
+							          </tr>	
+							        <g:each status="i" in="${timesheetInstance?.timesheetEntries }" var="timesheetEntry"> 
+							          <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">
+							              <g:each status="k" in="${wd?.notes}" var="note">
+								           <tr>
+								             <td><% 
+										  java.text.DateFormat df = new java.text.SimpleDateFormat("EEE");
+							          	  out.println(df.format(wd.dateWorked))
+							          	        %></td>
+								             <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
+								             <td>${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
+								             <td colspan="2">${note.comment }</td>
+								             <td></td>
+								           </tr>
+								            </g:each>
+							            </g:each>	
+							     </g:each>	
 							        </table>
 									<div class="buttons">
 									<g:form>
