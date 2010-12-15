@@ -50,9 +50,11 @@ class TimesheetController {
 			render(view: "create", model: [timesheetInstance: timesheetInstance])
 			return
 		}
-		populateWorkdaysFromForm(timesheetInstance)
+		
 		
 		try {
+			
+			populateWorkdaysFromForm(timesheetInstance)
 			// update state of the timesheet
 			if (timesheetManagerService.createWeeklyTimesheet(timesheetInstance)){
 				flash.message = "${message(code: 'default.created.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), user.id])}"
@@ -100,6 +102,15 @@ class TimesheetController {
 		def user = User.get(session.user.id)
 		// original
 		Timesheet timesheetInstance = Timesheet.get(params.id)
+		try {
+			timesheetManagerService.validateState(params.id, timesheetManagerService.saving)
+		}catch(Exception e) {
+			flash.message = "Unable to save timesheet. The current state is " + timesheetInstance.currentState
+			
+			render(view: "edit", model: [timesheetInstance: timesheetInstance])
+			return
+		}
+		
 		// copy
 		Timesheet timesheetCopy = timesheetManagerService.deepCopyTimesheet(timesheetInstance)
 		
@@ -256,12 +267,15 @@ class TimesheetController {
 		}
 		
 		try {
+			
 			// update state of the timesheet
+			timesheetManagerService.validateState(ts.id, timesheetManagerService.signing)
 			def authenticateUser = User.findByUsernameAndPasswd(params.username, params.passwd)
 			if (!authenticateUser || authenticateUser.id != user.id) {
 				flash.message = "Authenticate failure, unable to sign timesheet"
 				render(view: "edit", model: [timesheetInstance: ts])
 			} else {
+			
 				signatureService.signTimesheet(ts, user)
 				if (timesheetManagerService.sign(ts)){
 					flash.message = "${message(code: 'timesheet signed successfully', args: [message(code: 'timesheet.label', default: 'Timesheet'), user.id])}"
