@@ -98,7 +98,10 @@ class TimesheetController {
 	
 	def update = {
 		def user = User.get(session.user.id)
+		// original
 		Timesheet timesheetInstance = Timesheet.get(params.id)
+		// copy
+		Timesheet timesheetCopy = timesheetManagerService.deepCopyTimesheet(timesheetInstance)
 		
 		if (params.version) {
 			def version = params.version.toLong()
@@ -117,18 +120,21 @@ class TimesheetController {
 			render(view: "edit", model: [timesheetInstance: timesheetInstance])
 			return
 		}
+		
+		// forwards to edit page when prior days have been modified.
 		def weekdaysModified = validatePriorWorkDayChanged(timesheetInstance)
-
-		if (! params["workaround_notes"]) {
-			if (weekdaysModified.size()> 0 ) {
-				println (" " + weekdaysModified.size())
-				flash.message = "Modified work hours on a prior date requires a reason."
-				render(view: "edit", model: [timesheetInstance: timesheetInstance, weekdaysModified:weekdaysModified, workaround_notes:"workaround_notes" ])
-				return
-			}
+		
+		
+		if (weekdaysModified.size()> 0 ) {
+			flash.message = "Modified work hours on a prior date requires a reason."
+			// update from form
+			populateWorkdaysFromForm(timesheetInstance)
+			render(view: "edit", model: [timesheetInstance: timesheetInstance, weekdaysModified:weekdaysModified])
+			return
 		}
-		// update from form
-		populateWorkdaysFromForm(timesheetInstance)
+		populateModifiesFromForm(timesheetInstance)
+		//obtainModifiedDays(timesheetCopy.taskAssignment)
+
 		try {
 			if (!timesheetInstance.hasErrors()) {
 				timesheetManagerService.update(timesheetInstance)
@@ -153,6 +159,27 @@ class TimesheetController {
 			params["day7_${taskAssignment?.id}"]
 		]
 	}
+	
+	def obtainModifiedDayHrs(taskAssignment) {
+		[ params["modDay1_${taskAssignment?.id}_hrs"], //modDay1_2_note
+		  params["modDay2_${taskAssignment?.id}_hrs"],
+		  params["modDay3_${taskAssignment?.id}_hrs"],
+		  params["modDay4_${taskAssignment?.id}_hrs"],
+		  params["modDay5_${taskAssignment?.id}_hrs"],
+		  params["modDay6_${taskAssignment?.id}_hrs"],
+		  params["modDay7_${taskAssignment?.id}_hrs"]
+		]
+	}
+	def obtainModifiedDayNotes(taskAssignment) {
+		[ params["modDay1_${taskAssignment?.id}_note"], //modDay1_2_note
+		  params["modDay2_${taskAssignment?.id}_note"],
+		  params["modDay3_${taskAssignment?.id}_note"],
+		  params["modDay4_${taskAssignment?.id}_note"],
+		  params["modDay5_${taskAssignment?.id}_note"],
+		  params["modDay6_${taskAssignment?.id}_note"],
+		  params["modDay7_${taskAssignment?.id}_note"]
+		]
+	}
 
 	def populateWorkdaysFromForm(timesheetInstance){
 		timesheetInstance.timesheetEntries.eachWithIndex {
@@ -172,7 +199,36 @@ class TimesheetController {
 				
 			} // clean up bad numbers.
 		}
-	}	
+	}
+	
+	def populateModifiesFromForm(timesheetInstance){
+		timesheetInstance.timesheetEntries.eachWithIndex {
+			tse, index ->
+			def notes = obtainModifiedDayNotes(tse.taskAssignment)
+			def dayHrs = obtainModifiedDayHrs(tse.taskAssignment)
+			
+			tse.workdays.eachWithIndex { workday, indx ->
+				
+				if (dayHrs[indx] == "" || dayHrs[indx] == null) {
+					// skip
+				} else {
+					workday.hoursWorked = dayHrs[indx].toFloat();
+					println("mod hours: ${dayHrs[indx]}")
+					println("mod notes: ${notes[indx]}")
+					if (notes[indx]) {
+						Note note = new Note(dateCreated:new Date(),
+							noteType:'change',
+							comment:notes[indx]
+						).save()
+						workday.notes.add note
+						
+					} 
+
+				}
+				
+			} // clean up bad numbers.
+		}
+	}
 	def signform = {
 		def user = User.get(session.user.id)
 		def tsId = params['id']
@@ -270,6 +326,7 @@ class TimesheetController {
 		}
 	}
 	
+	// returns all days that was modified.
 	def validatePriorWorkDayChanged(timesheetInstance){
 		def weekdaysModified = []
 		
@@ -284,8 +341,7 @@ class TimesheetController {
 				DateTime currentDay = DateTime.today(TimeZone.getDefault())
 				currentDay = currentDay.getEndOfDay().truncate(DateTime.Unit.SECOND)
 				DateTime dtWorkday = new DateTime(workday.dateWorked.toString()).getEndOfDay().truncate(DateTime.Unit.SECOND)
-				//println("currday=" + currentDay)
-				//println("dtWorkday=" + dtWorkday)
+
 				if (!currentDay.equals(dtWorkday)) {
 					if (daysOfWeek[indx] != sysHoursWorked.toString()) {
 						Workday changedWorkday = new Workday()
@@ -293,8 +349,6 @@ class TimesheetController {
 						changedWorkday.hoursWorked = daysOfWeek[indx].toFloat()
 						changedWorkday.timesheetEntry = tse
 						weekdaysModified.add changedWorkday
-						//println ("changedWorkday day" + indx + " value: was "  + workday?.hoursWorked)
-						//println ("changedWorkday day" + indx + " value: to  "  + changedWorkday.hoursWorked)
 					}
 				}
 			}
