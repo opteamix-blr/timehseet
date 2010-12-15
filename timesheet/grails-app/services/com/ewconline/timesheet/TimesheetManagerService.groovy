@@ -124,6 +124,17 @@ class TimesheetManagerService {
 		return allUserTimesheets
 	}
 	
+	
+	def validateState(int tsId, String transition){
+		Timesheet timesheetInstance = Timesheet.get(tsId)
+		def resultantState = STATE_MAP[(timesheetInstance.currentState+transition)]
+		// if null is returned its an illegal state !!!
+		// example the user tried to save after it was approved.
+		if (!resultantState) {
+			throw new RuntimeException("${transition} timesheet is not allowed. Current state of the timesheet is ${ts.currentState}.")
+		}
+	}
+	
 	def updateState(Timesheet ts, String transition) {
 		
 		def resultantState = STATE_MAP[(ts.currentState+transition)]
