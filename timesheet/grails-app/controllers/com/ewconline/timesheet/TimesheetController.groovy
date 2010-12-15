@@ -101,13 +101,13 @@ class TimesheetController {
 	def update = {
 		def user = User.get(session.user.id)
 		// original
-		Timesheet timesheetInstance = Timesheet.get(params.id)
+		Timesheet timesheetInstance = Timesheet.get(params.id.toInteger())
 		try {
-			timesheetManagerService.validateState(params.id, timesheetManagerService.saving)
+			timesheetManagerService.validateState(params.id.toInteger(), timesheetManagerService.saving)
 		}catch(Exception e) {
+			//e.printStackTrace()
 			flash.message = "Unable to save timesheet. The current state is " + timesheetInstance.currentState
-			
-			render(view: "edit", model: [timesheetInstance: timesheetInstance])
+			redirect(action: "show", id: params.id.toInteger())
 			return
 		}
 		
@@ -269,7 +269,7 @@ class TimesheetController {
 		try {
 			
 			// update state of the timesheet
-			timesheetManagerService.validateState(ts.id, timesheetManagerService.signing)
+			timesheetManagerService.validateState(ts.id.toInteger(), timesheetManagerService.signing)
 			def authenticateUser = User.findByUsernameAndPasswd(params.username, params.passwd)
 			if (!authenticateUser || authenticateUser.id != user.id) {
 				flash.message = "Authenticate failure, unable to sign timesheet"
