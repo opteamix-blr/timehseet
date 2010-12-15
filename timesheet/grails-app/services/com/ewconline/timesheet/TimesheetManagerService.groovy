@@ -88,25 +88,30 @@ class TimesheetManagerService {
 			throw new RuntimeException("The current or weekly timesheet was already created.")
 		}
 		updateState(timesheet, saving)
+		timesheet.lastUpdated = new Date()
 		return timesheet.save(flush:true)
 	}
 	
 	def update(Timesheet timesheet) {
 		updateState(timesheet, saving)
+		timesheet.lastUpdated = new Date()
 		return timesheet.save(flush:true)
 	}
 	def sign(Timesheet timesheet) {
 		updateState(timesheet, signing)
+		timesheet.lastUpdated = new Date()
 		return timesheet.save(flush:true)
 	}
 	
 	def approve(Timesheet timesheet) {
 		updateState(timesheet, approving)
+		timesheet.lastUpdated = new Date()
 		return timesheet.save(flush:true)
 	}
 	
 	def disapprove(Timesheet timesheet) {
 		updateState(timesheet, disapproving)
+		timesheet.lastUpdated = new Date()
 		return timesheet.save(flush:true)
 	}
 	
@@ -141,6 +146,29 @@ class TimesheetManagerService {
 	*/
 		
 	}
+	
+	def deepCopyTimesheet(Timesheet ts) {
+		
+		Timesheet copyTs = new Timesheet(
+			id:ts.id,
+			startDate:ts.startDate, 
+			endDate:ts.endDate,
+			user: ts.user,
+			currentState: ts.currentState
+		)
+		
+		
+		for (te in ts.getTimesheetEntries()){
+			def timesheetEntry = new TimesheetEntry(id:te.id, taskAssignment:te.taskAssignment);
+			for (wd in te.workdays){
+				timesheetEntry.addToWorkdays(new Workday(id:wd.id, dateWorked:wd.dateWorked, hoursWorked:wd.hoursWorked))
+			}
+			timesheetEntry.timesheet = copyTs
+			copyTs.addToTimesheetEntries(timesheetEntry)
+		}
+		return copyTs
+    }
+	
 
 }
 
