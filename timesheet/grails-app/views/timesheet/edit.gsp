@@ -120,7 +120,7 @@ function grandTotal() {
 							        </table>
 							        <table>
 							        <tr>
-							            <th colspan="5">Modifications:</th>
+							            <th colspan="6">Modifications:</th>
 							            
 							          </tr>	
 							         <tr>
