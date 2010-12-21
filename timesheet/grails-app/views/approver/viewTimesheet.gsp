@@ -79,7 +79,7 @@
 							            <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">
 							             <td>${wd.hoursWorked}</td>
 							            </g:each>
-							            <td><p></p></td>
+							             <td><p>${timesheetEntry?.sumHours()}</p></td>
 							          </tr>
 							            
 							    </g:each>
@@ -87,17 +87,18 @@
 							            <td></td>
 							            <td></td>
 							            <th>Total: </th>
-							            <td><div></div></td>
-							            <td><div></div></td>
-							            <td><div></div></td>
-							            <td><div></div></td>
-							            <td><div></div></td>
-							            <td><div></div></td>
-							            <td><div></div></td>
-							            <td><div></div></td>
+							            <td><div>${timesheetInstance.sumHoursByDay(1)}</div></td>
+							            <td><div>${timesheetInstance.sumHoursByDay(2)}</div></td>
+							            <td><div>${timesheetInstance.sumHoursByDay(3)}</div></td>
+							            <td><div>${timesheetInstance.sumHoursByDay(4)}</div></td>
+							            <td><div>${timesheetInstance.sumHoursByDay(5)}</div></td>
+							            <td><div>${timesheetInstance.sumHoursByDay(6)}</div></td>
+							            <td><div>${timesheetInstance.sumHoursByDay(7)}</div></td>
+							            <td><div>${timesheetInstance.sumAllHours()}</div></td>
 							          </tr>
 							         
 							        </table>
+							         <g:if test="${timesheetInstance.hasModifications()}">  
 							        <table>
 							         <tr>
 							            <th colspan="6">Modifications:</th>
@@ -128,6 +129,7 @@
 							            </g:each>	
 							     </g:each>	
 							        </table>
+							        </g:if>
 							    </div>
 							    <div class="buttons">
 				                    <span class="button"><g:actionSubmit class="approve" action="accountantApprove" value="Approve" /></span>

@@ -118,10 +118,10 @@ function grandTotal() {
 							          </tr>
 							           
 							        </table>
+							        <g:if test="${weekdaysModified?.size() > 0}">   
 							        <table>
 							        <tr>
 							            <th colspan="6">Modifications:</th>
-							            
 							          </tr>	
 							         <tr>
 							            <th>Day</th>
@@ -155,6 +155,7 @@ function grandTotal() {
 							          </tr>
 							          </g:each>
 							        </table>
+							        </g:if>
 							    </div>
 
 							    <div class="buttons">
