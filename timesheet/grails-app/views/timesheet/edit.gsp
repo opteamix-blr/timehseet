@@ -116,24 +116,25 @@ function grandTotal() {
 										<td><div id="day7"></div></td>
 										<td><div id="grandTotal"></div></td>
 							          </tr>
-							           <tr>
-							            <td colspan="10"><hr></hr></td>
-							            <td></td>
-							            <th></th>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-							          </tr>
+							           
+							        </table>
+							        <table>
+							        <tr>
+							            <th colspan="5">Modifications:</th>
+							            
+							          </tr>	
+							         <tr>
+							            <th>Day</th>
+							            <th>Labor Category</th>
+							            <th>Charge #</th>
+							            <th>Previous Value</th>
+							            <th>New Value</th>
+							            <th width="40%">Reason</th>
+							          </tr>	
 							         <g:each status="i" in="${weekdaysModified}" var="weekDay" >
 							          <tr>
 							            <td>${weekDay.timesheetEntry?.taskAssignment?.task?.name}</td>
 							            <td>${weekDay.timesheetEntry?.taskAssignment?.laborCategory?.name}</td>
-							            <td></td>
 							            <td><% 
 										  
 										  java.text.DateFormat df = new java.text.SimpleDateFormat("EEE");
@@ -148,39 +149,9 @@ function grandTotal() {
 												dayOfWeek++
 											}
 							          	%></td>
-										<td colspan="2">Changed to ${weekDay.hoursWorked} hours <g:hiddenField name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_hrs" value="${weekDay.hoursWorked}" /></td>
-										<td colspan="3"><textarea name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_note"></textarea></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-							          </tr>
-							          <tr align="TOP">
-							          	<td colspan="2"></td>
-							            <td></td>
-							            <td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-							          </tr>
-							          <tr align="TOP">
 							          	<td></td>
-							            <td></td>
-							            <td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
+										<td>Changed to ${weekDay.hoursWorked} hours <g:hiddenField name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_hrs" value="${weekDay.hoursWorked}" /></td>
+										<td><textarea name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_note"></textarea></td>
 							          </tr>
 							          </g:each>
 							        </table>
