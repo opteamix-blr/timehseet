@@ -121,8 +121,8 @@
 							          	        %></td>
 								             <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
 								             <td>${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
-								             <td></td>
-								             <td></td>
+								             <td>${note?.oldValue}</td>
+								             <td>${note?.newValue}</td>
 								             <td>${note.comment }</td>
 								           </tr>
 								            </g:each>
