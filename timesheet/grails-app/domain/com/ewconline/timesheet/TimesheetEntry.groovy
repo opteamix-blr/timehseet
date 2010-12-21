@@ -4,7 +4,7 @@ package com.ewconline.timesheet
 */
 class TimesheetEntry implements Comparable{
 	static belongsTo = [timesheet:Timesheet]
-	SortedSet workdays
+	List workdays
 	TaskAssignment taskAssignment
 
     static constraints = {
