@@ -140,11 +140,9 @@ class TimesheetController {
 			flash.message = "Modified work hours on a prior date requires a reason."
 			// update from form
 			populateWorkdaysFromForm(timesheetInstance)
-			render(view: "edit", model: [timesheetInstance: timesheetInstance, weekdaysModified:weekdaysModified])
+			render(view: "modifyWithNotes", model: [timesheetInstance: timesheetInstance, weekdaysModified:weekdaysModified])
 			return
 		}
-		populateModifiesFromForm(timesheetInstance)
-		//obtainModifiedDays(timesheetCopy.taskAssignment)
 
 		try {
 			if (!timesheetInstance.hasErrors()) {
@@ -152,6 +150,48 @@ class TimesheetController {
 				redirect(action: "show", id: timesheetInstance.id)
 			} else {
 				render(view: "edit", model: [timesheetInstance: timesheetInstance])
+			}
+		} catch (Exception e) {
+			flash.message = e.getMessage()
+//			flash.message = "${message(code: 'default.updated.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), timesheetInstance.id])}"
+			redirect(action: "show", id: timesheetInstance.id)
+		}
+	}
+	
+	def updateWithNotes = {
+		def user = User.get(session.user.id)
+		// original
+		Timesheet timesheetInstance = Timesheet.get(params.id.toInteger())
+		try {
+			timesheetManagerService.validateState(params.id.toInteger(), timesheetManagerService.saving)
+		}catch(Exception e) {
+			e.printStackTrace()
+			flash.message = "Unable to save timesheet. The current state is " + timesheetInstance.currentState
+			redirect(action: "show", id: params.id.toInteger())
+			return
+		}
+		
+		// copy
+		Timesheet timesheetCopy = timesheetManagerService.deepCopyTimesheet(timesheetInstance)
+		
+		if (params.version) {
+			def version = params.version.toLong()
+			if (timesheetInstance.version > version) {
+				timesheetInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'timesheet.label', default: 'Timesheet')] as Object[], "Another user has updated this Timesheet while you were editing")
+				render(view: "edit", model: [timesheetInstance: timesheetInstance])
+				return
+			}
+		}
+		
+		populateModifiesFromForm(timesheetInstance)
+		
+
+		try {
+			if (!timesheetInstance.hasErrors()) {
+				timesheetManagerService.update(timesheetInstance)
+				redirect(action: "show", id: timesheetInstance.id)
+			} else {
+				render(view: "modifyWithNotes", model: [timesheetInstance: timesheetInstance])
 			}
 		} catch (Exception e) {
 			flash.message = e.getMessage()
@@ -219,16 +259,19 @@ class TimesheetController {
 			def dayHrs = obtainModifiedDayHrs(tse.taskAssignment)
 			
 			tse.workdays.eachWithIndex { workday, indx ->
-				
+				Float oldValue = workday.hoursWorked;
 				if (dayHrs[indx] == "" || dayHrs[indx] == null) {
 					// skip
 				} else {
+					
 					workday.hoursWorked = dayHrs[indx].toFloat();
 					println("mod hours: ${dayHrs[indx]}")
 					println("mod notes: ${notes[indx]}")
 					if (notes[indx]) {
 						Note note = new Note(dateCreated:new Date(),
 							noteType:'change',
+							oldValue:oldValue,
+							newValue:workday.hoursWorked,
 							comment:notes[indx]
 						).save()
 						workday.notes.add note
