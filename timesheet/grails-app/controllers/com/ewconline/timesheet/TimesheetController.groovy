@@ -360,7 +360,9 @@ class TimesheetController {
 					if (daysOfWeek[indx] != sysHoursWorked.toString()) {
 						Workday changedWorkday = new Workday()
 						changedWorkday.dateWorked = workday?.dateWorked
-						changedWorkday.hoursWorked = daysOfWeek[indx].toFloat()
+						if (daysOfWeek[indx]) {
+							changedWorkday.hoursWorked = daysOfWeek[indx].toFloat()
+						}
 						changedWorkday.timesheetEntry = tse
 						weekdaysModified.add changedWorkday
 					}
