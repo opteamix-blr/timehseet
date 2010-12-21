@@ -100,13 +100,14 @@
 							        </table>
 							        <table>
 							         <tr>
-							            <th colspan="4">Modifications:</th>
-							            
+							            <th colspan="5">Modifications:</th>
 							          </tr>	
 							         <tr>
 							            <th>Day</th>
 							            <th>Labor Category</th>
 							            <th>Charge #</th>
+							            <th>Previous Value</th>
+							            <th>New Value</th>
 							            <th width="40%">Reason</th>
 							          </tr>	
 							        <g:each status="i" in="${timesheetInstance?.timesheetEntries }" var="timesheetEntry"> 
@@ -119,8 +120,9 @@
 							          	        %></td>
 								             <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
 								             <td>${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
-								             <td colspan="2">${note.comment }</td>
 								             <td></td>
+								             <td></td>
+								             <td>${note.comment }</td>
 								           </tr>
 								            </g:each>
 							            </g:each>	
@@ -128,7 +130,6 @@
 							        </table>
 							    </div>
 							    <div class="buttons">
-								
 				                    <span class="button"><g:actionSubmit class="approve" action="accountantApprove" value="Approve" /></span>
 									<span class="button"><g:actionSubmit class="disapprove" action="accountantDisapprove" value="Disapprove" /></span>
 									<span class="menuButton"><g:link class="list" action="approverListTimesheet"><g:message code="Cancel" /></g:link></span>
