@@ -81,13 +81,13 @@ function grandTotal() {
 							            <th>Task</th>
 							            <th>Labor Category</th>
 							            <th>Charge #</th>
-							            <th>Sat</th>
-							            <th>Sun</th>
-							            <th>Mon</th>
-							            <th>Tue</th>
-							            <th>Wed</th>
-							            <th>Thu</th>
-							            <th>Fri</th>
+							            <th>Sat <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate}"/></th>
+										<th>Sun <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 1}"/></th>
+										<th>Mon <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 2}"/></th>
+										<th>Tue <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 3}"/></th>
+										<th>Wed <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 4}"/></th>
+										<th>Thu <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 5}"/></th>
+										<th>Fri <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 6}"/></th>
 							            <th>Total</th>
 							          </tr>
 							          <g:hiddenField name="totalEntries" value="${timesheetInstance?.timesheetEntries.size()}" />
