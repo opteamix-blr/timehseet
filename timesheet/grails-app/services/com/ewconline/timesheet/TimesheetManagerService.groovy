@@ -45,12 +45,12 @@ class TimesheetManagerService {
     def generateWeeklyTimesheet(User user) {
 		
 		DateTime currentDay = DateTime.today(TimeZone.getDefault())
-		DateTime saturday = currentDay.minusDays(currentDay.getWeekDay())
-		DateTime friday = saturday.plusDays(6)
+		DateTime saturday = currentDay.minusDays(currentDay.getWeekDay()).getStartOfDay()
+		DateTime friday = saturday.plusDays(6).getEndOfDay() 
 
 		Timesheet ts = new Timesheet(
-			startDate:new Date(saturday.format("MM/DD/YYYY")), 
-			endDate:new Date(friday.format("MM/DD/YYYY")),
+			startDate:new Date(saturday.getMilliseconds(TimeZone.getDefault())), 
+			endDate:new Date(friday.getMilliseconds(TimeZone.getDefault())),
 			user: user,
 			currentState: NOT_STARTED
 		)
@@ -71,13 +71,20 @@ class TimesheetManagerService {
 		def systemUser = User.get(user.id)
 		def c = Timesheet.createCriteria()
 		DateTime currentDay = DateTime.today(TimeZone.getDefault())
-		DateTime saturday = currentDay.minusDays(currentDay.getWeekDay())
+		int dayNum = currentDay.getWeekDay() % 7 + 1
+		
+		DateTime saturday = currentDay.minusDays(dayNum - 1).getStartOfDay()
+		DateTime friday = saturday.plusDays(6).getEndOfDay()
+		
 		def previousTimesheet = c.list {
 			eq("user.id", systemUser.id)
-			eq("startDate", new Date(saturday.format("MM/DD/YYYY"))) 
+			ge("startDate", new Date(saturday.getMilliseconds(TimeZone.getDefault())))
+			le("endDate", new Date(friday.getMilliseconds(TimeZone.getDefault())))
 		}
 		if (previousTimesheet && previousTimesheet.size() > 0) {
 			return previousTimesheet[0]
+		} else {
+			return null;
 		}
 	}
 	

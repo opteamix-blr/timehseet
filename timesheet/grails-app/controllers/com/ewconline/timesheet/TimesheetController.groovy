@@ -27,13 +27,14 @@ class TimesheetController {
 	def create = {
 
 		def user = User.get(session.user.id)
-		Timesheet ts = timesheetManagerService.generateWeeklyTimesheet(user)
+		
 
 		Timesheet duplicateTimesheet = timesheetManagerService.retrieveCurrentTimesheet(user)
 		
 		if(duplicateTimesheet){
 			redirect(action:"edit", params:[id:duplicateTimesheet.id])
 		} else {
+			Timesheet ts = timesheetManagerService.generateWeeklyTimesheet(user)
 			[timesheetInstance:ts]
 		}
 	}
