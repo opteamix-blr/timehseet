@@ -134,7 +134,9 @@ class TimesheetController {
 		}
 		
 		// forwards to edit page when prior days have been modified.
-		def weekdaysModified = validatePriorWorkDayChanged(timesheetInstance)
+		def weekdaysModified = validateWorkDayChangedExceptToday(timesheetInstance)
+		
+		updateWorkDayChangedToday(timesheetInstance)
 		
 		
 		if (weekdaysModified.size()> 0 ) {
@@ -385,7 +387,7 @@ class TimesheetController {
 	}
 	
 	// returns all days that was modified.
-	def validatePriorWorkDayChanged(timesheetInstance){
+	def validateWorkDayChangedExceptToday(timesheetInstance){
 		def weekdaysModified = []
 		
 		timesheetInstance.timesheetEntries.eachWithIndex {
@@ -410,9 +412,49 @@ class TimesheetController {
 						changedWorkday.timesheetEntry = tse
 						weekdaysModified.add changedWorkday
 					}
-				}
+				} 
 			}
 		}
 		return weekdaysModified
 	}
+	
+	def updateWorkDayChangedToday(timesheetInstance){
+		
+		def changedWorkday = []
+		DateTime currentDay = DateTime.today(TimeZone.getDefault())
+		currentDay = currentDay.getEndOfDay().truncate(DateTime.Unit.SECOND)
+		timesheetInstance.timesheetEntries.eachWithIndex {
+			tse, index ->
+			def daysOfWeek = obtainWeekdays(tse.taskAssignment)
+			tse.workdays.eachWithIndex { workday, indx ->
+				def sysHoursWorked = workday?.hoursWorked
+				if (sysHoursWorked == null) {
+					sysHoursWorked = ""
+				}
+
+				DateTime dtWorkday = new DateTime(workday.dateWorked.toString()).getEndOfDay().truncate(DateTime.Unit.SECOND)
+
+				if (currentDay.equals(dtWorkday)) {
+					if (daysOfWeek[indx] != sysHoursWorked.toString()) {
+						//def todayMod = new Workday()
+						//todayMod.dateWorked = workday?.dateWorked
+						if (daysOfWeek[indx]) {
+							workday?.hoursWorked = daysOfWeek[indx].toFloat()
+						}
+					}
+				}
+			} // wds
+		} // te eachWithIndex
+		
+		try {
+			if (!timesheetInstance.hasErrors()) {
+				timesheetManagerService.update(timesheetInstance)
+			} else {
+				render(view: "edit", model: [timesheetInstance: timesheetInstance])
+			}
+		} catch (Exception e) {
+			flash.message = e.getMessage()
+			redirect(action: "show", id: timesheetInstance.id)
+		}
+	} // updateWorkDayChangedToday
 }
