@@ -6,6 +6,7 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'timesheet.label', default: 'Timesheet')}" />
         <title><g:message code="default.list.label" args="[entityName]" /></title>
+        <resource:dateChooser />
     </head>
     <body>
         <div class="nav">
@@ -29,8 +30,12 @@
                     </thead>
                     <tbody>
                     	<tr>
-                            <td><g:textField size="10" name="startDate" id="startDate" value=""></g:textField></td>
-                            <td><g:textField size="10" name="endDate" id="endDate" value=""></g:textField></td>                        
+                            <td>
+								<richui:dateChooser name="startDate" id="startDate" format="MM/dd/yyyy"/>
+                           	</td>
+                            <td>
+								<richui:dateChooser name="endDate" id="endDate" format="MM/dd/yyyy"/>
+                           	</td>                        
                         	<td><span class="button"><g:actionSubmit class="" action="lookupMyTimesheets" value="Search" /></span></td>
                         </tr>
                     </tbody>

@@ -6,7 +6,7 @@ import java.util.SortedSet;
 class Timesheet {
 
     Date dateCreated
-	Date lastUpdated
+    Date lastUpdated
 
     Date startDate
     Date endDate
