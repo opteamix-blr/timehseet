@@ -103,7 +103,7 @@
 							         <tr>
 							            <th>Day</th>
 							            <th>Labor Category</th>
-							            <th>Charge #</th>
+							            <th>Last Modified</th>
 							            <th>Previous Value</th>
 							            <th>New Value</th>
 							            <th width="40%">Reason</th>
@@ -112,12 +112,11 @@
 							          <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">
 							              <g:each status="k" in="${wd?.notes}" var="note">
 								           <tr>
-								             <td><% 
-										  java.text.DateFormat df = new java.text.SimpleDateFormat("EEE");
-							          	  out.println(df.format(wd.dateWorked))
-							          	        %></td>
+								             <td><g:formatDate format="EEE" date="${wd.dateWorked}"/><br/>
+								             <g:formatDate format="dd" date="${wd.dateWorked}"/>
+								             </td>
 								             <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
-								             <td>${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
+								             <td><g:formatDate format="MMM-dd-yyyy hh:mm:ss" date="${note?.dateCreated}"/></td>
 								             <td>${note?.oldValue}</td>
 								             <td>${note?.newValue}</td>
 								             <td>${note.comment }</td>
