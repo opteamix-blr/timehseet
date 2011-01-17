@@ -112,8 +112,7 @@ class TimesheetController {
 			return
 		}
 		
-		// copy
-		Timesheet timesheetCopy = timesheetManagerService.deepCopyTimesheet(timesheetInstance)
+		
 		
 		if (params.version) {
 			def version = params.version.toLong()
@@ -134,21 +133,23 @@ class TimesheetController {
 		}
 		
 		// forwards to edit page when prior days have been modified.
-		def weekdaysModified = validateWorkDayChangedExceptToday(timesheetInstance)
-		
-		updateWorkDayChangedToday(timesheetInstance)
-		
-		
+		def weekdaysModified = validateWorkDayChangedExceptToday(timesheetInstance)		
 		if (weekdaysModified.size()> 0 ) {
 			flash.message = "Modified work hours on a prior date requires a reason."
 			// update from form
-			populateWorkdaysFromForm(timesheetInstance)
-			render(view: "modifyWithNotes", model: [timesheetInstance: timesheetInstance, weekdaysModified:weekdaysModified])
+			// copy
+			Timesheet timesheetCopy = timesheetManagerService.deepCopyTimesheet(timesheetInstance)
+			
+			populateWorkdaysFromForm(timesheetCopy)
+			timesheetCopy.id = timesheetInstance.id
+			def previousHourValues = obtainPreviousValues(timesheetInstance)
+			render(view: "modifyWithNotes", model: [timesheetInstance: timesheetCopy, weekdaysModified:weekdaysModified, previousHourValues:previousHourValues])
 			return
 		}
 
 		try {
 			if (!timesheetInstance.hasErrors()) {
+				populateWorkdaysFromForm(timesheetInstance)
 				timesheetManagerService.update(timesheetInstance)
 				redirect(action: "show", id: timesheetInstance.id)
 			} else {
@@ -156,7 +157,6 @@ class TimesheetController {
 			}
 		} catch (Exception e) {
 			flash.message = e.getMessage()
-//			flash.message = "${message(code: 'default.updated.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), timesheetInstance.id])}"
 			redirect(action: "show", id: timesheetInstance.id)
 		}
 	}
@@ -187,7 +187,7 @@ class TimesheetController {
 		}
 		
 		populateModifiesFromForm(timesheetInstance)
-		
+		populateTodaysDateFromForm(timesheetInstance)
 
 		try {
 			if (!timesheetInstance.hasErrors()) {
@@ -263,6 +263,7 @@ class TimesheetController {
 			
 			tse.workdays.eachWithIndex { workday, indx ->
 				Float oldValue = workday.hoursWorked;
+				//println "old value is ${workday?.hoursWorked} new value is ${dayHrs[indx]?.toFloat() }"
 				if (dayHrs[indx] == "" || dayHrs[indx] == null) {
 					// skip
 				} else {
@@ -286,6 +287,23 @@ class TimesheetController {
 			} // clean up bad numbers.
 		}
 	}
+	def populateTodaysDateFromForm(timesheetInstance){
+		DateTime currentDay = DateTime.today(TimeZone.getDefault())
+		currentDay = currentDay.getEndOfDay().truncate(DateTime.Unit.SECOND)
+		timesheetInstance.timesheetEntries.eachWithIndex {
+			tse, index ->
+			def daysOfWeek = obtainWeekdays(tse.taskAssignment)
+			tse.workdays.eachWithIndex { workday, indx ->
+				DateTime dtWorkday = new DateTime(workday.dateWorked.toString()).getEndOfDay().truncate(DateTime.Unit.SECOND)
+				if (currentDay.equals(dtWorkday)){
+					if (daysOfWeek[indx]) {
+						workday.hoursWorked = daysOfWeek[indx].toFloat()
+					}
+				}
+			}
+		}
+	}
+	
 	def signform = {
 		def user = User.get(session.user.id)
 		def tsId = params['id']
@@ -397,9 +415,11 @@ class TimesheetController {
 		}
 	}
 	
-	// returns all days that was modified.
-	def validateWorkDayChangedExceptToday(timesheetInstance){
+	// returns all days that was modified with a list of previous values.
+	def obtainPreviousValues(timesheetInstance){
 		def weekdaysModified = []
+		DateTime currentDay = DateTime.today(TimeZone.getDefault())
+		currentDay = currentDay.getEndOfDay().truncate(DateTime.Unit.SECOND)
 		
 		timesheetInstance.timesheetEntries.eachWithIndex {
 			tse, index ->
@@ -409,8 +429,35 @@ class TimesheetController {
 				if (sysHoursWorked == null) {
 					sysHoursWorked = ""
 				}
-				DateTime currentDay = DateTime.today(TimeZone.getDefault())
-				currentDay = currentDay.getEndOfDay().truncate(DateTime.Unit.SECOND)
+				DateTime dtWorkday = new DateTime(workday.dateWorked.toString()).getEndOfDay().truncate(DateTime.Unit.SECOND)
+
+				if (!currentDay.equals(dtWorkday)) {
+					if (daysOfWeek[indx] != sysHoursWorked.toString()) {
+						Workday changedWorkday = new Workday()
+						changedWorkday.dateWorked = workday?.dateWorked
+						changedWorkday.hoursWorked = workday?.hoursWorked
+						changedWorkday.timesheetEntry = tse
+						weekdaysModified.add changedWorkday
+					}
+				} 
+			}
+		}
+		return weekdaysModified
+	}
+	
+	def validateWorkDayChangedExceptToday(timesheetInstance){
+		def weekdaysModified = []
+		DateTime currentDay = DateTime.today(TimeZone.getDefault())
+		currentDay = currentDay.getEndOfDay().truncate(DateTime.Unit.SECOND)
+		
+		timesheetInstance.timesheetEntries.eachWithIndex {
+			tse, index ->
+			def daysOfWeek = obtainWeekdays(tse.taskAssignment)
+			tse.workdays.eachWithIndex { workday, indx ->
+				def sysHoursWorked = workday?.hoursWorked
+				if (sysHoursWorked == null) {
+					sysHoursWorked = ""
+				}
 				DateTime dtWorkday = new DateTime(workday.dateWorked.toString()).getEndOfDay().truncate(DateTime.Unit.SECOND)
 
 				if (!currentDay.equals(dtWorkday)) {
@@ -423,15 +470,13 @@ class TimesheetController {
 						changedWorkday.timesheetEntry = tse
 						weekdaysModified.add changedWorkday
 					}
-				} 
+				}
 			}
 		}
 		return weekdaysModified
 	}
 	
 	def updateWorkDayChangedToday(timesheetInstance){
-		
-		def changedWorkday = []
 		DateTime currentDay = DateTime.today(TimeZone.getDefault())
 		currentDay = currentDay.getEndOfDay().truncate(DateTime.Unit.SECOND)
 		timesheetInstance.timesheetEntries.eachWithIndex {
@@ -444,28 +489,20 @@ class TimesheetController {
 				}
 
 				DateTime dtWorkday = new DateTime(workday.dateWorked.toString()).getEndOfDay().truncate(DateTime.Unit.SECOND)
-
+				//println("currentDay = ${currentDay}")
+				//println("dtWorkday = ${dtWorkday}")
 				if (currentDay.equals(dtWorkday)) {
 					if (daysOfWeek[indx] != sysHoursWorked.toString()) {
 						//def todayMod = new Workday()
 						//todayMod.dateWorked = workday?.dateWorked
 						if (daysOfWeek[indx]) {
 							workday?.hoursWorked = daysOfWeek[indx].toFloat()
+							println("modified workday?.hoursWorked= ${workday?.hoursWorked}")
+							
 						}
 					}
 				}
 			} // wds
 		} // te eachWithIndex
-		
-		try {
-			if (!timesheetInstance.hasErrors()) {
-				timesheetManagerService.update(timesheetInstance)
-			} else {
-				render(view: "edit", model: [timesheetInstance: timesheetInstance])
-			}
-		} catch (Exception e) {
-			flash.message = e.getMessage()
-			redirect(action: "show", id: timesheetInstance.id)
-		}
 	} // updateWorkDayChangedToday
 }
