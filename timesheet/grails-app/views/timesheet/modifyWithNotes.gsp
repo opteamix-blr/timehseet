@@ -81,13 +81,13 @@ function grandTotal() {
 							            <th>Task</th>
 							            <th>Labor Category</th>
 							            <th>Charge #</th>
-							            <th>Sat</th>
-							            <th>Sun</th>
-							            <th>Mon</th>
-							            <th>Tue</th>
-							            <th>Wed</th>
-							            <th>Thu</th>
-							            <th>Fri</th>
+							            <th>Sat <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate}"/></th>
+							            <th>Sun <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 1}"/></th>
+							            <th>Mon <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 2}"/></th>
+							            <th>Tue <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 3}"/></th>
+							            <th>Wed <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 4}"/></th>
+							            <th>Thu <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 5}"/></th>
+							            <th>Fri <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 6}"/></th>
 							            <th>Total</th>
 							          </tr>
 							          <g:hiddenField name="totalEntries" value="${timesheetInstance?.timesheetEntries.size()}" />
@@ -126,31 +126,25 @@ function grandTotal() {
 							         <tr>
 							            <th>Day</th>
 							            <th>Labor Category</th>
-							            <th>Charge #</th>
+							            <th></th>
 							            <th>Previous Value</th>
 							            <th>New Value</th>
 							            <th width="40%">Reason</th>
 							          </tr>	
 							         <g:each status="i" in="${weekdaysModified}" var="weekDay" >
 							          <tr>
-							            <td>${weekDay.timesheetEntry?.taskAssignment?.task?.name}</td>
+							            <td><g:formatDate format="EEE" date="${weekDay.dateWorked}"/><br/>
+								             <g:formatDate format="dd" date="${weekDay.dateWorked}"/>
+								        </td>
 							            <td>${weekDay.timesheetEntry?.taskAssignment?.laborCategory?.name}</td>
-							            <td><% 
-										  
-										  java.text.DateFormat df = new java.text.SimpleDateFormat("EEE");
-							          	  out.print(df.format(weekDay.dateWorked))
-											
-											Calendar calendar = Calendar.getInstance() 
-											calendar.setTime(weekDay.dateWorked)
-											int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-											if (dayOfWeek == 7){
-												dayOfWeek = 1
-											} else {
-												dayOfWeek++
-											}
-							          	%></td>
-							          	<td></td>
-										<td>Changed to ${weekDay.hoursWorked} hours <g:hiddenField name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_hrs" value="${weekDay.hoursWorked}" /></td>
+							            <td></td>
+							          	<td>${previousHourValues?.get(i)?.hoursWorked}</td>
+										<td><%
+										Calendar calendar = Calendar.getInstance()
+										calendar.setTime(weekDay.dateWorked)
+										int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) % 7 + 1;
+										 %>
+										${weekDay.hoursWorked}<g:hiddenField name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_hrs" value="${weekDay.hoursWorked}" /></td>
 										<td><textarea name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_note"></textarea></td>
 							          </tr>
 							          </g:each>
