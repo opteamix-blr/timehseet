@@ -62,7 +62,7 @@ function grandTotal() {
                                   <label for="startDate"><g:message code="timesheet.startDate.label" default="Start Date" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'startDate', 'errors')}">
-                                    ${timesheetInstance?.startDate}
+                                    <g:formatDate format="MMM-dd-yyyy hh:mm:ss" date="${timesheetInstance?.startDate}"/>
                                 </td>
                             </tr>
                         
@@ -71,7 +71,7 @@ function grandTotal() {
                                   <label for="endDate"><g:message code="timesheet.endDate.label" default="End Date" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'endDate', 'errors')}">
-                                    ${timesheetInstance?.endDate}
+                                    <g:formatDate format="MMM-dd-yyyy hh:mm:ss" date="${timesheetInstance?.endDate}"/>
                                 </td>
                             </tr>
                             <tr class="prop">
@@ -149,8 +149,8 @@ function grandTotal() {
 												dayOfWeek++
 											}
 							          	%></td>
-							          	<td></td>
-										<td>Changed to ${weekDay.hoursWorked} hours <g:hiddenField name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_hrs" value="${weekDay.hoursWorked}" /></td>
+							          	<td>${previousHourValues?.get(i)?.hoursWorked}</td>
+										<td>${weekDay.hoursWorked} hours <g:hiddenField name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_hrs" value="${weekDay.hoursWorked}" /></td>
 										<td><textarea name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_note"></textarea></td>
 							          </tr>
 							          </g:each>
