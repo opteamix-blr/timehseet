@@ -10,9 +10,9 @@ class TotalsTagLib {
 		// add horizontal across
 		if (!attrs.totalAcross || attrs.totalAcross == "true") {
 			TimesheetEntry tse = TimesheetEntry.get(attrs.timesheetEntryId)
-			tse.workdays.each { wd ->
-				if (wd.hoursWorked) {
-					totalHours += wd.hoursWorked
+			tse?.workdays?.each { wd ->
+				if (wd?.hoursWorked) {
+					totalHours += wd?.hoursWorked
 				}
 			}
 		} else {
