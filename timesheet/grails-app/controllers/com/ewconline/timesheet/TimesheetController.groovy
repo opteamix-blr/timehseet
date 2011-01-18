@@ -368,15 +368,8 @@ class TimesheetController {
 		def endDate = params["endDate"]
 		
 		def user = User.get(session.user.id)
-                println startDate
-                def c = Timesheet.createCriteria()
-                def timesheetList = c.list{
-                    le("startDate", startDate)
-//                    le("endDate", endDate)
-                    eq("user", user)
-                }
+                def timesheetList = Timesheet.findAllByStartDateBetween(startDate, endDate)
                 println timesheetList
-//		def timesheetList = timesheetManagerService.retrieveTimesheets(user)
 		
 		render(view: "listTimesheets", model: [timesheetList:timesheetList, timesheetInstanceTotal:timesheetList.count()])
 	}

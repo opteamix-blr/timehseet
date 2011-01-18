@@ -14,7 +14,7 @@
             <span class="menuButton"><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></span>
         </div>
         <div class="body">
-            <h1>Lookup Timesheets</h1>
+            <h1>Lookup Timesheets by Start Date</h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
