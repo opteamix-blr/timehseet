@@ -35,6 +35,20 @@
                             <td valign="top" class="value">${fieldValue(bean: taskInstance, field: "name")}</td>
                             
                         </tr>
+                        
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="task.contractInfo1.label" default="Contract Info1" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: taskInstance, field: "contractInfo1")}</td>
+                            
+                        </tr>
+                        
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="task.contractInfo1.label" default="Contract Info2" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: taskInstance, field: "contractInfo2")}</td>
+                            
+                        </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="task.description.label" default="Description" /></td>

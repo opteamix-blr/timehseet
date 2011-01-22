@@ -46,6 +46,24 @@
                                     <g:textField name="name" maxlength="50" value="${taskInstance?.name}" />
                                 </td>
                             </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="name"><g:message code="task.contractInfo1.label" default="Contract Info1" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: taskInstance, field: 'contractInfo1', 'errors')}">
+                                    <g:textField name="contractInfo1" maxlength="50" value="${taskInstance?.contractInfo1}" />
+                                </td>
+                            </tr>
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="name"><g:message code="task.contractInfo2.label" default="Contract Info2" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: taskInstance, field: 'contractInfo2', 'errors')}">
+                                    <g:textField name="contractInfo2" maxlength="50" value="${taskInstance?.contractInfo2}" />
+                                </td>
+                            </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
