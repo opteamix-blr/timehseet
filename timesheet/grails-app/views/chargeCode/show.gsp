@@ -40,7 +40,12 @@
                             <td valign="top" class="value">${fieldValue(bean: chargeCodeInstance, field: "chargeNumber")}</td>
                             
                         </tr>
-                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="chargeCode.displayName.label" default="Display Name" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: chargeCodeInstance, field: "displayName")}</td>
+                            
+                        </tr>
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="chargeCode.description.label" default="Description" /></td>
                             
