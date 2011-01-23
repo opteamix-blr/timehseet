@@ -23,7 +23,7 @@
                         <tr>
                         
                             <g:sortableColumn property="id" title="${message(code: 'chargeCode.id.label', default: 'Id')}" />
-                        	<g:sortableColumn property="task.name" title="${message(code: 'chargeCode.task.name.label', default: 'Task')}" />
+                        	<g:sortableColumn property="task" titlekey="chargeCode.task" title="${message(code: 'chargeCode.task.name.label', default: 'Task')}" />
                             <g:sortableColumn property="chargeNumber" title="${message(code: 'chargeCode.chargeNumber.label', default: 'Charge Number')}" />
                             <g:sortableColumn property="description" title="${message(code: 'chargeCode.description.label', default: 'Description')}" />
                         
