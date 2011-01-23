@@ -22,12 +22,21 @@ class TaskAssignmentController {
     def save = {
         def taskAssignmentInstance = new TaskAssignment()
 		taskAssignmentInstance.properties = params
+
+		
+		// validate user exists
+		def user = User.findByUserRealName(params?.user.userRealName)
+		if (!user) {
+			flash.message = "Employee '${params?.user.userRealName}' does not exist. Check spelling"
+			render(view: "create", model: [taskAssignmentInstance: taskAssignmentInstance])
+			return
+		}
+		taskAssignmentInstance.user = user
 		
 		def chargeCode = ChargeCode.get(params?.chargeCode.id)
 		def laborCategory = LaborCategory.get(params?.laborCategory.id)
 		def task = Task.get(params?.task.id)
 		
-
 		taskAssignmentInstance.task = task
 		taskAssignmentInstance.chargeCode = chargeCode
 		taskAssignmentInstance.laborCategory = laborCategory
@@ -35,8 +44,7 @@ class TaskAssignmentController {
         if (taskAssignmentInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'taskAssignment.label', default: 'TaskAssignment'), taskAssignmentInstance.id])}"
             redirect(action: "show", id: taskAssignmentInstance.id)
-        }
-        else {
+        } else {
             render(view: "create", model: [taskAssignmentInstance: taskAssignmentInstance])
         }
     }
@@ -75,7 +83,22 @@ class TaskAssignmentController {
                     return
                 }
             }
-            taskAssignmentInstance.properties = params
+			def user = User.findByUserRealName(params?.user.userRealName)
+			if (!user) {
+
+				def copyTaskAssignmentInstance = new TaskAssignment()
+				copyTaskAssignmentInstance.properties = params
+				copyTaskAssignmentInstance.id = taskAssignmentInstance.id
+				
+				flash.message = "Employee '${params?.user.userRealName}' does not exist. Check spelling"
+				render(view: "edit", model: [taskAssignmentInstance: copyTaskAssignmentInstance])
+				return
+			}
+			params.user.userRealName = taskAssignmentInstance.user.userRealName
+			taskAssignmentInstance.user = user
+            taskAssignmentInstance.properties = params			
+			
+			
             if (!taskAssignmentInstance.hasErrors() && taskAssignmentInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'taskAssignment.label', default: 'TaskAssignment'), taskAssignmentInstance.id])}"
                 redirect(action: "show", id: taskAssignmentInstance.id)

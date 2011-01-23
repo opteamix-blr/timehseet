@@ -5,6 +5,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
+        <resource:autoComplete skin="default" />
         <g:set var="entityName" value="${message(code: 'taskAssignment.label', default: 'TaskAssignment')}" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
     </head>
@@ -51,7 +52,7 @@
                                     <label for="task"><g:message code="taskAssignment.task.label" default="Task" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: taskAssignmentInstance, field: 'task.id', 'errors')}">
-                                    <g:select optionValue="name" name="task.id" from="${com.ewconline.timesheet.Task.list()}" optionKey="id" />
+                                    <g:select optionValue="name" name="task.id" from="${com.ewconline.timesheet.Task.list()}" optionKey="id" value="${taskAssignmentInstance?.task?.id}" />
                                 </td>
                             </tr>
                                                 
@@ -60,7 +61,7 @@
                                     <label for="chargeCode"><g:message code="taskAssignment.chargeCode.label" default="Charge Code" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: taskAssignmentInstance, field: 'chargeCode.id', 'errors')}">
-                                    <g:select optionValue="chargeNumber" name="chargeCode.id" from="${com.ewconline.timesheet.ChargeCode.list()}" optionKey="id"/>
+                                    <g:select optionValue="chargeNumber" name="chargeCode.id" from="${com.ewconline.timesheet.ChargeCode.list()}" optionKey="id" value="${taskAssignmentInstance?.chargeCode?.id}" />
                                 </td>
                             </tr>
                             
@@ -69,7 +70,7 @@
                                     <label for="laborCategory"><g:message code="taskAssignment.laborCategory.label" default="Labor Category" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: taskAssignmentInstance, field: 'laborCategory.id', 'errors')}">
-                                    <g:select optionValue="name" name="laborCategory.id" from="${com.ewconline.timesheet.LaborCategory.list()}" optionKey="id" />
+                                    <g:select optionValue="name" name="laborCategory.id" from="${com.ewconline.timesheet.LaborCategory.list()}" optionKey="id" value="${taskAssignmentInstance?.laborCategory?.id}"/>
                                 </td>
                             </tr>
                             <tr class="prop">
@@ -80,7 +81,14 @@
                                     <g:textField name="laborIdReference" value="${taskAssignmentInstance?.laborIdReference}" />
                                 </td>
                             </tr>
-
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="user"><g:message code="taskAssignment.user.label" default="Employee" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: taskAssignmentInstance, field: 'user.userRealName', 'errors')}">
+                                    <richui:autoComplete name="user.userRealName" action="${createLinkTo('dir': 'user/searchAJAX')}" value="${taskAssignmentInstance?.user?.userRealName}" />                                    
+                                </td>
+                            </tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="notes"><g:message code="taskAssignment.notes.label" default="Notes" /></label>
