@@ -64,7 +64,7 @@
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="taskAssignment.laborIdReference.label" default="Labor ID Reference" /></td>
                             
-                            <td valign="top" class="value"><g:link controller="laborIdReference" action="show" id="${taskAssignmentInstance?.laborIdReference?.id}">${taskAssignmentInstance?.laborIdReference?.name?.encodeAsHTML()}</g:link></td>
+                            <td valign="top" class="value">${taskAssignmentInstance?.laborIdReference}</td>
                             
                         </tr>
                    

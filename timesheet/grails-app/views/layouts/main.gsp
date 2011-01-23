@@ -61,7 +61,6 @@
                         <li><a href="${createLinkTo(dir:'', file:'task/list')}">Tasks</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'chargeCode/list')}">Charge Codes</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'laborCategory/list')}">Labor Categories</a></li>
-                        <li><a href="${createLinkTo(dir:'', file:'laborIdReference/list')}">Labor Id References</a></li>
                     </g:if>
                     <li><p></p></li>
 					<li><a href="${createLinkTo(dir:'', file:'access/logout')}">Logout</a></li>

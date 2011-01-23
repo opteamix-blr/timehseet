@@ -77,7 +77,7 @@
                                     <label for="laborIdReference"><g:message code="taskAssignment.laborIdReference.label" default="Labor ID Reference" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: taskAssignmentInstance, field: 'laborIdReference.id', 'errors')}">
-                                    <g:select multiple="true" optionValue="name" name="laborIdReference.id" from="${com.ewconline.timesheet.LaborIdReference.list()}" optionKey="id" />
+                                    <g:textField name="laborIdReference" value="${taskAssignmentInstance?.laborIdReference}" />
                                 </td>
                             </tr>
 
