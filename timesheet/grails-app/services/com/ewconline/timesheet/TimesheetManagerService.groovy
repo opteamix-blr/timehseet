@@ -56,7 +56,12 @@ class TimesheetManagerService {
 		)
 		
 		
-		def taskAssignments = user.taskAssignments
+		def taskAssignments = []
+		user.taskAssignments.each { ta ->
+			if (ta.enabled) {
+				taskAssignments.add ta
+			}
+		}
 		for (ta in taskAssignments){
 			def timesheetEntry = new TimesheetEntry(taskAssignment:ta);
 			for (x in (0..6)){
