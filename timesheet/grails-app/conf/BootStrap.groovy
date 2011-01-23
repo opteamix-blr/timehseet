@@ -123,22 +123,25 @@ class BootStrap {
 		).save()
 		
 		def laborCategory1 = new LaborCategory( name: "Engineer 1",
-			description:"Test labor cat 1"
+			description:"Test labor cat 1",
+			task:task1
 		).save()
 		
 		def laborCategory2 = new LaborCategory( name: "Engineer 2",
-			description:"Test labor cat 2"
+			description:"Test labor cat 2",
+			task:task1
 		).save()
-	
-		// note: tasks should never have the same charge codes
-		//       but they can have the same labor categories.
-		task1.addToLaborCategories(laborCategory1)
-		task1.addToLaborCategories(laborCategory2)
-		task1.save()
+
+		def laborCategoryA = new LaborCategory( name: "Truck driver",
+			description:"Test Truck driver",
+			task:task2
+		).save()
 		
-		task2.addToLaborCategories(laborCategory1)
-		task2.addToLaborCategories(laborCategory2)		
-		task2.save()
+		def laborCategoryB = new LaborCategory( name: "Plumber",
+			description:"Test Plumber",
+			task:task2
+		).save()
+
 		
 		// user1 has work on two different tasks and two diff labor cats.
 		def taskAssignment1 = new TaskAssignment( displayName: "job1",
@@ -154,7 +157,7 @@ class BootStrap {
 			notes: "taskAssignment2 ",
 			task: task2,
 			chargeCode:chargeCode3,
-			laborCategory:laborCategory2
+			laborCategory:laborCategoryB
 		).save()
 		
 		
