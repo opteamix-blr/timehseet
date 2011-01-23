@@ -156,15 +156,10 @@
                                     <label for="user.taskAssignments"><g:message code="user.taskAssignments.label" default="TaskAssignments" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'taskAssignments', 'errors')}">
-                                    <g:select name="taskAssignment.id"
-                                                from="${allTaskAssignments}"
-                                                optionValue="displayName"
-                                                optionKey="id"
-                                                multiple="true"/>
+                                   
                                 </td>
                                 <td>
-                                    <input type="button" value="&#062;" onClick="moveSelectedOptions('taskAssignment.id', 'taskAssignments');"/><br/>
-                                    <input type="button" value="&#060;" onClick="moveSelectedOptions('taskAssignments', 'taskAssignment.id');"/>
+                                    
                                 </td>
                                 <td class="name">
                                     <g:select id="taskAssignments" name="taskAssignments" 
