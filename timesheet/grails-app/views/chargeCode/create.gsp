@@ -43,7 +43,14 @@
                                     <g:textField name="chargeNumber" maxlength="100" value="${chargeCodeInstance?.chargeNumber}" />
                                 </td>
                             </tr>
-                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="displayName"><g:message code="chargeCode.displayName.label" default="Display Name" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: chargeCodeInstance, field: 'displayName', 'errors')}">
+                                    <g:textField name="displayName" maxlength="100" value="${chargeCodeInstance?.displayName}" />
+                                </td>
+                            </tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="description"><g:message code="chargeCode.description.label" default="Description" /></label>
