@@ -21,20 +21,13 @@
                 <table>
                     <thead>
                         <tr>
-                        
                             <g:sortableColumn property="id" title="${message(code: 'taskAssignment.id.label', default: 'Id')}" />
-                            
                             <g:sortableColumn property="displayName" title="${message(code: 'taskAssignment.displayName.label', default: 'Display Name')}" />
-                        
                             <g:sortableColumn property="enabled" title="${message(code: 'taskAssignment.enabled.label', default: 'Enabled')}" />
-                        
-                            <th><g:message code="taskAssignment.task.label" default="Task" /></th>
-                            
-                            <th><g:message code="taskAssignment.chargeCode.label" default="Charge Code" /></th>
-                        
-                            <th><g:message code="taskAssignment.laborCategory.label" default="Labor Category" /></th>
-                        	<th><g:message code="taskAssignment.laborIdReference.label" default="Labor ID Reference" /></th>
-                        
+                            <g:sortableColumn property="task" titlekey="taskAssignment.task" title="${message(code: 'taskAssignment.task.name.label', default: 'Task')}" />
+                            <g:sortableColumn property="chargeCode" titlekey="taskAssignment.chargeCode" title="${message(code: 'taskAssignment.chargeCode.name.label', default: 'Charge Code')}" />
+                            <g:sortableColumn property="laborCategory" titlekey="taskAssignment.laborCategory" title="${message(code: 'taskAssignment.laborCategory.name.label', default: 'Labor Category')}" />
+                            <g:sortableColumn property="laborIdReference" title="${message(code: 'taskAssignment.laborIdReference.label', default: 'Labor ID Reference')}" />
                         </tr>
                     </thead>
                     <tbody>
@@ -42,17 +35,12 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
                             <td><g:link action="show" id="${taskAssignmentInstance.id}">${fieldValue(bean: taskAssignmentInstance, field: "id")}</g:link></td>
-                        
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "displayName")}</td>
-                            
                             <td><g:formatBoolean boolean="${taskAssignmentInstance.enabled}" /></td>
-                        
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "task.name")}</td>
-                        
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "chargeCode.chargeNumber")}</td>
-                        
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "laborCategory.name")}</td>
-                            <td>${fieldValue(bean: taskAssignmentInstance, field: "laborIdReference.name")}</td>
+                            <td>${fieldValue(bean: taskAssignmentInstance, field: "laborIdReference")}</td>
                                                
                         </tr>
                     </g:each>

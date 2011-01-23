@@ -7,7 +7,7 @@ class TaskAssignment {
 	Task task
     LaborCategory laborCategory
 	ChargeCode chargeCode
-	LaborIdReference laborIdReference
+	String laborIdReference
     
     static constraints = {
 		displayName(blank:false, maxSize:50)
