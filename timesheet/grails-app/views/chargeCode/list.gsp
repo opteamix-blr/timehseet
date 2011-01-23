@@ -23,9 +23,8 @@
                         <tr>
                         
                             <g:sortableColumn property="id" title="${message(code: 'chargeCode.id.label', default: 'Id')}" />
-                        
+                        	<g:sortableColumn property="task.name" title="${message(code: 'chargeCode.task.name.label', default: 'Task')}" />
                             <g:sortableColumn property="chargeNumber" title="${message(code: 'chargeCode.chargeNumber.label', default: 'Charge Number')}" />
-                        
                             <g:sortableColumn property="description" title="${message(code: 'chargeCode.description.label', default: 'Description')}" />
                         
                         </tr>
@@ -35,9 +34,8 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
                             <td><g:link action="show" id="${chargeCodeInstance.id}">${fieldValue(bean: chargeCodeInstance, field: "id")}</g:link></td>
-                        
+                        	<td>${fieldValue(bean: chargeCodeInstance, field: "task.name")}</td>
                             <td>${fieldValue(bean: chargeCodeInstance, field: "chargeNumber")}</td>
-                        
                             <td>${fieldValue(bean: chargeCodeInstance, field: "description")}</td>
                         
                         </tr>

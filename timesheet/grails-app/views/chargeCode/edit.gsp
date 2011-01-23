@@ -30,7 +30,14 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                  <label for="task"><g:message code="chargeCode.task.name.label" default="Task" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: chargeCodeInstance, field: 'task', 'errors')}">
+                                    <g:select optionValue="name" name="task.id" from="${com.ewconline.timesheet.Task.list()}" optionKey="id" value="${chargeCodeInstance?.task?.id}"  />
+                                </td>
+                            </tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="chargeNumber"><g:message code="chargeCode.chargeNumber.label" default="Charge Number" /></label>

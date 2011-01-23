@@ -1,4 +1,3 @@
-
 <%@ page import="com.ewconline.timesheet.Task" %>
 <html>
     <head>
@@ -21,27 +20,21 @@
                 <table>
                     <thead>
                         <tr>
-                        
                             <g:sortableColumn property="id" title="${message(code: 'task.id.label', default: 'Id')}" />
-                        
                             <g:sortableColumn property="name" title="${message(code: 'task.name.label', default: 'Name')}" />
                         	<g:sortableColumn property="contractInfo1" title="${message(code: 'task.contractInfo1.label', default: 'Contract Info1')}" />
                         	<g:sortableColumn property="contractInfo2" title="${message(code: 'task.contractInfo2.label', default: 'Contract Info2')}" />
                             <g:sortableColumn property="description" title="${message(code: 'task.description.label', default: 'Description')}" />
-                        
                         </tr>
                     </thead>
                     <tbody>
                     <g:each in="${taskInstanceList}" status="i" var="taskInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
                             <td><g:link action="show" id="${taskInstance.id}">${fieldValue(bean: taskInstance, field: "id")}</g:link></td>
-                        
                             <td>${fieldValue(bean: taskInstance, field: "name")}</td>
                             <td>${fieldValue(bean: taskInstance, field: "contractInfo1")}</td>
                             <td>${fieldValue(bean: taskInstance, field: "contractInfo2")}</td>
                             <td>${fieldValue(bean: taskInstance, field: "description")}</td>
-                        
                         </tr>
                     </g:each>
                     </tbody>

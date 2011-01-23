@@ -1,14 +1,20 @@
+import java.util.TimeZone;
+
 import com.ewconline.timesheet.ChargeCode 
 import com.ewconline.timesheet.LaborCategory 
 import com.ewconline.timesheet.Role;
 import com.ewconline.timesheet.Task 
 import com.ewconline.timesheet.TaskAssignment;
+import com.ewconline.timesheet.Timesheet 
+import com.ewconline.timesheet.TimesheetEntry 
 import com.ewconline.timesheet.User;
+import com.ewconline.timesheet.Workday 
 
 import grails.util.Environment;
+import hirondelle.date4j.DateTime 
 
 class BootStrap {
-
+	def timesheetManagerService
     def init = { servletContext ->
 		
     	switch(Environment.current) {
@@ -96,19 +102,24 @@ class BootStrap {
 		
 		def task1 = new Task(name:"Task 1", 
 			description:"Test Task 1"
-		)
+		).save()
+		
 		def task2 = new Task(name:"Task 2",
 			description:"Test Task 2"
-		)
+		).save()
 		
 		def chargeCode1 = new ChargeCode(chargeNumber:"000-111-1111", 
-			description:"Test Charge Code 1"
+			description:"Test Charge Code 1",
+			task:task1
 		).save()
 		def chargeCode2 = new ChargeCode(chargeNumber:"000-222-2222",
-			description:"Test Charge Code 2"
+			description:"Test Charge Code 2",
+			task:task1
 		).save()
+		
 		def chargeCode3 = new ChargeCode(chargeNumber:"000-333-3333",
-			description:"Test Charge Code 3"
+			description:"Test Charge Code 3",
+			task:task2
 		).save()
 		
 		def laborCategory1 = new LaborCategory( name: "Engineer 1",
@@ -118,18 +129,15 @@ class BootStrap {
 		def laborCategory2 = new LaborCategory( name: "Engineer 2",
 			description:"Test labor cat 2"
 		).save()
-		
+	
 		// note: tasks should never have the same charge codes
 		//       but they can have the same labor categories.
 		task1.addToLaborCategories(laborCategory1)
 		task1.addToLaborCategories(laborCategory2)
-		task1.addToChargeCodes(chargeCode1)
-		task1.addToChargeCodes(chargeCode2)
 		task1.save()
 		
 		task2.addToLaborCategories(laborCategory1)
 		task2.addToLaborCategories(laborCategory2)		
-		task2.addToChargeCodes(chargeCode3)
 		task2.save()
 		
 		// user1 has work on two different tasks and two diff labor cats.
@@ -154,8 +162,36 @@ class BootStrap {
 		user1.addToTaskAssignments(taskAssignment2)
 		user1.save()
 
-		// @TODO: create task assignments for approvers.
-		
+//		// @TODO: create task assignments for approvers.
+// below is was a timesheet on a weekend boundary. timesheet before current.
+//		//DateTime currentDay = DateTime.today(TimeZone.getDefault())
+//		DateTime saturday = new DateTime("2010-12-18").getStartOfDay();
+//		DateTime friday = new DateTime("2010-12-24").getEndOfDay();
+//		//DateTime saturday = currentDay.minusDays(currentDay.getWeekDay())
+//		//DateTime friday = saturday.plusDays(6)
+//
+//		Timesheet ts = new Timesheet(
+//			startDate:new Date(saturday.getMilliseconds(TimeZone.getDefault())),
+//			endDate:new Date(friday.getMilliseconds(TimeZone.getDefault())),
+//			user: user1,
+//			currentState: timesheetManagerService.NOT_STARTED
+//		)
+//		
+//		
+//		def taskAssignments = user1.taskAssignments
+//		for (ta in taskAssignments){
+//			def timesheetEntry = new TimesheetEntry(taskAssignment:ta);
+//			for (x in (0..6)){
+//				timesheetEntry.addToWorkdays(new Workday(hoursWorked:8.0, 
+//												dateWorked:new Date(saturday.plusDays(x)
+//													                        .getEndOfDay()
+//																			.getMilliseconds(TimeZone.getDefault())))
+//				                             )
+//			} // for loop
+//			ts.addToTimesheetEntries(timesheetEntry)
+//		}
+//		
+//		timesheetManagerService.createWeeklyTimesheet(ts)
 	}
 	
 }
