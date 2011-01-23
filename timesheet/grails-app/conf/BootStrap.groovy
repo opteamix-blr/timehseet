@@ -78,6 +78,7 @@ class BootStrap {
 				description:"Employee",
 				email:"test@test.com"
 		)
+		user1.save()
 		Role.findByAuthority("self_role").addToPeople(user1)
 		
 		def user2 = new User(username:"approver1",
@@ -148,7 +149,8 @@ class BootStrap {
 			notes: "taskAssignment1 ",
 			task: task1,
 			chargeCode:chargeCode1,
-			laborCategory:laborCategory1
+			laborCategory:laborCategory1,
+			user:user1
 		).save()
 		
 		// a second task assignment means the employee 
@@ -157,13 +159,10 @@ class BootStrap {
 			notes: "taskAssignment2 ",
 			task: task2,
 			chargeCode:chargeCode3,
-			laborCategory:laborCategoryB
+			laborCategory:laborCategoryB,
+			user:user1
 		).save()
-		
-		
-		user1.addToTaskAssignments(taskAssignment1)
-		user1.addToTaskAssignments(taskAssignment2)
-		user1.save()
+
 
 //		// @TODO: create task assignments for approvers.
 // below is was a timesheet on a weekend boundary. timesheet before current.

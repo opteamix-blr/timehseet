@@ -8,6 +8,8 @@ class TaskAssignment {
     LaborCategory laborCategory
 	ChargeCode chargeCode
 	String laborIdReference
+	User user
+	
     
     static constraints = {
 		displayName(blank:false, maxSize:50)
@@ -17,6 +19,7 @@ class TaskAssignment {
 		laborCategory()
 		chargeCode()
 		laborIdReference(nullable:true)
+		user()
     }
-
+	static belongsTo = [user:User]
 }

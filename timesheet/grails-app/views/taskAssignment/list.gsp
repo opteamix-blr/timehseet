@@ -27,6 +27,7 @@
                             <g:sortableColumn property="task" titlekey="taskAssignment.task" title="${message(code: 'taskAssignment.task.name.label', default: 'Task')}" />
                             <g:sortableColumn property="chargeCode" titlekey="taskAssignment.chargeCode" title="${message(code: 'taskAssignment.chargeCode.name.label', default: 'Charge Code')}" />
                             <g:sortableColumn property="laborCategory" titlekey="taskAssignment.laborCategory" title="${message(code: 'taskAssignment.laborCategory.name.label', default: 'Labor Category')}" />
+                            <g:sortableColumn property="userRealName" titlekey="taskAssignment.user" title="${message(code: 'taskAssignment.user.userRealName.label', default: 'Employee')}" />
                             <g:sortableColumn property="laborIdReference" title="${message(code: 'taskAssignment.laborIdReference.label', default: 'Labor ID Reference')}" />
                         </tr>
                     </thead>
@@ -40,6 +41,7 @@
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "task.name")}</td>
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "chargeCode.chargeNumber")}</td>
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "laborCategory.name")}</td>
+                            <td>${fieldValue(bean: taskAssignmentInstance, field: "user.userRealName")}</td>
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "laborIdReference")}</td>
                                                
                         </tr>

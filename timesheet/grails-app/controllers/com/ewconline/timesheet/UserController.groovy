@@ -167,4 +167,20 @@ class UserController {
             redirect(action: "list")
         }
     }
+	def searchAJAX = {
+		def users = User.findAllByUserRealNameLike("%${params.query}%")
+
+		//Create XML response
+		render(contentType: "text/xml") {
+			results() {
+				users.each { user ->
+					result() {
+						name(user.userRealName)
+						//Optional id which will be available in onItemSelect id(person.id)
+						id(user.id.toLong())
+					}
+				}
+			}
+		}
+	}
 }
