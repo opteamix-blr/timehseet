@@ -83,3 +83,6 @@ log4j = {
 
     warn   'org.mortbay.log'
 }
+ldapServers {
+	d1 {} // use defaults
+}
