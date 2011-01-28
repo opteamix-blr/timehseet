@@ -8,6 +8,8 @@
         <resource:autoComplete skin="default" />
         <g:set var="entityName" value="${message(code: 'taskAssignment.label', default: 'TaskAssignment')}" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
+        <g:javascript library="prototype"/>
+        <g:javascript library="taskAssignment"/>
     </head>
     <body>
         <div class="nav">
@@ -52,7 +54,12 @@
                                     <label for="task"><g:message code="taskAssignment.task.label" default="Task" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: taskAssignmentInstance, field: 'task.id', 'errors')}">
-                                    <g:select optionValue="name" name="task.id" from="${com.ewconline.timesheet.Task.list()}" optionKey="id" value="${taskAssignmentInstance?.task?.id}" />
+                                    <g:select optionValue="name"
+                                              name="task.id"
+                                              from="${com.ewconline.timesheet.Task.list()}"
+                                              optionKey="id"
+                                              value="${taskAssignmentInstance?.task?.id}"
+                                              noSelection="${['null':'Select One...']}"/>
                                 </td>
                             </tr>
                                                 
@@ -61,7 +68,7 @@
                                     <label for="chargeCode"><g:message code="taskAssignment.chargeCode.label" default="Charge Code" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: taskAssignmentInstance, field: 'chargeCode.id', 'errors')}">
-                                    <g:select optionValue="chargeNumber" name="chargeCode.id" from="${com.ewconline.timesheet.ChargeCode.list()}" optionKey="id" value="${taskAssignmentInstance?.chargeCode?.id}" />
+                                    <div id="chargeCodeSelect"></div>
                                 </td>
                             </tr>
                             
@@ -70,7 +77,7 @@
                                     <label for="laborCategory"><g:message code="taskAssignment.laborCategory.label" default="Labor Category" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: taskAssignmentInstance, field: 'laborCategory.id', 'errors')}">
-                                    <g:select optionValue="name" name="laborCategory.id" from="${com.ewconline.timesheet.LaborCategory.list()}" optionKey="id" value="${taskAssignmentInstance?.laborCategory?.id}"/>
+                                  <div id="laborCategorySelect"></div>
                                 </td>
                             </tr>
                             <tr class="prop">
