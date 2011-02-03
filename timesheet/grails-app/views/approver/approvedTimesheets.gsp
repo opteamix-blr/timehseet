@@ -34,9 +34,9 @@
 				<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 					<td><g:link action="viewTimesheet" id="${timesheet.id}">${fieldValue(bean: timesheet, field: "id")}</g:link></td>
 					<td><g:link action="viewTimesheet" id="${timesheet.id}">${fieldValue(bean: timesheet, field: "user.userRealName")}</g:link></td>
-					<td>${timesheet?.lastUpdated?.encodeAsHTML()}</td>
-					<td>${timesheet?.startDate?.encodeAsHTML()}</td>
-					<td>${timesheet?.endDate?.encodeAsHTML()}</td>
+					<td><g:formatDate format="MMM-dd-yyyy hh:mm:ss a" date="${timesheet.lastUpdated}"/></td>
+					<td><g:formatDate format="MMM-dd-yyyy" date="${timesheet.startDate}"/></td>
+					<td><g:formatDate format="MMM-dd-yyyy" date="${timesheet.endDate}"/></td>
 					
 					<td class="actionButtons">
                         <g:if test="${timesheet?.currentState == 'APPROVED'}">
