@@ -46,14 +46,14 @@
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="timesheet.dateCreated.label" default="Date Created" /></td>
                             
-                            <td valign="top" class="value"><g:formatDate format="MMM-dd-yyyy hh:mm:ss" date="${timesheetInstance?.dateCreated}" /></td>
+                            <td valign="top" class="value"><g:formatDate format="MMM-dd-yyyy hh:mm:ss a" date="${timesheetInstance?.dateCreated}" /></td>
                             
                         </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="timesheet.lastUpdated.label" default="Last Updated" /></td>
                             
-                            <td valign="top" class="value"><g:formatDate format="MMM-dd-yyyy hh:mm:ss" date="${timesheetInstance?.lastUpdated}" /></td>
+                            <td valign="top" class="value"><g:formatDate format="MMM-dd-yyyy hh:mm:ss a" date="${timesheetInstance?.lastUpdated}" /></td>
                             
                         </tr>
                     
@@ -79,6 +79,12 @@
                                 </table>
                         
                             </td>
+                            
+                        </tr>
+                        <tr class="prop">
+                            <td valign="top" class="name">Total Hours</td>
+                            
+                            <td valign="top" class="value">${timesheetInstance?.sumAllHours()}</td>
                             
                         </tr>
                     
