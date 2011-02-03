@@ -116,7 +116,7 @@
 								             <g:formatDate format="dd" date="${wd.dateWorked}"/>
 								             </td>
 								             <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
-								             <td><g:formatDate format="MMM-dd-yyyy hh:mm:ss" date="${note?.dateCreated}"/></td>
+								             <td><g:formatDate format="MMM-dd-yyyy hh:mm:ss a" date="${note?.dateCreated}"/></td>
 								             <td>${note?.oldValue}</td>
 								             <td>${note?.newValue}</td>
 								             <td>${note.comment }</td>
