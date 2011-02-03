@@ -168,7 +168,7 @@ class TimesheetController {
 		try {
 			timesheetManagerService.validateState(params.id.toInteger(), timesheetManagerService.saving)
 		}catch(Exception e) {
-			e.printStackTrace()
+			
 			flash.message = "Unable to save timesheet. The current state is " + timesheetInstance.currentState
 			redirect(action: "show", id: params.id.toInteger())
 			return
@@ -181,13 +181,28 @@ class TimesheetController {
 			def version = params.version.toLong()
 			if (timesheetInstance.version > version) {
 				timesheetInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'timesheet.label', default: 'Timesheet')] as Object[], "Another user has updated this Timesheet while you were editing")
-				render(view: "edit", model: [timesheetInstance: timesheetInstance])
+				render(view: "modifyWithNotes", model: [timesheetInstance: timesheetInstance])
 				return
 			}
 		}
-		
-		populateModifiesFromForm(timesheetInstance)
-		populateTodaysDateFromForm(timesheetInstance)
+	
+		try {
+			timesheetCopy.id = timesheetInstance.id
+			validateEmptyNotes(timesheetCopy)
+			timesheetCopy.properties = params
+			populateModifiesFromForm(timesheetInstance)
+			populateTodaysDateFromForm(timesheetInstance)
+			
+		} catch (Exception e) {
+			flash.message = e.getMessage()
+			timesheetCopy.id = timesheetInstance.id
+			populateWorkdaysFromForm(timesheetCopy)
+			def notes = obtainNotesFromForm(timesheetCopy)
+			def weekdaysModified = validateWorkDayChangedExceptToday(timesheetInstance)
+			def previousHourValues = obtainPreviousValues(timesheetInstance)
+			render(view: "modifyWithNotes", model: [timesheetInstance: timesheetCopy, weekdaysModified:weekdaysModified, previousHourValues:previousHourValues, notes:notes])
+			return
+		}
 
 		try {
 			if (!timesheetInstance.hasErrors()) {
@@ -198,11 +213,39 @@ class TimesheetController {
 			}
 		} catch (Exception e) {
 			flash.message = e.getMessage()
-//			flash.message = "${message(code: 'default.updated.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), timesheetInstance.id])}"
 			redirect(action: "show", id: timesheetInstance.id)
 		}
 	}
 
+	def validateEmptyNotes(timesheetInstance) {
+		timesheetInstance.timesheetEntries.eachWithIndex {
+			tse, index ->
+			def taNotes = obtainModifiedDayNotes(tse.taskAssignment)
+			taNotes.eachWithIndex { oneNote, indx ->
+				if (oneNote != null) {
+					if (oneNote.trim() == "") {
+						throw new RuntimeException("Error cannot leave Note/Reason blank.")
+					}
+				}
+			}
+		}
+	}
+	
+	def obtainNotesFromForm(timesheetInstance) {
+		def notes = []
+		timesheetInstance.timesheetEntries.eachWithIndex {
+			tse, index ->
+			def taNotes = obtainModifiedDayNotes(tse.taskAssignment)
+			taNotes.eachWithIndex { oneNote, indx ->
+				if (oneNote != null) {
+					notes.add oneNote
+				}
+			} 
+		}
+		return notes
+	}
+	
+	
 	def obtainWeekdays(taskAssignment) {
 		[ params["day1_${taskAssignment?.id}"],
 			params["day2_${taskAssignment?.id}"],
@@ -251,7 +294,7 @@ class TimesheetController {
 					}
 				}
 				
-			} // clean up bad numbers.
+			}
 		}
 	}
 	
@@ -269,8 +312,11 @@ class TimesheetController {
 				} else {
 					
 					workday.hoursWorked = dayHrs[indx].toFloat();
-					println("mod hours: ${dayHrs[indx]}")
-					println("mod notes: ${notes[indx]}")
+					//println("mod hours: ${dayHrs[indx]}")
+					//println("mod notes: ${notes[indx]}")
+					if (workday.hoursWorked != oldValue && notes[indx] == "") {
+						throw new RuntimeException("Cannot leave a reason field blank.")
+					}
 					if (notes[indx]) {
 						Note note = new Note(dateCreated:new Date(),
 							noteType:'change',
@@ -284,7 +330,7 @@ class TimesheetController {
 
 				}
 				
-			} // clean up bad numbers.
+			}
 		}
 	}
 	def populateTodaysDateFromForm(timesheetInstance){
