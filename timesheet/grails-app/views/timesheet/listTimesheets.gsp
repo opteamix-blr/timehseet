@@ -34,10 +34,10 @@
 			<g:each in="${timesheetList}" status="i" var="timesheet">
 				<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 					<td><g:link action="viewTimesheet" id="${timesheet.id}">${fieldValue(bean: timesheet, field: "id")}</g:link></td>
-					<td>${timesheet.dateCreated?.encodeAsHTML()}</td>
-					<td>${timesheet.lastUpdated?.encodeAsHTML()}</td>
-					<td>${timesheet.startDate?.encodeAsHTML()}</td>
-					<td>${timesheet.endDate?.encodeAsHTML()}</td>
+					<td><g:formatDate format="MMM-dd-yyyy hh:mm:ss a" date="${timesheet.dateCreated}"/></td>
+					<td><g:formatDate format="MMM-dd-yyyy hh:mm:ss a" date="${timesheet.lastUpdated}"/></td>
+					<td><g:formatDate format="MMM-dd-yyyy hh:mm:ss a" date="${timesheet.startDate}"/></td>
+					<td><g:formatDate format="MMM-dd-yyyy hh:mm:ss a" date="${timesheet.endDate}"/></td>
 					
 					<td class="actionButtons">
 						<span class="actionButton">
