@@ -62,7 +62,7 @@ function grandTotal() {
                                   <label for="startDate"><g:message code="timesheet.startDate.label" default="Start Date" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'startDate', 'errors')}">
-                                    <g:formatDate format="MMM-dd-yyyy hh:mm:ss" date="${timesheetInstance?.startDate}"/>
+                                    <g:formatDate format="MMM-dd-yyyy" date="${timesheetInstance?.startDate}"/>
                                 </td>
                             </tr>
                         
@@ -71,7 +71,7 @@ function grandTotal() {
                                   <label for="endDate"><g:message code="timesheet.endDate.label" default="End Date" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'endDate', 'errors')}">
-                                    <g:formatDate format="MMM-dd-yyyy hh:mm:ss" date="${timesheetInstance?.endDate}"/>
+                                    <g:formatDate format="MMM-dd-yyyy" date="${timesheetInstance?.endDate}"/>
                                 </td>
                             </tr>
                             <tr class="prop">
