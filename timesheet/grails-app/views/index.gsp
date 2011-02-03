@@ -7,4 +7,4 @@
 //</g:if>
 
  %>
-${response.sendRedirect("access/login")}
+<g:createLink controller="access" action="login" params="" />
