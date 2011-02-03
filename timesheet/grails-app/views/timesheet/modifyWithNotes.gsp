@@ -145,7 +145,7 @@ function grandTotal() {
 										int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) % 7 + 1;
 										 %>
 										${weekDay.hoursWorked}<g:hiddenField name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_hrs" value="${weekDay.hoursWorked}" /></td>
-										<td><textarea name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_note"></textarea></td>
+										<td><textarea name="modDay${dayOfWeek}_${weekDay?.timesheetEntry?.taskAssignment?.id}_note">${notes?.get(i)}</textarea></td>
 							          </tr>
 							          </g:each>
 							        </table>
