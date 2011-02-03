@@ -55,21 +55,39 @@ function grandTotal() {
             </div>
         </g:hasErrors>
 		<g:form action="save" method="post" >
+		
 		<div class="dialog">
 		<table>
-		  <tr>
-			<th>Task</th>
-			<th>Labor Category</th>
-			<th>Charge #</th>
-			<th>Sat <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate}"/></th>
-			<th>Sun <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 1}"/></th>
-			<th>Mon <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 2}"/></th>
-			<th>Tue <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 3}"/></th>
-			<th>Wed <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 4}"/></th>
-			<th>Thu <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 5}"/></th>
-			<th>Fri <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 6}"/></th>
-			<th>Total</th>
-		  </tr>
+			<tr class="prop">
+			    <td valign="top" class="name">
+			      <label for="startDate"><g:message code="timesheet.startDate.label" default="Start Date" /></label>
+			    </td>
+			    <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'startDate', 'errors')}">
+			        <g:formatDate format="MMM-dd-yyyy" date="${timesheetInstance?.startDate}"/>
+			    </td>
+			</tr>
+			
+			<tr class="prop">
+			    <td valign="top" class="name">
+			      <label for="endDate"><g:message code="timesheet.endDate.label" default="End Date" /></label>
+			    </td>
+			    <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'endDate', 'errors')}">
+			        <g:formatDate format="MMM-dd-yyyy" date="${timesheetInstance?.endDate}"/>
+			    </td>
+			</tr>
+			<tr>
+				<th>Task</th>
+				<th>Labor Category</th>
+				<th>Charge #</th>
+				<th>Sat <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate}"/></th>
+				<th>Sun <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 1}"/></th>
+				<th>Mon <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 2}"/></th>
+				<th>Tue <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 3}"/></th>
+				<th>Wed <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 4}"/></th>
+				<th>Thu <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 5}"/></th>
+				<th>Fri <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 6}"/></th>
+				<th>Total</th>
+		  	</tr>
 	<g:each status="i" in="${timesheetInstance?.timesheetEntries}" var="timesheetEntry">
 	      <tr>
             <td><g:hiddenField name="timesheetEntries" value="${timesheetEntry?.id}" />${timesheetEntry?.taskAssignment?.task.name} </td>
