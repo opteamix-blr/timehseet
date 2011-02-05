@@ -5,6 +5,9 @@
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
         <g:layoutHead />
         <g:javascript library="application" />
+        <g:javascript>
+          var appName = "<g:resource />"
+        </g:javascript>
 	    
 	</head><body onload="${pageProperty(name:'body.onload')}" bgcolor="#999999">
 		<div align="center"> 

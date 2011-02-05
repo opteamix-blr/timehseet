@@ -8,11 +8,11 @@ function respondToSelect(event)
 {
     try{
        new Ajax.Updater("laborCategorySelect",
-          "/Timesheet/lookup/laborCategory",
+          appName + "/lookup/laborCategory",
           {method:'get', parameters: {selectedValue : $F("task.id")} }
          );
        new Ajax.Updater("chargeCodeSelect",
-          "/Timesheet/lookup/chargeCode",
+          appName + "/lookup/chargeCode",
           {method:'get', parameters: {selectedValue : $F("task.id")} }
          );
     } catch (e){alert(e)}
