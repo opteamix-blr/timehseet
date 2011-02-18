@@ -8,6 +8,8 @@
         <resource:autoComplete skin="default" />
         <g:set var="entityName" value="${message(code: 'taskAssignment.label', default: 'TaskAssignment')}" />
         <title><g:message code="default.edit.label" args="[entityName]" /></title>
+        <g:javascript library="prototype"/>
+        <g:javascript library="taskAssignment"/>
     </head>
     <body>
         <div class="nav">
@@ -62,7 +64,14 @@
                                   <label for="chargeCode"><g:message code="taskAssignment.chargeCode.label" default="Charge Code" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: taskAssignmentInstance, field: 'chargeCode', 'errors')}">
-                                    <g:select optionValue="chargeNumber" name="chargeCode.id" from="${com.ewconline.timesheet.ChargeCode.list()}" optionKey="id" value="${taskAssignmentInstance?.chargeCode?.id}"  />
+                                    <div id="chargeCodeSelect">
+                                      <g:select
+                                        optionValue="chargeNumber"
+                                        name="chargeCode.id"
+                                        from="${com.ewconline.timesheet.ChargeCode.list()}"
+                                        optionKey="id"
+                                        value="${taskAssignmentInstance?.chargeCode?.id}"  />
+                                    </div>
                                 </td>
                             </tr>
                             
@@ -71,7 +80,14 @@
                                   <label for="laborCategory"><g:message code="taskAssignment.laborCategory.label" default="Labor Category" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: taskAssignmentInstance, field: 'laborCategory', 'errors')}">
-                                    <g:select optionValue="name" name="laborCategory.id" from="${com.ewconline.timesheet.LaborCategory.list()}" optionKey="id" value="${taskAssignmentInstance?.laborCategory?.id}"  />
+                                  <div id="laborCategorySelect">
+                                    <g:select
+                                      optionValue="name"
+                                      name="laborCategory.id"
+                                      from="${com.ewconline.timesheet.LaborCategory.list()}"
+                                      optionKey="id"
+                                      value="${taskAssignmentInstance?.laborCategory?.id}"  />
+                                  </div>
                                 </td>
                             </tr>
                             <tr class="prop">
