@@ -3,7 +3,7 @@ package com.ewconline.timesheet
 /**
  * Request Map domain class.
  */
-class RequestMap {
+class RequestMap extends AuditableObject{
 
 	String url
 	String configAttribute

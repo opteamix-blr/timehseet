@@ -1,6 +1,6 @@
 package com.ewconline.timesheet
 
-class TaskAssignment {
+class TaskAssignment extends AuditableObject{
 	String displayName
 	String notes
 	boolean enabled = true
@@ -9,6 +9,10 @@ class TaskAssignment {
 	ChargeCode chargeCode
 	String laborIdReference
 	User user
+
+    String toString(){
+        return displayName
+    }
 	
     
     static constraints = {

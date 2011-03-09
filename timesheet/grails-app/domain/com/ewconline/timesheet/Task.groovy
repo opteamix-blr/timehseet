@@ -1,12 +1,16 @@
 package com.ewconline.timesheet
 
-class Task {
+class Task extends AuditableObject{
 
     String name
 	String contractInfo1
 	String contractInfo2
     String description
-	
+
+    String toString(){
+        return name
+    }
+
 	static hasMany = [chargeCodes: ChargeCode, laborCategories: LaborCategory ]
 	
     static constraints = {
