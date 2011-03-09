@@ -2,10 +2,14 @@ package com.ewconline.timesheet
 
 /** This represents a row on a time sheet.
 */
-class TimesheetEntry implements Comparable{
+class TimesheetEntry extends AuditableObject implements Comparable{
 	static belongsTo = [timesheet:Timesheet]
 	List workdays
 	TaskAssignment taskAssignment
+
+    String toString(){
+        return taskAssignment.toString()
+    }
 
     static constraints = {
 		taskAssignment()

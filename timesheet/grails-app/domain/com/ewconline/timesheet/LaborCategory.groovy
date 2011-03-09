@@ -1,6 +1,6 @@
 package com.ewconline.timesheet
 
-class LaborCategory {
+class LaborCategory extends AuditableObject{
 	Task task
 	String name
     String description

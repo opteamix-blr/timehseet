@@ -3,14 +3,18 @@ package com.ewconline.timesheet
 
 import java.util.SortedSet;
 
-class Timesheet {
+class Timesheet extends AuditableObject{
 
     Date dateCreated
     Date lastUpdated
 
     Date startDate
     Date endDate
-	
+
+    String toString(){
+        return startDate.toString()
+    }
+
    /* State - transition - State
 	* NOT_STARTED - saving - OPEN_SAVED
 	* OPEN_SAVED - signing - SIGNED

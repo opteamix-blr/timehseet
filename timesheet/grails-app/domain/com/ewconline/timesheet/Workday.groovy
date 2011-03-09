@@ -1,6 +1,6 @@
 package com.ewconline.timesheet
 
-class Workday  implements Comparable {
+class Workday extends AuditableObject implements Comparable {
 	
 	Date dateWorked
 	Float hoursWorked
@@ -8,7 +8,11 @@ class Workday  implements Comparable {
 	static hasMany = [notes: Note]
 	
 	static belongsTo = [timesheetEntry:TimesheetEntry]
-	
+
+        String toString(){
+            dateWorked.toString()
+        }
+
     static constraints = {
 		dateWorked()
 		hoursWorked(nullable: true)

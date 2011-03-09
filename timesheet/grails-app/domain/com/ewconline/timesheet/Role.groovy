@@ -5,7 +5,7 @@ import com.ewconline.timesheet.User
 /**
  * Authority domain class.
  */
-class Role {
+class Role extends AuditableObject{
 
 	static hasMany = [people: User]
 
