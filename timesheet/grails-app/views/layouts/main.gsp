@@ -47,17 +47,19 @@
 		      <td bgcolor="#FFFFFF" valign="top" width="168" style="padding-left: 5px;">
 		        <!-- Left Menu options -->
                 <ul id="mainNav">
-                    <li><p>My Timesheet</p></li>
-                    <li><a href="${createLinkTo(dir:'', file:'timesheet/edit')}">Current Timesheet</a></li>		          
-					<li><a href="${createLinkTo(dir:'', file:'timesheet/listTimesheets')}">Timesheets </a></li>
-					<li><a href="${createLinkTo(dir:'', file:'timesheet/lookupSearchForm')}">Lookup Timesheets </a></li>
-                    <g:if test="${session?.approverRole || session?.adminRole}">
+                    <g:if test="${session?.employeeRole || session?.approverRole || session?.accountantRole}">
+                      <li><p>My Timesheet</p></li>
+                      <li><a href="${createLinkTo(dir:'', file:'timesheet/edit')}">Current Timesheet</a></li>
+                      <li><a href="${createLinkTo(dir:'', file:'timesheet/listTimesheets')}">Timesheets </a></li>
+                      <li><a href="${createLinkTo(dir:'', file:'timesheet/lookupSearchForm')}">Lookup Timesheets </a></li>
+                    </g:if>
+                    <g:if test="${session?.approverRole || session?.accountantRole}">
                         <li><p>Approver</p></li>
                         <li><a href="${createLinkTo(dir:'', file:'approver/approverListTimesheet')}">Recently Signed</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'approver/approvedTimesheets')}">Approved Timesheets</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'reports/list')}">Reporting</a></li>
                     </g:if>
-                    <g:if test="${session?.adminRole}">
+                    <g:if test="${session?.accountantRole}">
                         <li><p>Administration</p></li>
                         <li><a href="${createLinkTo(dir:'', file:'user/list')}">Employees</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'taskAssignment/list')}">Task Assignments</a></li>
@@ -65,8 +67,9 @@
                         <li><a href="${createLinkTo(dir:'', file:'chargeCode/list')}">Charge Codes</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'laborCategory/list')}">Labor Categories</a></li>
                     </g:if>
-                    <li><p></p></li>
-					<li><a href="${createLinkTo(dir:'', file:'access/logout')}">Logout</a></li>
+                    <li><p></p>
+                    </li>
+                    <li><a href="${createLinkTo(dir:'', file:'access/logout')}">Logout</a></li>
                 </ul>
 		      </td>
 		      
@@ -83,7 +86,6 @@
 		      </td>
 		    </tr>
 		  </table>
-		  
 		</div>
 	</body>
 </html>
