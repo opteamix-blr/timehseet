@@ -14,57 +14,63 @@ import grails.util.Environment;
 import hirondelle.date4j.DateTime 
 
 class BootStrap {
-	def timesheetManagerService
+    def timesheetManagerService
+    def etimeSecurityService
     def init = { servletContext ->
 		
     	switch(Environment.current) {
-			case Environment.DEVELOPMENT:
-			case Environment.TEST:
-				createRolesIfRequired()
-				createAdminUserIfRequired()
-				createTestUsers()
-				break;
-			case Environment.PRODUCTION:
-				break;
-		}
+                case Environment.DEVELOPMENT:
+                case Environment.TEST:
+                        createRolesIfRequired()
+                        createAdminUserIfRequired()
+                        createTestUsers()
+                        break;
+                case Environment.PRODUCTION:
+                        createRolesIfRequired()
+                        break;
+        }
+    }
 
-	}
     def destroy = {
     }
 
 	void createRolesIfRequired() {
-		def employeeRole = new Role(description:"Employee Role",
-			authority:"self_role"
-		).save()
-		
-		def approverRole = new Role(description:"Approver Role",
-			authority:"approver_role"
-		).save()
-		
-		def accountantRole = new Role(description:"Accountant Role",
-			authority:"accountant_role"
-		).save()
-		
-		def assistantAccountantRole = new Role(description:"Accounting Assistant Role",
-			authority:"accounting_assistant_role"
-		).save()
-		
+                if (!Role.findByAuthority(etimeSecurityService.SELF_ROLE)) {
+                    def employeeRole = new Role(description:"Employee Role",
+			authority:etimeSecurityService.SELF_ROLE
+                    ).save()
+                }
 
+                if (!Role.findByAuthority(etimeSecurityService.APPROVER_ROLE)) {
+                    def approverRole = new Role(description:"Approver Role",
+                            authority:etimeSecurityService.APPROVER_ROLE
+                    ).save()
+                }
+
+                if (!Role.findByAuthority(etimeSecurityService.ACCOUNTANT_ROLE)) {
+                    def accountantRole = new Role(description:"Accountant Role",
+			authority:etimeSecurityService.ACCOUNTANT_ROLE
+                    ).save()
+                }
+
+		if (!Role.findByAuthority(etimeSecurityService.ADMIN_ROLE)) {
+                    def adminRole = new Role(description:"Administrator Role",
+                            authority:etimeSecurityService.ADMIN_ROLE
+                    ).save()
+                }
 	}
 
 	void createAdminUserIfRequired() {
-		if (!User.findByUsername("admin")) {
-			println "Creating an admin user for $Environment.current environment"
-			def adminRole = new Role(description:"Administrator Role",
-				authority:"administrator_role"
-			).save()
+		if (!User.findByUsername("accountant")) {
+			println "Creating an admin user for ${Environment.current} environment"
+			def accountantRole = Role.findByAuthority(etimeSecurityService.ACCOUNTANT_ROLE)
 
-			def user = new User(username:"admin",
+			def user = new User(username:"accountant",
 				passwd:"p@ssw0rd1",
-				userRealName:"Administrator",
-				description:"Dev Admin user"
+				userRealName:"Accountant User",
+				description:"Dev Accountant user"
 			)
-			adminRole.addToPeople(user)
+			accountantRole.addToPeople(user)
 
 			println "Created successfully username:" + user?.username
 		} else {
@@ -87,8 +93,8 @@ class BootStrap {
 			description:"Employee and Approver"
 		)
 		
-		Role.findByAuthority("self_role").addToPeople(user2)
-		Role.findByAuthority("approver_role").addToPeople(user2)
+		Role.findByAuthority(etimeSecurityService.SELF_ROLE).addToPeople(user2)
+		Role.findByAuthority(etimeSecurityService.APPROVER_ROLE).addToPeople(user2)
 		user2.save();
 		
 		def user3 = new User(username:"accountant1",
@@ -97,8 +103,8 @@ class BootStrap {
 			description:"Employee and Accountant"
 		)
 		
-		Role.findByAuthority("self_role").addToPeople(user3)
-		Role.findByAuthority("accountant_role").addToPeople(user3)
+		Role.findByAuthority(etimeSecurityService.SELF_ROLE).addToPeople(user3)
+		Role.findByAuthority(etimeSecurityService.ACCOUNTANT_ROLE).addToPeople(user3)
 		user3.save();
 		
 		def task1 = new Task(name:"Task 1", 
