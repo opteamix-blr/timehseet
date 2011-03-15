@@ -13,28 +13,16 @@ ${flash.message}
 <form name="loginform" id="loginform" action="${createLinkTo(dir:'', file:'access/authenticate')}" method="post">
 	<p>
 		<label>Username<br />
-		
-<g:if test="${grails.util.Environment.current == grails.util.Environment.DEVELOPMENT || grails.util.Environment.current == grails.util.Environment.TEST}">
-	<g:textField id="user_login" name="username" value="emp1" class="input" size="20" tabindex="10" /></label>
-</g:if>
-<g:else>
-    <input type="text" name="username" id="user_login" class="input" value="" size="20" tabindex="10" /></label>
-</g:else>		
+        <input type="text" name="username" id="user_login" class="input" value="" size="20" tabindex="10" /></label>
 	</p>
 	<p>
-		<label>Password<br />
-<g:if test="${grails.util.Environment.current == grails.util.Environment.DEVELOPMENT || grails.util.Environment.current == grails.util.Environment.TEST}">
-	<g:passwordField  id="user_pass" name="passwd" value="p@ssw0rd1" class="input" size="20" tabindex="10" /></label>
-</g:if>
-<g:else>
-    <input type="password" name="passwd" id="user_pass" class="input" value="" size="20" tabindex="20" /></label>
-</g:else>
+	<label>Password<br />
+        <input type="password" name="passwd" id="user_pass" class="input" value="" size="20" tabindex="20" /></label>
 		
 	</p>
 	<p class="forgetmenot"><label><input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90" /> Remember Me</label></p>
 	<p class="submit">
 		<input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Log In" tabindex="100" />
-
 	</p>
 </form>
 
