@@ -3,7 +3,7 @@ class SecurityFilters {
 	def filters = {
 		loginCheck(controller:'*', action:'*') {
 			before = {
-				println "controller = ${params.controller} action=${params.action}"
+				//println "controller = ${params.controller} action=${params.action}"
 				if (params.controller == null) {
 					redirect(controller:'access', action:'login')
 					
