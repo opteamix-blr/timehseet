@@ -11,7 +11,13 @@
 // }
 
 com.ewconline.timesheet.doAuditWithUserName = false //turn on to append username to audit trail
-
+def ldapFile="${userHome}/.grails/ldap-config.groovy"
+if (new java.io.File(ldapFile).exists()){
+    println 'LDAP access activating'
+    grails.config.locations = [ "file:${ldapFile}"]
+} else {
+    println 'LDAP access [not activated]'
+}
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
@@ -84,7 +90,4 @@ log4j = {
            'net.sf.ehcache.hibernate'
 
     warn   'org.mortbay.log'
-}
-ldapServers {
-	//d1 {} // use defaults
 }
