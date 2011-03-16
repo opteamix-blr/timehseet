@@ -12,7 +12,7 @@ class EtimeSecurityService {
             Role role = null
             for (rt in rolesText) {
                 role = Role.findByAuthority(rt)
-                if (user.authorities.contains(role)) {
+                if (rt == role.authority) {
                     return true
                 }
             }
