@@ -9,13 +9,16 @@ import com.ewconline.timesheet.Timesheet
 class TimesheetController {
 	def timesheetManagerService
 	def signatureService
+        def auditingService
 	def scafold = true
     def index = { }
 	
 	
 	//  http://localhost:8080/Timesheet/timesheet/listTimesheets
 	def listTimesheets = {
+                
 		def user = User.get(session.user.id)
+                auditingService.setCurrentUserName(user.username)
 		def timesheetList = timesheetManagerService.retrieveTimesheets(user)
 		// TODO use paging abilities pagination next, prev.
 		//		params.max = Math.min(params.max ? params.int('max') : 10, 100)

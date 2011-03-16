@@ -1,10 +1,15 @@
 package com.ewconline.timesheet
 
 import org.codehaus.groovy.grails.commons.DefaultGrailsDomainClass
+import org.springframework.context.ApplicationContext
+import org.springframework.context.ApplicationContextAware
 
-abstract class AuditableObject {
+abstract class AuditableObject implements ApplicationContextAware {
+    def applicationContext
 
-//    def auditingService
+    public void setApplicationContext(ApplicationContext ctx){
+        this.applicationContext = ctx
+    }
 
     def afterInsert = {
         def objectToAudit = new DefaultGrailsDomainClass(this.class)
@@ -15,7 +20,9 @@ abstract class AuditableObject {
             c.previousValue = null
             c.fieldName = k
             c.newValue = this."$k"  //all "owned" objects must implement toString for this to work
-//            c.userName = auditingService.currentUserName()
+            try{
+                c.userName = applicationContext.auditingService.getCurrentUserName()
+            } catch (Exception e){}//no session, maybe we're not in one
             c.save()
         }
     }
@@ -32,11 +39,15 @@ abstract class AuditableObject {
                 c.previousValue = originalValue
                 c.newValue = currentValue
                 c.fieldName = it
-//                c.userName = auditingService.currentUserName()
+                try{
+                c.userName = applicationContext.auditingService.getCurrentUserName()
+                }catch(Exception e){}//no session, maybe we're not in one
                 c.save()
             }
         }
     }
+
+    static transients = ['applicationContext']
 
     static constraints = {
     }
