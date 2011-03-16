@@ -29,7 +29,7 @@ class LdapAuthenticationService {
         try {
             //ctx = new InitialLdapContext( env)
             ctx = new InitialLdapContext(env)
-            println('yay you made it into the application ' + username )
+            //println('yay you made it into the application ' + username )
 
             SearchControls ctls = new SearchControls();
             ctls.setReturningObjFlag (true);
@@ -70,7 +70,7 @@ class LdapAuthenticationService {
                         }
                     }
                 }
-                println "memberOf: ${attr?.get("memberOf")?.get()}"
+                //println "memberOf: ${attr?.get("memberOf")?.get()}"
             }
             
             user.authorities.addAll(roles)
