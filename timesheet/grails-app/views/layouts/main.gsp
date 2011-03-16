@@ -57,10 +57,11 @@
                         <li><p>Approver</p></li>
                         <li><a href="${createLinkTo(dir:'', file:'approver/approverListTimesheet')}">Recently Signed</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'approver/approvedTimesheets')}">Approved Timesheets</a></li>
-                        <li><a href="${createLinkTo(dir:'', file:'reports/list')}">Reporting</a></li>
+                        
                     </g:if>
                     <g:if test="${session?.accountantRole}">
                         <li><p>Administration</p></li>
+                        <li><a href="${createLinkTo(dir:'', file:'reports/list')}">Reporting</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'user/list')}">Employees</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'taskAssignment/list')}">Task Assignments</a></li>
                         <li><a href="${createLinkTo(dir:'', file:'task/list')}">Tasks</a></li>
