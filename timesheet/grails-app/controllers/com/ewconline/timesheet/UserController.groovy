@@ -120,10 +120,11 @@ class UserController {
 			}
 
 			// TaskAssignments
-			def transferUserTaskAssignments = params.taskAssignments.collect { targetT ->
+			def transferUserTaskAssignments = new HashSet(params.taskAssignments.collect { targetT ->
 				TaskAssignment.get(targetT)
-			}
-			def userCurTaskAssignments = userInstance.taskAssignments
+			})
+			def userCurTaskAssignments = new HashSet(userInstance.taskAssignments)
+
 			def taskAssignmentRemoveList = DefaultGroovyMethods.minus(userCurTaskAssignments, transferUserTaskAssignments)
 			def taskAssignmentAddList = DefaultGroovyMethods.minus(transferUserTaskAssignments, userCurTaskAssignments)
 			
