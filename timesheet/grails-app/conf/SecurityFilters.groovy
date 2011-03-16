@@ -1,7 +1,7 @@
 import com.ewconline.timesheet.User;
 class SecurityFilters {
     def etimeSecurityService
-    static accountantControllers = ['reports', 'user', 'taskAssignment', 'task', 'chargeCode', 'laborCategory']
+    static accountantControllers = ['reports', 'user', 'role', 'taskAssignment', 'task', 'chargeCode', 'laborCategory']
     def filters = {
         loginCheck(controller:'*', action:'*') {
             before = {
@@ -30,7 +30,7 @@ class SecurityFilters {
                     String[] approverRoles = [etimeSecurityService.ACCOUNTANT_ROLE, etimeSecurityService.APPROVER_ROLE]
                     def username = session?.user?.username
                     def hasAccess = etimeSecurityService.isUserInRole(username , approverRoles )
-                    
+                    //println "${username} has approver access : ${hasAccess}"
                     if (!hasAccess) {
                         redirect(controller:'access', action:'accessDenied')
                         return hasAccess
