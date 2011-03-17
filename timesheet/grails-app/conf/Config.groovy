@@ -11,10 +11,14 @@
 // }
 
 com.ewconline.timesheet.doAuditWithUserName = false //turn on to append username to audit trail
-def ldapFile="${userHome}/.grails/ldap-config.groovy"
-if (new java.io.File(ldapFile).exists()){
+def ldapFile1="${userHome}/.grails/ldap-config.groovy"
+def ldapFile2="C:/Program Files/Apache Software Foundation/ldap-config.groovy"
+if (new java.io.File(ldapFile1).exists()){
     println 'LDAP access activating'
-    grails.config.locations = [ "file:${ldapFile}"]
+    grails.config.locations = [ "file:${ldapFile1}"]
+} else if (new java.io.File(ldapFile2).exists()){
+    println 'LDAP access activating'
+    grails.config.locations = [ "file:${ldapFile2}"]
 } else {
     println 'LDAP access [not activated]'
 }
