@@ -27,7 +27,7 @@ class SecurityFilters {
 
                 // secure approver area
                 if (params.controller=='approver') {
-                    String[] approverRoles = [etimeSecurityService.ACCOUNTANT_ROLE, etimeSecurityService.APPROVER_ROLE]
+                    def approverRoles = [etimeSecurityService.ACCOUNTANT_ROLE, etimeSecurityService.APPROVER_ROLE]
                     def username = session?.user?.username
                     def hasAccess = etimeSecurityService.isUserInRole(username , approverRoles )
                     //println "${username} has approver access : ${hasAccess}"
@@ -40,7 +40,7 @@ class SecurityFilters {
 
                 // accountants area only
                 if (accountantControllers.contains(params.controller)) {
-                    String[] acctRoles = [etimeSecurityService.ACCOUNTANT_ROLE]
+                    def acctRoles = [etimeSecurityService.ACCOUNTANT_ROLE]
                     def hasAccess = etimeSecurityService.isUserInRole(session?.user?.username , acctRoles )
                     if (!hasAccess) {
                         redirect(controller:'access', action:'accessDenied')
