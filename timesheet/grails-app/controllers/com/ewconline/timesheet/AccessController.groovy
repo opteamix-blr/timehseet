@@ -41,7 +41,7 @@ class AccessController {
         log.info "User agent: " + request.getHeader("User-Agent")
         // check database for user exists.
         log.debug "user name is : " + params.username
-
+        
         def user
         try {
             def config = ConfigurationHolder.config
@@ -82,21 +82,27 @@ class AccessController {
             //                        println("*****> user ${user.username} is in role: ${r.authority}" )
             //                    }
             // obtain a session
+            if (session) {
+                if (session.user != null) {
+                    session.user = null
+                    session.invalidate()
+                }
+            }
             if (!session || !session.user) {
                 session.user = user
-                for ( r in user.authorities ) {
-                    if (r.authority == etimeSecurityService.APPROVER_ROLE) {
-                        session.approverRole = true;
-                    } else if (r.authority == etimeSecurityService.ACCOUNTANT_ROLE) {
-                        session.accountantRole = true;
-                    } else if (r.authority == etimeSecurityService.SELF_ROLE) {
-                        session.employeeRole = true;
-                    } else if (r.authority == etimeSecurityService.ADMIN_ROLE) {
-                        session.adminRole = true;
-                    }
-                }
-                log.debug "user named " + session.user.username + " is logged in"
             }
+            for ( r in user.authorities ) {
+                if (r.authority == etimeSecurityService.APPROVER_ROLE) {
+                    session.approverRole = true;
+                } else if (r.authority == etimeSecurityService.ACCOUNTANT_ROLE) {
+                    session.accountantRole = true;
+                } else if (r.authority == etimeSecurityService.SELF_ROLE) {
+                    session.employeeRole = true;
+                } else if (r.authority == etimeSecurityService.ADMIN_ROLE) {
+                    session.adminRole = true;
+                }
+            }
+            log.debug "user named " + session.user.username + " is logged in"
             redirect(controller: "timesheet", action: "listTimesheets")
         } else {
             redirect(action:login)
