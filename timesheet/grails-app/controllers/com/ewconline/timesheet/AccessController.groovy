@@ -82,15 +82,13 @@ class AccessController {
             //                        println("*****> user ${user.username} is in role: ${r.authority}" )
             //                    }
             // obtain a session
-            if (session) {
-                if (session.user != null) {
-                    session.user = null
-                    session.invalidate()
-                }
-            }
             if (!session || !session.user) {
                 session.user = user
+            } else {
+                // just swap out the user
+                session.user = user
             }
+
             for ( r in user.authorities ) {
                 if (r.authority == etimeSecurityService.APPROVER_ROLE) {
                     session.approverRole = true;
