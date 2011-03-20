@@ -21,21 +21,25 @@ class TaskAssignmentController {
 
     def save = {
         def taskAssignmentInstance = new TaskAssignment()
-        taskAssignmentInstance.properties = params
+        
 
 		
         // validate user exists
         def user = null
+        def userRealName = null
         if (params?.user?.id) {
             user = User.get(params?.user.id)
-            if (!user) {
-                flash.message = "Employee '${params?.user.userRealName}' does not exist. Check spelling"
-                render(view: "create", model: [taskAssignmentInstance: taskAssignmentInstance])
-                return
-            }
+            userRealName = user.userRealName
         }
+        if (!user) {
+            flash.message = "Employee '${params?.user.userRealName}' does not exist. Check spelling"
+            render(view: "create", model: [taskAssignmentInstance: taskAssignmentInstance])
+            return
+        }
+        taskAssignmentInstance.properties = params
         taskAssignmentInstance.user = user
-		
+        taskAssignmentInstance.user.userRealName = userRealName
+	
         def chargeCode = ChargeCode.get(params?.chargeCode.id)
         def laborCategory = LaborCategory.get(params?.laborCategory.id)
         def task = Task.get(params?.task.id)
@@ -76,7 +80,9 @@ class TaskAssignmentController {
 
     def update = {
         def taskAssignmentInstance = TaskAssignment.get(params.id)
+        
         if (taskAssignmentInstance) {
+
             if (params.version) {
                 def version = params.version.toLong()
                 if (taskAssignmentInstance.version > version) {
@@ -90,22 +96,27 @@ class TaskAssignmentController {
 
             // validate user exists
             def user = null
+            def userRealName = null
             if (params?.user?.id) {
                 user = User.get(params?.user.id)
-                if (!user) {
-                    def copyTaskAssignmentInstance = new TaskAssignment()
-                    copyTaskAssignmentInstance.properties = params
-                    copyTaskAssignmentInstance.id = taskAssignmentInstance.id
-                    flash.message = "Employee '${params?.user.userRealName}' does not exist. Check spelling"
-                    render(view: "create", model: [taskAssignmentInstance: taskAssignmentInstance])
-                    return
-                }
+                userRealName = user.userRealName
+            } else {
+
             }
-            params.user.userRealName = taskAssignmentInstance.user.userRealName
+
+            if (!user) {
+                def copyTaskAssignmentInstance = new TaskAssignment()
+                copyTaskAssignmentInstance.properties = params
+                copyTaskAssignmentInstance.id = taskAssignmentInstance.id
+                flash.message = "Employee '${params?.user.userRealName}' does not exist. Check spelling"
+                render(view: "edit", model: [taskAssignmentInstance: copyTaskAssignmentInstance])
+                return
+            }
+            // This takes params and will update nested objects like user.
+            taskAssignmentInstance.properties = params
             taskAssignmentInstance.user = user
-            taskAssignmentInstance.properties = params			
-			
-			
+            user.userRealName = userRealName
+
             if (!taskAssignmentInstance.hasErrors() && taskAssignmentInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'taskAssignment.label', default: 'TaskAssignment'), taskAssignmentInstance.id])}"
                 redirect(action: "show", id: taskAssignmentInstance.id)
