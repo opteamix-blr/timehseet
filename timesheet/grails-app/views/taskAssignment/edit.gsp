@@ -108,7 +108,7 @@
                                     <label for="user"><g:message code="taskAssignment.user.label" default="Employee" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: taskAssignmentInstance, field: 'user', 'errors')}">
-                                  <g:hiddenField name="user.id" value="" />
+                                  <g:hiddenField name="user.id" value="${taskAssignmentInstance?.user?.id}" />
                                   <richui:autoComplete name="user.userRealName" action="${createLinkTo('dir': 'user/searchAJAX')}" value="${taskAssignmentInstance?.user?.userRealName}" onItemSelect="javascript:updateEmployeeId(id);" />
                                 </td>
                             </tr>
@@ -120,7 +120,7 @@
                                     <g:textArea name="notes" value="${taskAssignmentInstance?.notes}" />
                                 </td>
                             </tr>
-                        
+
                         </tbody>
                     </table>
                 </div>
