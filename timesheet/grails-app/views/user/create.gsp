@@ -11,7 +11,7 @@
         <script language="JavaScript" type="text/javascript">
 
         function selectAllListBoxes() {
-            var targetListBoxes = ['taskAssignments', 'authorities'];
+            var targetListBoxes = ['authorities'];
             selectAllListBoxesByIds(targetListBoxes);
         }
         </script>
@@ -132,8 +132,7 @@
                                     <input type="button" value="&#060;" onClick="moveSelectedOptions('authorities', 'role.authority');"/>
                                 </td>
                                 <td class="name">
-                                    <select id="authorities" name="authorities" multiple="multiple">
-                                    </select>
+                                    <select name="authorities" id="authorities" multiple="multiple"/>
                                 </td>
                             </tr>
                     </table>
