@@ -10,6 +10,11 @@
         <title><g:message code="default.edit.label" args="[entityName]" /></title>
         <g:javascript library="prototype"/>
         <g:javascript library="taskAssignment"/>
+        <g:javascript>
+          function updateEmployeeId(id) {
+            $('user.id').value = id;
+          }
+        </g:javascript>
     </head>
     <body>
         <div class="nav">
@@ -103,7 +108,8 @@
                                     <label for="user"><g:message code="taskAssignment.user.label" default="Employee" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: taskAssignmentInstance, field: 'user', 'errors')}">
-                                    <richui:autoComplete name="user.userRealName" action="${createLinkTo('dir': 'user/searchAJAX')}" value="${taskAssignmentInstance?.user?.userRealName}" />                                    
+                                  <g:hiddenField name="user.id" value="" />
+                                  <richui:autoComplete name="user.userRealName" action="${createLinkTo('dir': 'user/searchAJAX')}" value="${taskAssignmentInstance?.user?.userRealName}" onItemSelect="javascript:updateEmployeeId(id);" />
                                 </td>
                             </tr>
                             <tr class="prop">
