@@ -5,7 +5,7 @@ class TaskAssignment extends AuditableObject{
 	String notes
 	boolean enabled = true
 	Task task
-    LaborCategory laborCategory
+        LaborCategory laborCategory
 	ChargeCode chargeCode
 	String laborIdReference
 	User user
@@ -19,11 +19,12 @@ class TaskAssignment extends AuditableObject{
 		displayName(blank:false, maxSize:50)
 		notes(nullable:true, maxSize:1000)
 		enabled()
-        task()
+                task()
 		laborCategory()
 		chargeCode()
 		laborIdReference(nullable:true)
 		user()
     }
-	static belongsTo = [user:User]
+    static belongsTo = [user:User]
+    static hasMany = [taskAssignmentApprovals:TaskAssignmentApproval]
 }

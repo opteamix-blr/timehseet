@@ -38,8 +38,7 @@ class UserController {
 //		for (ta in params.taskAssignments) {
 //			println ">>>> " + ta
 //		}
-		
-		
+	userInstance.guid = java.util.UUID.randomUUID().toString()
         if (userInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
             redirect(action: "show", id: userInstance.id)

@@ -8,7 +8,10 @@ import com.ewconline.timesheet.TaskAssignment
  */
 class User {
 	static transients = ['pass']
-	static hasMany = [authorities: Role, timesheets: Timesheet, taskAssignments: TaskAssignment ]
+	static hasMany = [authorities: Role,
+            timesheets: Timesheet,
+            taskAssignments: TaskAssignment,
+            taskAssignmentsApprovals:TaskAssignmentApproval ]
 	static belongsTo = [Role]
 
 	/** Username */
@@ -29,6 +32,8 @@ class User {
 	/** plain password to create a MD5 password */
 	String pass = '[secret]'
 
+        String guid
+
         String toString(){
             return username
         }
@@ -38,5 +43,6 @@ class User {
 		userRealName(nullable: true)
 		passwd(nullable:true)
 		enabled()
+                guid(blank: false, unique: true)
 	}
 }
