@@ -66,6 +66,12 @@ form .submit,.alignright {
 	float: right;
 }
 
+form .errormsg {
+	font-size: 13px;
+	line-height: 19px;
+        color: red;
+}
+
 form p {
 	margin-bottom: 24px;
 }
@@ -83,7 +89,10 @@ h1 a {
 #nav {
 	text-shadow: rgba(255, 255, 255, 1) 0 1px 0;
 }
-
+#errormsg {
+    font-size: 13px;
+    color:blue;
+}
 #backtoblog {
 	position: absolute;
 	top: 0;
