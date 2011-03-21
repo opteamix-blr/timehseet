@@ -16,23 +16,16 @@
 <div class="body">
 <h1></h1>
 ${flash.message}
-	<form name="signform" id="signform" action="${createLinkTo(dir:'', file:'timesheet/sign')}" method="post">
-		<p>
-			<label>Username<br />
-	    <input type="text" name="username" id="user_login" class="input" value="" size="20" tabindex="10" /></label>
-		</p>
-		<g:hiddenField name="timesheetId" value="${timesheetId}" />
-		<p>
-			<label>Password<br />
-	    <input type="password" name="passwd" id="user_pass" class="input" value="" size="20" tabindex="20" /></label>
-		</p>
-		<p class="submit">
-			<input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Sign" tabindex="100" />
-	
-		</p>
-	</form>
-
-
+<form name="signform" id="signform" action="${createLinkTo(dir:'', file:'timesheet/sign')}" method="post">
+  <g:hiddenField name="timesheetId" value="${timesheetId}" />
+  <p>
+    <label>Password<br />
+    <input type="password" name="passwd" id="user_pass" class="input" value="" size="20" tabindex="20" /></label>
+  </p>
+  <p class="submit">
+    <input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Sign" tabindex="100" />
+  </p>
+</form>
 </div>
 
 <script type="text/javascript">
