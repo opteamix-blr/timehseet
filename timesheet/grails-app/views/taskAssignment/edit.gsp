@@ -10,9 +10,17 @@
         <title><g:message code="default.edit.label" args="[entityName]" /></title>
         <g:javascript library="prototype"/>
         <g:javascript library="taskAssignment"/>
+        <g:javascript src="TS_select_control_utils.js" />
         <g:javascript>
           function updateEmployeeId(id) {
             $('user.id').value = id;
+          }
+          function updateApproverId(id) {
+            $('approver.id').value = id;
+          }
+          function selectAllListBoxes() {
+            var targetListBoxes = ['approvers'];
+            selectAllListBoxesByIds(targetListBoxes);
           }
         </g:javascript>
     </head>
@@ -32,7 +40,7 @@
                 <g:renderErrors bean="${taskAssignmentInstance}" as="list" />
             </div>
             </g:hasErrors>
-            <g:form method="post" >
+            <g:form method="post" onSubmit="selectAllListBoxes()">
                 <g:hiddenField name="id" value="${taskAssignmentInstance?.id}" />
                 <g:hiddenField name="version" value="${taskAssignmentInstance?.version}" />
                 <div class="dialog">
@@ -120,7 +128,26 @@
                                     <g:textArea name="notes" value="${taskAssignmentInstance?.notes}" />
                                 </td>
                             </tr>
-
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="user"><g:message code="taskAssignment.user.label" default="Approvers" /></label>
+                                </td>
+                                <td valign="top" class="value">
+                                  <g:hiddenField name="approver.id" value="" />
+                                  <richui:autoComplete name="approver.userRealName" action="${createLinkTo('dir': 'user/searchAJAX')}" value="" onItemSelect="javascript:updateApproverId(id);" />
+                                </td>
+                                <td>
+                                    <input type="button" value=" Add  " onClick="moveTextToList('approver.id', 'approver.userRealName', 'approvers');"/><br/>
+                                    <input type="button" value="Remove" onClick="removeTextFromList('approvers');"/>
+                                </td>
+                                <td class="name">
+                                    <g:select id="approvers" name="approvers"
+                                                from="${approvers}"
+                                                optionValue="userRealName"
+                                                optionKey="id"
+                                                multiple="multiple"/>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
