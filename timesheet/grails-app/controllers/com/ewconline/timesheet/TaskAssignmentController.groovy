@@ -1,5 +1,5 @@
 package com.ewconline.timesheet
-
+import org.codehaus.groovy.runtime.DefaultGroovyMethods
 class TaskAssignmentController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -72,9 +72,12 @@ class TaskAssignmentController {
         if (!taskAssignmentInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'taskAssignment.label', default: 'TaskAssignment'), params.id])}"
             redirect(action: "list")
-        }
-        else {
-            return [taskAssignmentInstance: taskAssignmentInstance]
+        } else {
+            def approvers = taskAssignmentInstance.taskAssignmentApprovals.collect {
+                taa ->
+                taa.user
+            }
+            return [taskAssignmentInstance: taskAssignmentInstance, approvers: approvers]
         }
     }
 
@@ -116,6 +119,55 @@ class TaskAssignmentController {
             taskAssignmentInstance.properties = params
             taskAssignmentInstance.user = user
             user.userRealName = userRealName
+            
+            // handle all approvers
+            def oldApprovers = []
+            taskAssignmentInstance.taskAssignmentApprovals.each {
+                taa ->
+                oldApprovers.add(taa.user.id)
+            }
+
+            def newApprovers = []
+            params.approvers.each { approverId ->
+                println(" approvers user id = ${approverId}")
+                def approverUser = User.get(approverId)
+                if (approverUser) {
+                    if (!newApprovers.contains(approverUser.id)) {
+                        newApprovers.add(approverUser.id)
+                    }
+                }
+            }
+            def userIdsToAdd = newApprovers - oldApprovers
+            def userIdsToDel = oldApprovers - newApprovers
+
+            // delete
+            def removeList = []
+            taskAssignmentInstance.taskAssignmentApprovals.each {
+                taa ->
+                userIdsToDel.each {
+                    userId ->
+                    if (taa.user.id == userId) {
+                        removeList.add(taa)
+                        taa.delete()
+                    }
+                }
+            }
+            taskAssignmentInstance.taskAssignmentApprovals.removeAll(removeList)
+            // add
+            def addList = []
+            userIdsToAdd.each {
+                userId ->
+                def addUser = User.get(userId)
+                def taskAssignApp = new TaskAssignmentApproval(user:addUser, taskAssignment: taskAssignmentInstance)
+                taskAssignmentInstance.taskAssignmentApprovals.add(taskAssignApp)
+            }
+
+            //taskAssignmentInstance.taskAssignmentApprovals.addAll(addList)
+            taskAssignmentInstance.taskAssignmentApprovals.removeAll(removeList)
+            taskAssignmentInstance.taskAssignmentApprovals.each {
+                taa ->
+                println( "Setting each taa = ${taa.user.id} ${taa.user.userRealName}")
+            }
 
             if (!taskAssignmentInstance.hasErrors() && taskAssignmentInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'taskAssignment.label', default: 'TaskAssignment'), taskAssignmentInstance.id])}"
