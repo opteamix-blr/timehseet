@@ -41,6 +41,9 @@ class LdapAuthenticationService {
                 SearchResult item = (SearchResult) answer.next();
                 Attributes attr = item.getAttributes();
 
+                // get guid on this object
+                user.guid = attr?.get("objectGUID")?.get()
+                
                 // Get the display name
                 user.userRealName = attr?.get("displayName")?.get()
 

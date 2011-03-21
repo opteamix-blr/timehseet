@@ -46,12 +46,12 @@ class AccessController {
         try {
             def config = ConfigurationHolder.config
 
-            if (config?.timesheet?.useLdap) {
+            if (config?.timesheet?.useLdap && config?.timesheet?.useLdap == true) {
                 user = ldapAuthenticationService.authenticate(params.username, params.passwd)
             } else {
 
                 if (Environment.current == Environment.DEVELOPMENT) {
-                    user = User.findByUsername(params.username)
+                    user = User.findByUsernameAndPasswd(params.username, params.passwd)
                     if (!user) {
                         flash.message = 'Invalid username or password.'
                         redirect(action:login)

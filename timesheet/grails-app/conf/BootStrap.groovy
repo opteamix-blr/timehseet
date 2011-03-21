@@ -68,7 +68,8 @@ class BootStrap {
 			def user = new User(username:"accountant",
 				passwd:"p@ssw0rd1",
 				userRealName:"Accountant User",
-				description:"Dev Accountant user"
+				description:"Dev Accountant user",
+                                guid:java.util.UUID.randomUUID().toString()
 			)
 			accountantRole.addToPeople(user)
 
@@ -82,7 +83,8 @@ class BootStrap {
 				passwd:"p@ssw0rd1",
 				userRealName:"John Doe",
 				description:"Employee",
-				email:"test@test.com"
+				email:"test@test.com",
+                                guid:java.util.UUID.randomUUID().toString()
 		)
 		user1.save()
 		Role.findByAuthority("self_role").addToPeople(user1)
@@ -90,7 +92,8 @@ class BootStrap {
 		def user2 = new User(username:"approver1",
 			passwd:"p@ssw0rd1",
 			userRealName:"Jane Doe",
-			description:"Employee and Approver"
+			description:"Employee and Approver",
+                        guid:java.util.UUID.randomUUID().toString()
 		)
 		
 		Role.findByAuthority(etimeSecurityService.SELF_ROLE).addToPeople(user2)
@@ -100,7 +103,8 @@ class BootStrap {
 		def user3 = new User(username:"accountant1",
 			passwd:"p@ssw0rd1",
 			userRealName:"Fred Sanford",
-			description:"Employee and Accountant"
+			description:"Employee and Accountant",
+                        guid:java.util.UUID.randomUUID().toString()
 		)
 		
 		Role.findByAuthority(etimeSecurityService.SELF_ROLE).addToPeople(user3)

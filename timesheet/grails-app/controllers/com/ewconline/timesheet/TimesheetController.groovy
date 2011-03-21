@@ -1,6 +1,7 @@
 package com.ewconline.timesheet
 
-
+import org.codehaus.groovy.grails.commons.*
+import grails.util.Environment
 import hirondelle.date4j.DateTime 
 import java.util.TimeZone
 
@@ -10,6 +11,7 @@ class TimesheetController {
     def timesheetManagerService
     def signatureService
     def auditingService
+    def ldapAuthenticationService
     def scafold = true
     def index = { }
 	
@@ -383,12 +385,22 @@ class TimesheetController {
 			
             // update state of the timesheet
             timesheetManagerService.validateState(ts.id.toInteger(), timesheetManagerService.signing)
-            def authenticateUser = User.findByUsernameAndPasswd(params.username, params.passwd)
-            if (!authenticateUser || authenticateUser.id != user.id) {
-                flash.message = "Authenticate failure, unable to sign timesheet"
-                render(view: "edit", model: [timesheetInstance: ts])
+
+            def config = ConfigurationHolder.config
+
+            if (config?.timesheet?.useLdap && config?.timesheet?.useLdap == true) {
+                user = ldapAuthenticationService.authenticate(session.user.username, params.passwd)
             } else {
-			
+                if (Environment.current == Environment.DEVELOPMENT) {
+                    user = User.findByUsernameAndPasswd(session.user.username, params.passwd)
+                }
+            }
+
+            if (!user) {
+                flash.message = "Authentication failed, unable to sign timesheet"
+                render(view: "edit", model: [timesheetInstance: ts])
+                return
+            } else {
                 signatureService.signTimesheet(ts, user)
                 if (timesheetManagerService.sign(ts)){
                     flash.message = "${message(code: 'timesheet signed successfully', args: [message(code: 'timesheet.label', default: 'Timesheet'), user.id])}"
