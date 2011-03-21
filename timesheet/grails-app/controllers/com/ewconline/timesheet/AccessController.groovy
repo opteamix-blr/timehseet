@@ -88,7 +88,10 @@ class AccessController {
                 // just swap out the user
                 session.user = user
             }
-
+            session.approverRole = false;
+            session.accountantRole = false;
+            session.employeeRole = false;
+            session.adminRole = false;
             for ( r in user.authorities ) {
                 if (r.authority == etimeSecurityService.APPROVER_ROLE) {
                     session.approverRole = true;
