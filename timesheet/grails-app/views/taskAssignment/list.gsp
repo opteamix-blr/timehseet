@@ -36,7 +36,7 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
                             <td><g:link action="show" id="${taskAssignmentInstance.id}">${fieldValue(bean: taskAssignmentInstance, field: "id")}</g:link></td>
-                            <td>${fieldValue(bean: taskAssignmentInstance, field: "displayName")}</td>
+                            <td><g:link action="show" id="${taskAssignmentInstance.id}">${fieldValue(bean: taskAssignmentInstance, field: "displayName")}</g:link></td>
                             <td><g:formatBoolean boolean="${taskAssignmentInstance.enabled}" /></td>
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "task.name")}</td>
                             <td>${fieldValue(bean: taskAssignmentInstance, field: "chargeCode.chargeNumber")}</td>
