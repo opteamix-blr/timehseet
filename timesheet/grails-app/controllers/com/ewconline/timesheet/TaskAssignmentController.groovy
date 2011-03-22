@@ -1,7 +1,7 @@
 package com.ewconline.timesheet
 import org.codehaus.groovy.runtime.DefaultGroovyMethods
 class TaskAssignmentController {
-
+    def etimeSecurityService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index = {
@@ -47,7 +47,27 @@ class TaskAssignmentController {
         taskAssignmentInstance.task = task
         taskAssignmentInstance.chargeCode = chargeCode
         taskAssignmentInstance.laborCategory = laborCategory
-		
+
+        // handle all approvers
+        def newApprovers = []
+        params.approvers.each { approverId ->
+            println(" approvers user id = ${approverId}")
+            def approverUser = User.get(approverId)
+            if (approverUser) {
+                def approverRoles = [etimeSecurityService.ACCOUNTANT_ROLE, etimeSecurityService.APPROVER_ROLE]
+                if (etimeSecurityService.isUserInRole(approverUser.username, approverRoles)) {
+                    println(" ${approverUser.username} isUserInRole")
+                    def taskAssignApp = new TaskAssignmentApproval(user:approverUser, taskAssignment: taskAssignmentInstance)
+                    taskAssignmentInstance.taskAssignmentApprovals.add(taskAssignApp)
+                }
+            }
+        }
+//      taskAssignmentInstance.taskAssignmentApprovals.each {
+//          taa ->
+//          println( "Setting each taa = ${taa.user.id} ${taa.user.userRealName}")
+//      }
+
+	
         if (taskAssignmentInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'taskAssignment.label', default: 'TaskAssignment'), taskAssignmentInstance.id])}"
             redirect(action: "show", id: taskAssignmentInstance.id)
@@ -129,7 +149,7 @@ class TaskAssignmentController {
 
             def newApprovers = []
             params.approvers.each { approverId ->
-                println(" approvers user id = ${approverId}")
+                //println(" approvers user id = ${approverId}")
                 def approverUser = User.get(approverId)
                 if (approverUser) {
                     if (!newApprovers.contains(approverUser.id)) {
@@ -158,16 +178,20 @@ class TaskAssignmentController {
             userIdsToAdd.each {
                 userId ->
                 def addUser = User.get(userId)
-                def taskAssignApp = new TaskAssignmentApproval(user:addUser, taskAssignment: taskAssignmentInstance)
-                taskAssignmentInstance.taskAssignmentApprovals.add(taskAssignApp)
+                def approverRoles = [etimeSecurityService.ACCOUNTANT_ROLE, etimeSecurityService.APPROVER_ROLE]
+                if (etimeSecurityService.isUserInRole(addUser.username, approverRoles)) {
+                    def taskAssignApp = new TaskAssignmentApproval(user:addUser, taskAssignment: taskAssignmentInstance)
+                    taskAssignmentInstance.taskAssignmentApprovals.add(taskAssignApp)
+                }
+                
             }
 
             //taskAssignmentInstance.taskAssignmentApprovals.addAll(addList)
             taskAssignmentInstance.taskAssignmentApprovals.removeAll(removeList)
-            taskAssignmentInstance.taskAssignmentApprovals.each {
-                taa ->
-                println( "Setting each taa = ${taa.user.id} ${taa.user.userRealName}")
-            }
+//            taskAssignmentInstance.taskAssignmentApprovals.each {
+//                taa ->
+//                println( "Setting each taa = ${taa.user.id} ${taa.user.userRealName}")
+//            }
 
             if (!taskAssignmentInstance.hasErrors() && taskAssignmentInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'taskAssignment.label', default: 'TaskAssignment'), taskAssignmentInstance.id])}"
