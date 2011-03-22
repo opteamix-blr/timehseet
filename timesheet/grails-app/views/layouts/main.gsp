@@ -47,7 +47,7 @@
 		      <td bgcolor="#FFFFFF" valign="top" width="168" style="padding-left: 5px;">
 		        <!-- Left Menu options -->
                 <ul id="mainNav">
-                    <g:if test="${session?.employeeRole || session?.approverRole || session?.accountantRole}">
+                    <g:if test="${session?.employeeRole || session?.approverRole || session?.accountantRole || session?.adminRole}">
                       <li><p>My Timesheet</p></li>
                       <li><a href="${createLinkTo(dir:'', file:'timesheet/edit')}">Current Timesheet</a></li>
                       <li><a href="${createLinkTo(dir:'', file:'timesheet/listTimesheets')}">Timesheets </a></li>
