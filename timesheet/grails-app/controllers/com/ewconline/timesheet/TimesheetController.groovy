@@ -310,7 +310,10 @@ class TimesheetController {
             def dayHrs = obtainModifiedDayHrs(tse.taskAssignment)
 			
             tse.workdays.eachWithIndex { workday, indx ->
-                Float oldValue = workday.hoursWorked;
+                def oldValue = workday?.hoursWorked
+                if (!oldValue) {
+                    oldValue = 0.0
+                }
                 //println "old value is ${workday?.hoursWorked} new value is ${dayHrs[indx]?.toFloat() }"
                 if (dayHrs[indx] == "" || dayHrs[indx] == null) {
                     // skip
@@ -325,10 +328,11 @@ class TimesheetController {
                     if (notes[indx]) {
                         Note note = new Note(dateCreated:new Date(),
                             noteType:'change',
-                            oldValue:oldValue,
-                            newValue:workday.hoursWorked,
+                            oldValue: oldValue,
+                            newValue:workday?.hoursWorked,
                             comment:notes[indx]
                         ).save()
+                        println "note = ${note}"
                         workday.notes.add note
 						
                     }
