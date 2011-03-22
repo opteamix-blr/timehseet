@@ -34,7 +34,7 @@
                         
                             <td><g:link action="show" id="${laborCategoryInstance.id}">${fieldValue(bean: laborCategoryInstance, field: "id")}</g:link></td>
                         	<td>${fieldValue(bean: laborCategoryInstance, field: "task.name")}</td>
-                            <td>${fieldValue(bean: laborCategoryInstance, field: "name")}</td>
+                            <td><g:link action="show" id="${laborCategoryInstance.id}">${fieldValue(bean: laborCategoryInstance, field: "name")}</g:link></td>
                             <td>${fieldValue(bean: laborCategoryInstance, field: "description")}</td>
                         
                         </tr>

@@ -42,7 +42,7 @@
                         
                             <td><g:link action="show" id="${timesheetInstance.id}">${fieldValue(bean: timesheetInstance, field: "id")}</g:link></td>
                         
-                            <td><g:formatDate date="${timesheetInstance.startDate}" /></td>
+                            <td><g:link action="show" id="${timesheetInstance.id}"><g:formatDate date="${timesheetInstance.startDate}" /></g:link></td>
                         
                             <td><g:formatDate date="${timesheetInstance.endDate}" /></td>
                         
