@@ -53,10 +53,14 @@ class LdapAuthenticationService {
                 // build role information
                 def memberOf = "${attr?.get("memberOf")?.get()}"
                 if (memberOf) {
+                    Role selfRole = Role.findByAuthority(etimeSecurityService.SELF_ROLE)
                     if (memberOf.indexOf('Administrators') > -1){
                         Role role = Role.findByAuthority(etimeSecurityService.ADMIN_ROLE)
                         if (!roles.contains(role)) {
                             roles.add(role)
+                        }
+                        if (!roles.contains(selfRole)) {
+                            roles.add(selfRole)
                         }
                     }
                     if (memberOf.indexOf('Accountants') > -1){
@@ -64,7 +68,9 @@ class LdapAuthenticationService {
                         if (!roles.contains(role)) {
                             roles.add(role)
                         }
-                        
+                        if (!roles.contains(selfRole)) {
+                            roles.add(selfRole)
+                        }
                     }
                     if (memberOf.indexOf('Employees') > -1){
                         Role role = Role.findByAuthority(etimeSecurityService.SELF_ROLE)
