@@ -11,6 +11,9 @@ class Change {
 
     Date dateCreated
 
+    static mapping = {
+        table 'ETChange'
+    }
 
     static constraints = {
         domainModelName(blank:false)
