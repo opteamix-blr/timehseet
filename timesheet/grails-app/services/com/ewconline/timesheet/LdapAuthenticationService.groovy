@@ -37,6 +37,9 @@ class LdapAuthenticationService {
             String filter = "(userPrincipalName=${username}${config.timesheet.email.suffix})";
             NamingEnumeration answer =  ctx.search(config.timesheet.search.users, filter, ctls);
             def roles = []
+            Role selfRole = Role.findByAuthority(etimeSecurityService.SELF_ROLE)
+            roles.add(selfRole)
+            
             while(answer.hasMore()) {
                 SearchResult item = (SearchResult) answer.next();
                 Attributes attr = item.getAttributes();
@@ -52,15 +55,14 @@ class LdapAuthenticationService {
 
                 // build role information
                 def memberOf = "${attr?.get("memberOf")?.get()}"
+                
+                
                 if (memberOf) {
-                    Role selfRole = Role.findByAuthority(etimeSecurityService.SELF_ROLE)
+
                     if (memberOf.indexOf('Administrators') > -1){
                         Role role = Role.findByAuthority(etimeSecurityService.ADMIN_ROLE)
                         if (!roles.contains(role)) {
                             roles.add(role)
-                        }
-                        if (!roles.contains(selfRole)) {
-                            roles.add(selfRole)
                         }
                     }
                     if (memberOf.indexOf('Accountants') > -1){
@@ -68,16 +70,13 @@ class LdapAuthenticationService {
                         if (!roles.contains(role)) {
                             roles.add(role)
                         }
-                        if (!roles.contains(selfRole)) {
-                            roles.add(selfRole)
-                        }
                     }
-                    if (memberOf.indexOf('Employees') > -1){
-                        Role role = Role.findByAuthority(etimeSecurityService.SELF_ROLE)
-                        if (!roles.contains(role)) {
-                            roles.add(role)
-                        }
-                    }
+//                    if (memberOf.indexOf('Employees') > -1){
+//                        Role role = Role.findByAuthority(etimeSecurityService.SELF_ROLE)
+//                        if (!roles.contains(role)) {
+//                            roles.add(role)
+//                        }
+//                    }
                 }
                 //println "memberOf: ${attr?.get("memberOf")?.get()}"
             }
