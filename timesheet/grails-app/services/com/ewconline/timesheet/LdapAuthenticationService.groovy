@@ -102,29 +102,37 @@ class LdapAuthenticationService {
             boolean changes = false
 
             // accountant role
-            if (!tempUser.authorities.contains(etimeSecurityService.ACCOUNTANT_ROLE) &&
-                user.authorities.contains(etimeSecurityService.ACCOUNTANT_ROLE)) {
+            Role accountantRole = Role.findByAuthority(etimeSecurityService.ACCOUNTANT_ROLE)
+            if (!tempUser.authorities.contains(accountantRole) &&
+                user.authorities.contains(accountantRole)) {
                 Role.findByAuthority(etimeSecurityService.ACCOUNTANT_ROLE).addToPeople(tempUser)
                 changes = true
-            } else if (tempUser.authorities.contains(etimeSecurityService.ACCOUNTANT_ROLE) &&
-                !user.authorities.contains(etimeSecurityService.ACCOUNTANT_ROLE)) {
+            } else if (tempUser.authorities.contains(accountantRole) &&
+                !user.authorities.contains(accountantRole)) {
                 Role.findByAuthority(etimeSecurityService.ACCOUNTANT_ROLE).removeFromPeople(tempUser)
                 changes = true
             }
 
             // admin role
-            if (!tempUser.authorities.contains(etimeSecurityService.ADMIN_ROLE) &&
-                user.authorities.contains(etimeSecurityService.ADMIN_ROLE)) {
-                user.authorities.add(etimeSecurityService.ADMIN_ROLE)
+            Role adminRole = Role.findByAuthority(etimeSecurityService.ACCOUNTANT_ROLE)
+            if (!tempUser.authorities.contains(adminRole) &&
+                user.authorities.contains(adminRole)) {
+                user.authorities.add(adminRole)
                 Role.findByAuthority(etimeSecurityService.ADMIN_ROLE).addToPeople(tempUser)
                 changes = true
-            } else if (tempUser.authorities.contains(etimeSecurityService.ADMIN_ROLE) &&
-                !user.authorities.contains(etimeSecurityService.ADMIN_ROLE)) {
-                user.authorities.add(etimeSecurityService.ADMIN_ROLE)
+            } else if (tempUser.authorities.contains(adminRole) &&
+                !user.authorities.contains(adminRole)) {
+                user.authorities.add(adminRole)
                 Role.findByAuthority(etimeSecurityService.ADMIN_ROLE).removeFromPeople(tempUser)
                 changes = true
             }
-            
+            // insure all authenticated people are employees (too many not in employee role)
+            Role selfRole = Role.findByAuthority(etimeSecurityService.SELF_ROLE)
+            if (!tempUser.authorities.contains(selfRole)) {
+                tempUser.authorities.add(selfRole)
+                selfRole.addToPeople(tempUser)
+                changes = true
+            }
             if (changes) {
                 tempUser.save(flush: true)
             }
