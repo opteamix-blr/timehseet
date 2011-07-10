@@ -8,6 +8,9 @@
         <g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
         <title><g:message code="default.create.label" args="[entityName]" /></title>
         <g:javascript src="TS_select_control_utils.js" />
+        <g:javascript library="prototype"/>
+        <g:javascript library="taskAssignment"/>
+        
         <script language="JavaScript" type="text/javascript">
 
         function selectAllListBoxes() {
@@ -134,6 +137,51 @@
                                 <td class="name">
                                     <select name="authorities" id="authorities" multiple="multiple"/>
                                 </td>
+                            </tr>
+                            <tr class="prop">
+                              <td colspan="2">
+                                <table>
+                                  <thead>
+                                    <th>Task</th>
+                                    <th>Charge Code</th>
+                                    <th>Labor Category</th>
+                                    <th>Enabled</th>
+                                  </thead>
+                                  <tbody id="taTable" class="taTable">
+                                    <tr id="taSourceRow" class="taSourceRow">
+                                      <td>
+                                        <g:select optionValue="name"
+                                              name="taskAssignment.task.id"
+                                              from="${com.ewconline.timesheet.Task.list()}"
+                                              optionKey="id"
+                                              noSelection="${['null':'Select One...']}"/>
+                                      </td>
+                                      <td>
+                                        <g:select optionValue="chargeNumber"
+                                              name="taskAssignment.chargeCode.id"
+                                              from="${com.ewconline.timesheet.ChargeCode.list()}"
+                                              optionKey="id"
+                                              noSelection="${['null':'Select One...']}"/>
+                                      </td>
+                                      <td>
+                                        <g:select optionValue="name"
+                                              name="taskAssignment.laborCategory.id"
+                                              from="${com.ewconline.timesheet.LaborCategory.list()}"
+                                              optionKey="id"
+                                              noSelection="${['null':'Select One...']}"/>
+                                      </td>
+                                      <td>
+                                        <g:checkBox name="enabled" value="true" />
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                  <tbody>
+                                    <tr>
+                                      <td><a href="#" onClick="addRow()">Add Row</a></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
                             </tr>
                     </table>
                 </div>
