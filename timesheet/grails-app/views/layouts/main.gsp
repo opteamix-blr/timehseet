@@ -67,7 +67,7 @@
               <li><a href="${createLinkTo(dir:'', file:'chargeCode/list')}">Charge Codes</a></li>
               <li><a href="${createLinkTo(dir:'', file:'laborCategory/list')}">Labor Categories</a></li>
               <!-- createLinkTo(dir:'', file:'reports/list')-->
-              <li><a href="">Reporting</a></li>
+              <li><a href="${createLinkTo(dir:'approver/approverListTimesheet')}">Reporting</a></li>
             </g:if>
             <li><p></p>
             </li>

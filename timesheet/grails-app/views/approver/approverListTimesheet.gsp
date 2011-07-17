@@ -8,7 +8,7 @@
 <body>
 
 	<div class="nav">
-		<span class="menuButton"><a class="home" href="${createLinkTo(dir:'timesheet/listTimesheets')}">Home</a></span>
+		<span class="menuButton"><a class="home" href="${createLinkTo(dir:'approver/approverListTimesheet')}">Home</a></span>
 	</div>
 
 	<div class="body">
