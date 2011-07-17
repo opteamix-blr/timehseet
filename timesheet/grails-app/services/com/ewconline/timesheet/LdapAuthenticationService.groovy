@@ -8,7 +8,12 @@ import javax.naming.*;
 import javax.naming.directory.*;
 import javax.naming.ldap.*;
 import java.util.Hashtable;
-
+/**
+ * This is responsible authenticating users and populating a user object with
+ * role information. The only significant role is Accountant Role which is
+ * controlled by Active Directory Server. All people
+ * will be 'self' role meaning they are employees.
+ */
 class LdapAuthenticationService {
     static transactional = true
     def etimeSecurityService
@@ -27,9 +32,7 @@ class LdapAuthenticationService {
         def user = new User(username:username, passwd:'nothing')
         user.authorities = []
         try {
-            //ctx = new InitialLdapContext( env)
             ctx = new InitialLdapContext(env)
-            //println('yay you made it into the application ' + username )
 
             SearchControls ctls = new SearchControls();
             ctls.setReturningObjFlag (true);
@@ -39,7 +42,8 @@ class LdapAuthenticationService {
             def roles = []
             Role selfRole = Role.findByAuthority(etimeSecurityService.SELF_ROLE)
             roles.add(selfRole)
-            
+
+            // obtain all attributes to populate user object.
             while(answer.hasMore()) {
                 SearchResult item = (SearchResult) answer.next();
                 Attributes attr = item.getAttributes();
