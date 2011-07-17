@@ -51,34 +51,34 @@ class LdapAuthenticationService {
                 user.userRealName = attr?.get("displayName")?.get()
 
                 // Get the primary email address
-                user.email = attr.get("mail").get()
+                user.email = attr?.get("mail")?.get()
+                if (!user.email) {
+                    user.email = "${username}${config.timesheet.email.suffix}"
+                }
 
                 // build role information
-                def memberOf = "${attr?.get("memberOf")?.get()}"
+                int size = attr?.get("memberOf")?.size()
+                def memberOf = attr?.get("memberOf").getAll()
                 
-                
-                if (memberOf) {
-
-                    if (memberOf.indexOf('Administrators') > -1){
-                        Role role = Role.findByAuthority(etimeSecurityService.ADMIN_ROLE)
-                        if (!roles.contains(role)) {
-                            roles.add(role)
+                if (size > 0) {
+                    while (memberOf.hasMore()) {
+                        def mValue = memberOf.next();
+                        if (mValue.contains('CN=Administrators')){
+                            Role role = Role.findByAuthority(etimeSecurityService.ADMIN_ROLE)
+                            if (!roles.contains(role)) {
+                                roles.add(role)
+                            }
                         }
-                    }
-                    if (memberOf.indexOf('Accountants') > -1){
-                        Role role = Role.findByAuthority(etimeSecurityService.ACCOUNTANT_ROLE)
-                        if (!roles.contains(role)) {
-                            roles.add(role)
+                        if (mValue.contains('CN=Accountants')){
+                            Role role = Role.findByAuthority(etimeSecurityService.ACCOUNTANT_ROLE)
+                            if (!roles.contains(role)) {
+                                roles.add(role)
+                            }
+                            break;
                         }
-                    }
-//                    if (memberOf.indexOf('Employees') > -1){
-//                        Role role = Role.findByAuthority(etimeSecurityService.SELF_ROLE)
-//                        if (!roles.contains(role)) {
-//                            roles.add(role)
-//                        }
-//                    }
+                        //println "memberOf: ${mValue}"
+                   }
                 }
-                //println "memberOf: ${attr?.get("memberOf")?.get()}"
             }
             
             user.authorities.addAll(roles)
