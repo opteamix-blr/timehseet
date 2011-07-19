@@ -171,7 +171,12 @@
                                               noSelection="${['null':'Select One...']}"/>
                                       </td>
                                       <td>
-                                        <g:checkBox name="enabled" value="true" />
+                                        <g:select name="taskAssignment.enabled"
+                                                  from="['enabled', 'disabled']"
+                                                  value="enabled"
+                                                  />
+
+
                                       </td>
                                     </tr>
                                   </tbody>
