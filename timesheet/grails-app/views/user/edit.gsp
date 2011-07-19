@@ -8,6 +8,8 @@
         <g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
         <title><g:message code="default.edit.label" args="[entityName]" /></title>
         <g:javascript src="TS_select_control_utils.js" />
+        <g:javascript library="prototype"/>
+        <g:javascript library="taskAssignment"/>
         <script language="JavaScript" type="text/javascript">
 
         function selectAllListBoxes() {
@@ -150,25 +152,70 @@
                 
                 <div class="dialog">
                     <table>
-                        <tbody>
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="user.taskAssignments"><g:message code="user.taskAssignments.label" default="TaskAssignments" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'taskAssignments', 'errors')}">
-                                   
-                                </td>
-                                <td>
-                                    
-                                </td>
-                                <td class="name">
-                                    <g:select id="taskAssignments" name="taskAssignments" 
-                                                from="${taskAssignments}"
-                                                optionValue="displayName"
-                                                optionKey="id"
-                                                multiple="true"/>
-                                </td>
-                            </tr>
+                      <thead>
+                        <th>Task</th>
+                        <th>Charge Code</th>
+                        <th>Labor Category</th>
+                        <th>Enabled</th>
+                      </thead>
+                      <tbody>
+                        <g:each in="${userInstance.taskAssignments}" var="t">
+                          <tr>
+                            <td>
+                              <g:link controller="taskAssignment" action="show" id="${t.id}">${t?.task}</g:link>
+                            </td>
+                            <td>
+                              ${t.chargeCode}
+                            </td>
+                            <td>
+                              ${t.laborCategory.name}
+                            </td>
+                            <td>
+                              <g:hiddenField name="existingTaskAssignment.id" value="${t.id}"/>
+                              <g:select name="existingTaskAssignment.enabled"
+                                                  from="['enabled', 'disabled']"
+                                                  value="${t.enabled ? 'enabled' : 'disabled'}"
+                                                  />
+                            </td>
+                          </tr>
+                        </g:each>
+                      </tbody>
+                      <tbody id="taTable" class="taTable">
+                        <tr id="taSourceRow" class="taSourceRow">
+                          <td>
+                            <g:select optionValue="name"
+                                  name="taskAssignment.task.id"
+                                  from="${com.ewconline.timesheet.Task.list()}"
+                                  optionKey="id"
+                                  noSelection="${['null':'Select One...']}"/>
+                          </td>
+                          <td>
+                            <g:select optionValue="chargeNumber"
+                                  name="taskAssignment.chargeCode.id"
+                                  from="${com.ewconline.timesheet.ChargeCode.list()}"
+                                  optionKey="id"
+                                  noSelection="${['null':'Select One...']}"/>
+                          </td>
+                          <td>
+                            <g:select optionValue="name"
+                                  name="taskAssignment.laborCategory.id"
+                                  from="${com.ewconline.timesheet.LaborCategory.list()}"
+                                  optionKey="id"
+                                  noSelection="${['null':'Select One...']}"/>
+                          </td>
+                          <td>
+                            <g:select name="taskAssignment.enabled"
+                                      from="['enabled', 'disabled']"
+                                      value="enabled"
+                                      />
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody>
+                        <tr>
+                          <td><a href="#" onClick="addRow()">Add Row</a></td>
+                        </tr>
+                      </tbody>
                     </table>
                 </div>
                 

@@ -87,11 +87,34 @@
                             <td valign="top" class="name"><g:message code="user.taskAssignments.label" default="TaskAssignments" /></td>
                             
                             <td valign="top" style="text-align: left;" class="value">
-                                <ul>
-                                <g:each in="${userInstance.taskAssignments}" var="t">
-                                    <li><g:link controller="taskAssignment" action="show" id="${t.id}">${t?.displayName.encodeAsHTML()} ${t?.displayName.encodeAsHTML()}</g:link></li>
-                                </g:each>
-                                </ul>
+                              <table>
+                                <thead>
+                                  <tr>
+                                    <th>Task</th>
+                                    <th>Charge Code</th>
+                                    <th>Labor Category</th>
+                                    <th>Enabled</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <g:each in="${userInstance.taskAssignments}" var="t">
+                                    <tr>
+                                      <td>
+                                        <g:link controller="taskAssignment" action="show" id="${t.id}">${t?.task}</g:link>
+                                      </td>
+                                      <td>
+                                        ${t.chargeCode}
+                                      </td>
+                                      <td>
+                                        ${t.laborCategory.name}
+                                      </td>
+                                      <td>
+                                        ${t.enabled ? "enabled" : "disabled"}
+                                      </td>
+                                    </tr>
+                                  </g:each>
+                                </tbody>
+                              </table>
                             </td>
                             
                         </tr>

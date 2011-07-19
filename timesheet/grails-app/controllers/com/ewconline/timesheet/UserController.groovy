@@ -19,25 +19,35 @@ class UserController {
     def create = {
         def userInstance = new User()
         userInstance.properties = params
-		def allRoles = Role.list([sort: 'authority', order: 'asc'])
+        def allRoles = Role.list([sort: 'authority', order: 'asc'])
 
-		def allTaskAssignments = TaskAssignment.createCriteria().list {
-			and {
-				eq('enabled', true)
-			}
-			order('displayName', 'asc')
-		}
+        def allTaskAssignments = TaskAssignment.createCriteria().list {
+            eq('enabled', true)
+        }
 		
-		return [userInstance: userInstance, allRoles:allRoles, allTaskAssignments:allTaskAssignments]
+        return [userInstance: userInstance, allRoles:allRoles, allTaskAssignments:allTaskAssignments]
     }
 
     def save = {
         def userInstance = new User(params)
 		
-		println "avail taskassignments:"
-//		for (ta in params.taskAssignments) {
-//			println ">>>> " + ta
-//		}
+        def tasks = [params["taskAssignment.task.id"]].flatten()
+        def chargeCodes = [params["taskAssignment.chargeCode.id"]].flatten()
+        def laborCategories = [params["taskAssignment.laborCategory.id"]].flatten()
+        def enabled = [params["taskAssignment.enabled"]].flatten()
+
+        tasks.eachWithIndex() { task, i ->
+            if(task != 'null'){
+                def ta = new TaskAssignment()
+                ta.task = Task.get(task)
+                ta.chargeCode = ChargeCode.get(chargeCodes[i])
+                ta.laborCategory = LaborCategory.get(laborCategories[i])
+                ta.enabled = (enabled[i] == 'enabled') ? true : false
+                userInstance.addToTaskAssignments(ta)
+            }
+        }
+
+
 	userInstance.guid = java.util.UUID.randomUUID().toString()
         if (userInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
@@ -61,36 +71,33 @@ class UserController {
 
     def edit = {
         def userInstance = User.get(params.id)
-		def allTaskAssignments = TaskAssignment.createCriteria().list {
-			and {
-				eq('enabled', true)
-			}
-			order('displayName', 'asc')
-		}
-		def availTaskAssignments = DefaultGroovyMethods.minus(allTaskAssignments, userInstance.taskAssignments)
+        def allTaskAssignments = TaskAssignment.createCriteria().list {
+            eq('enabled', true)
+        }
+        def availTaskAssignments = DefaultGroovyMethods.minus(allTaskAssignments, userInstance.taskAssignments)
 		
-		def allRoles = Role.list([sort: 'authority', order: 'asc'])
-		def availRoles = DefaultGroovyMethods.minus(allRoles, userInstance.authorities)
-//		println "avail roles:"
-//		for (role in availRoles) {
-//			println role.authority
-//		}
-		if (!userInstance) {
+        def allRoles = Role.list([sort: 'authority', order: 'asc'])
+        def availRoles = DefaultGroovyMethods.minus(allRoles, userInstance.authorities)
+        //		println "avail roles:"
+        //		for (role in availRoles) {
+        //			println role.authority
+        //		}
+        if (!userInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])}"
             redirect(action: "list")
         } else {
             return [userInstance: userInstance, 
-					allRoles:availRoles,
-					allTaskAssignments:availTaskAssignments,
-					taskAssignments:userInstance.taskAssignments,
-					authorities:userInstance.authorities
-			]
+                allRoles:availRoles,
+                allTaskAssignments:availTaskAssignments,
+                taskAssignments:userInstance.taskAssignments,
+                authorities:userInstance.authorities
+            ]
         }
     }
 
     def update = {
         def userInstance = User.get(params.id)
-		//def transferUser = new User(params)
+        //def transferUser = new User(params)
         if (userInstance) {
             if (params.version) {
                 def version = params.version.toLong()
@@ -101,41 +108,52 @@ class UserController {
                 }
             }
 			
-			// Roles information
-			def transferUserRoles = params.authorities.collect { targetA ->
-				def role = Role.get(targetA)
-				role
-			}
-			def userCurRoles = userInstance.authorities
-			def roleRemoveList = DefaultGroovyMethods.minus(userCurRoles, transferUserRoles)
-			def roleAddList = DefaultGroovyMethods.minus(transferUserRoles, userCurRoles)
+            // Roles information
+            def transferUserRoles = params.authorities.collect { targetA ->
+                def role = Role.get(targetA)
+                role
+            }
+            def userCurRoles = userInstance.authorities
+            def roleRemoveList = DefaultGroovyMethods.minus(userCurRoles, transferUserRoles)
+            def roleAddList = DefaultGroovyMethods.minus(transferUserRoles, userCurRoles)
 			
             userInstance.properties = params
-			for (role in roleRemoveList) {
-				userInstance.removeFromAuthorities(role)
-			}
-			for (role in roleAddList) {
-				userInstance.addToAuthorities(role)
-			}
+            for (role in roleRemoveList) {
+                userInstance.removeFromAuthorities(role)
+            }
+            for (role in roleAddList) {
+                userInstance.addToAuthorities(role)
+            }
 
-			// TaskAssignments
-			def transferUserTaskAssignments = new HashSet(params.taskAssignments.collect { targetT ->
-				TaskAssignment.get(targetT)
-			})
-			def userCurTaskAssignments = new HashSet(userInstance.taskAssignments)
+            //existing task assignments
+            def taIds = [params.existingTaskAssignment.id].flatten()
+            def enableds = [params.existingTaskAssignment.enabled].flatten()
+            params.each {k, v -> println k + "--" + v}
+            taIds.eachWithIndex {taId, i ->
+                def tempta = TaskAssignment.get(taId)
+                tempta.enabled = (enableds[i] == 'enabled') ? true : false
+                tempta.save()
+            }
 
-			def taskAssignmentRemoveList = DefaultGroovyMethods.minus(userCurTaskAssignments, transferUserTaskAssignments)
-			def taskAssignmentAddList = DefaultGroovyMethods.minus(transferUserTaskAssignments, userCurTaskAssignments)
+            //new task assignemnts
+            def tasks = [params["taskAssignment.task.id"]].flatten()
+            def chargeCodes = [params["taskAssignment.chargeCode.id"]].flatten()
+            def laborCategories = [params["taskAssignment.laborCategory.id"]].flatten()
+            def enabled = [params["taskAssignment.enabled"]].flatten()
+
+            tasks.eachWithIndex() { task, i ->
+                if(task != 'null'){
+                    def ta = new TaskAssignment()
+                    ta.task = Task.get(task)
+                    ta.chargeCode = ChargeCode.get(chargeCodes[i])
+                    ta.laborCategory = LaborCategory.get(laborCategories[i])
+                    ta.enabled = (enabled[i] == 'enabled') ? true : false
+                    userInstance.addToTaskAssignments(ta)
+                }
+            }
 			
-			for (taskAssignment in taskAssignmentRemoveList) {
-				userInstance.removeFromTaskAssignments(taskAssignment)
-			}
-			for (taskAssignment in taskAssignmentAddList) {
-				userInstance.addToTaskAssignments(taskAssignment)
-			}
 			
-			
-			if (!userInstance.hasErrors() && userInstance.save(flush: true)) {
+            if (!userInstance.hasErrors() && userInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])}"
                 redirect(action: "show", id: userInstance.id)
             }
@@ -167,20 +185,20 @@ class UserController {
             redirect(action: "list")
         }
     }
-	def searchAJAX = {
-		def users = User.findAllByUserRealNameLike("%${params.query}%")
+    def searchAJAX = {
+        def users = User.findAllByUserRealNameLike("%${params.query}%")
 
-		//Create XML response
-		render(contentType: "text/xml") {
-			results() {
-				users.each { user ->
-					result() {
-						name(user.userRealName)
-						//Optional id which will be available in onItemSelect id(person.id)
-						id(user.id.toLong())
-					}
-				}
-			}
-		}
-	}
+        //Create XML response
+        render(contentType: "text/xml") {
+            results() {
+                users.each { user ->
+                    result() {
+                        name(user.userRealName)
+                        //Optional id which will be available in onItemSelect id(person.id)
+                        id(user.id.toLong())
+                    }
+                }
+            }
+        }
+    }
 }
