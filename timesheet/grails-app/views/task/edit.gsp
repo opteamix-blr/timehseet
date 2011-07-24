@@ -85,7 +85,8 @@
                                 </td>
                                 <td class="name">
                                     <g:select id="chargeCodes" name="chargeCodes" 
-                                                from="${chargeCodes}"
+                                                from="${com.ewconline.timesheet.ChargeCode.list()}"
+                                                value="${taskInstance?.chargeCodes}"
                                                 optionValue="chargeNumber"
                                                 optionKey="id"
                                                 multiple="true"/>
@@ -102,8 +103,9 @@
                                     <label for="laborCategories"><g:message code="laborCategories.label" default="Labor Categories" /></label>
                                 </td>
                                 <td class="name">
-                                    <g:select id="laborCategories" name="laborCategories" 
-                                                from="${laborCategories}"
+                                    <g:select id="laborCategories" name="laborCategories"
+                                                from="${com.ewconline.timesheet.LaborCategory.list()}"
+                                                value="${taskInstance?.laborCategories}"
                                                 optionValue="name"
                                                 optionKey="id"
                                                 multiple="multiple"/>

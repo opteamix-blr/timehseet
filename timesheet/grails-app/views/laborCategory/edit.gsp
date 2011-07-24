@@ -30,14 +30,6 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                        	<tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="task"><g:message code="laborCategory.task.name.label" default="Task" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: laborCategoryInstance, field: 'task', 'errors')}">
-                                    <g:select optionValue="name" name="task.id" from="${com.ewconline.timesheet.Task.list()}" optionKey="id" value="${laborCategoryInstance?.task?.id}"  />
-                                </td>
-                            </tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="name"><g:message code="laborCategory.name.label" default="Name" /></label>

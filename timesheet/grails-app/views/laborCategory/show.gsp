@@ -28,12 +28,7 @@
                             <td valign="top" class="value">${fieldValue(bean: laborCategoryInstance, field: "id")}</td>
                             
                         </tr>
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="laborCategory.task.name.label" default="Task" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: laborCategoryInstance, field: "task.name")}</td>
-                            
-                        </tr>
+                        
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="laborCategory.name.label" default="Name" /></td>
                             
