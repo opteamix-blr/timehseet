@@ -111,47 +111,48 @@ class BootStrap {
 		Role.findByAuthority(etimeSecurityService.ACCOUNTANT_ROLE).addToPeople(user3)
 		user3.save();
 		
-		def task1 = new Task(name:"Task 1", 
-			description:"Test Task 1"
-		).save()
-		
-		def task2 = new Task(name:"Task 2",
-			description:"Test Task 2"
-		).save()
-		
+			
 		def chargeCode1 = new ChargeCode(chargeNumber:"000-111-1111", 
-			description:"Test Charge Code 1",
-			task:task1
+			description:"Test Charge Code 1"
 		).save()
+
 		def chargeCode2 = new ChargeCode(chargeNumber:"000-222-2222",
-			description:"Test Charge Code 2",
-			task:task1
+			description:"Test Charge Code 2"
 		).save()
 		
 		def chargeCode3 = new ChargeCode(chargeNumber:"000-333-3333",
-			description:"Test Charge Code 3",
-			task:task2
+			description:"Test Charge Code 3"
 		).save()
 		
 		def laborCategory1 = new LaborCategory( name: "Engineer 1",
-			description:"Test labor cat 1",
-			task:task1
+			description:"Test labor cat 1"
 		).save()
 		
 		def laborCategory2 = new LaborCategory( name: "Engineer 2",
-			description:"Test labor cat 2",
-			task:task1
+			description:"Test labor cat 2"
 		).save()
 
 		def laborCategoryA = new LaborCategory( name: "Truck driver",
-			description:"Test Truck driver",
-			task:task2
+			description:"Test Truck driver"
 		).save()
 		
 		def laborCategoryB = new LaborCategory( name: "Plumber",
-			description:"Test Plumber",
-			task:task2
+			description:"Test Plumber"
 		).save()
+
+                def task1 = new Task(name:"Task 1",
+			description:"Test Task 1"
+		).save()
+
+                task1.addToChargeCodes(chargeCode1)
+                task1.addToLaborCategories(laborCategory1)
+
+		def task2 = new Task(name:"Task 2",
+			description:"Test Task 2"
+		).save()
+
+                task2.addToChargeCodes(chargeCode2)
+                task2.addToLaborCategories(laborCategory2)
 
 		
 		// user1 has work on two different tasks and two diff labor cats.

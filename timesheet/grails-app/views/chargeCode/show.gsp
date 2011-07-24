@@ -29,12 +29,6 @@
                             
                         </tr>
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="chargeCode.task.name.label" default="Task" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: chargeCodeInstance, field: "task.name")}</td>
-                            
-                        </tr>
-                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="chargeCode.chargeNumber.label" default="Charge Number" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: chargeCodeInstance, field: "chargeNumber")}</td>

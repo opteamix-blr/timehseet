@@ -23,7 +23,6 @@
                         <tr>
                         
                             <g:sortableColumn property="id" title="${message(code: 'laborCategory.id.label', default: 'Id')}" />
-                        	<g:sortableColumn property="task" titlekey="laborCategory.task" title="${message(code: 'laborCategory.task.name.label', default: 'Task')}" />
                             <g:sortableColumn property="name" title="${message(code: 'laborCategory.name.label', default: 'Name')}" />
                             <g:sortableColumn property="description" title="${message(code: 'laborCategory.description.label', default: 'Description')}" />
                         </tr>
@@ -33,7 +32,6 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
                             <td><g:link action="show" id="${laborCategoryInstance.id}">${fieldValue(bean: laborCategoryInstance, field: "id")}</g:link></td>
-                        	<td>${fieldValue(bean: laborCategoryInstance, field: "task.name")}</td>
                             <td><g:link action="show" id="${laborCategoryInstance.id}">${fieldValue(bean: laborCategoryInstance, field: "name")}</g:link></td>
                             <td>${fieldValue(bean: laborCategoryInstance, field: "description")}</td>
                         
