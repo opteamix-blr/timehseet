@@ -62,7 +62,6 @@
             <g:if test="${session?.accountantRole}">
               <li><p>Administration</p></li>
               <li><a href="${createLinkTo(dir:'', file:'user/list')}">Employees</a></li>
-              <li><a href="${createLinkTo(dir:'', file:'taskAssignment/list')}">Task Assignments</a></li>
               <li><a href="${createLinkTo(dir:'', file:'task/list')}">Tasks</a></li>
               <li><a href="${createLinkTo(dir:'', file:'chargeCode/list')}">Charge Codes</a></li>
               <li><a href="${createLinkTo(dir:'', file:'laborCategory/list')}">Labor Categories</a></li>
