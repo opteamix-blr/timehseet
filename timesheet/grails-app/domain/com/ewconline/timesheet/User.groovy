@@ -28,6 +28,8 @@ class User {
     /** enabled */
     boolean enabled = true
 
+    String employeeId
+
     String email = ''
     boolean emailShow
 
@@ -49,5 +51,6 @@ class User {
         passwd(nullable:true)
         enabled()
         guid(blank: false, unique: true)
+        employeeId(blank:false)
     }
 }

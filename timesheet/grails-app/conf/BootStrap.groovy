@@ -69,6 +69,7 @@ class BootStrap {
 				passwd:"p@ssw0rd1",
 				userRealName:"Accountant User",
 				description:"Dev Accountant user",
+                                employeeId:"004",
                                 guid:java.util.UUID.randomUUID().toString()
 			)
 			accountantRole.addToPeople(user)
@@ -84,6 +85,7 @@ class BootStrap {
 				userRealName:"John Doe",
 				description:"Employee",
 				email:"test@test.com",
+                                employeeId:"001",
                                 guid:java.util.UUID.randomUUID().toString()
 		)
 		user1.save()
@@ -93,6 +95,7 @@ class BootStrap {
 			passwd:"p@ssw0rd1",
 			userRealName:"Jane Doe",
 			description:"Employee and Approver",
+                        employeeId:"002",
                         guid:java.util.UUID.randomUUID().toString()
 		)
 		
@@ -104,6 +107,7 @@ class BootStrap {
 			passwd:"p@ssw0rd1",
 			userRealName:"Fred Sanford",
 			description:"Employee and Accountant",
+                        employeeId:"003",
                         guid:java.util.UUID.randomUUID().toString()
 		)
 		
@@ -160,9 +164,9 @@ class BootStrap {
 			notes: "taskAssignment1 ",
 			task: task1,
 			chargeCode:chargeCode1,
-			laborCategory:laborCategory1,
-			user:user1
-		).save()
+			laborCategory:laborCategory1
+		)
+                user1.addToTaskAssignments(taskAssignment1)
 		
 		// a second task assignment means the employee 
 		// will get two entries in their time sheet.
@@ -170,41 +174,9 @@ class BootStrap {
 			notes: "taskAssignment2 ",
 			task: task2,
 			chargeCode:chargeCode3,
-			laborCategory:laborCategoryB,
-			user:user1
-		).save()
-
-
-//		// @TODO: create task assignments for approvers.
-// below is was a timesheet on a weekend boundary. timesheet before current.
-//		//DateTime currentDay = DateTime.today(TimeZone.getDefault())
-//		DateTime saturday = new DateTime("2010-12-18").getStartOfDay();
-//		DateTime friday = new DateTime("2010-12-24").getEndOfDay();
-//		//DateTime saturday = currentDay.minusDays(currentDay.getWeekDay())
-//		//DateTime friday = saturday.plusDays(6)
-//
-//		Timesheet ts = new Timesheet(
-//			startDate:new Date(saturday.getMilliseconds(TimeZone.getDefault())),
-//			endDate:new Date(friday.getMilliseconds(TimeZone.getDefault())),
-//			user: user1,
-//			currentState: timesheetManagerService.NOT_STARTED
-//		)
-//		
-//		
-//		def taskAssignments = user1.taskAssignments
-//		for (ta in taskAssignments){
-//			def timesheetEntry = new TimesheetEntry(taskAssignment:ta);
-//			for (x in (0..6)){
-//				timesheetEntry.addToWorkdays(new Workday(hoursWorked:8.0, 
-//												dateWorked:new Date(saturday.plusDays(x)
-//													                        .getEndOfDay()
-//																			.getMilliseconds(TimeZone.getDefault())))
-//				                             )
-//			} // for loop
-//			ts.addToTimesheetEntries(timesheetEntry)
-//		}
-//		
-//		timesheetManagerService.createWeeklyTimesheet(ts)
+			laborCategory:laborCategoryB
+		)
+                user1.addToTaskAssignments(taskAssignment2)
 	}
 	
 }
