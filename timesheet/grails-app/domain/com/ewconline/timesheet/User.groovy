@@ -28,7 +28,7 @@ class User {
     /** enabled */
     boolean enabled = true
 
-    String employeeId
+    String employeeId = "-1"
 
     String email = ''
     boolean emailShow
