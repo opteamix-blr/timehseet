@@ -61,6 +61,9 @@ function grandTotal() {
 			<tr class="prop">
 			    <td valign="top" class="name">
 			      <label for="startDate"><g:message code="timesheet.startDate.label" default="Start Date" /></label>
+                              <g:hiddenField name="isCurrentWeek" value="${isCurrentWeek}" />
+                              <g:hiddenField name="dateOnWeek" value="${timesheetInstance.startDate.format('yyyy-MM-dd').toString()}" />
+
 			    </td>
 			    <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'startDate', 'errors')}">
 			        <g:formatDate format="MMM-dd-yyyy" date="${timesheetInstance?.startDate}"/>
@@ -90,7 +93,7 @@ function grandTotal() {
 		  	</tr>
 	<g:each status="i" in="${timesheetInstance?.timesheetEntries}" var="timesheetEntry">
 	      <tr>
-            <td><g:hiddenField name="timesheetEntries" value="${timesheetEntry?.id}" />${timesheetEntry?.taskAssignment?.task.name} </td>
+            <td><g:hiddenField name="taskAssignmentIds" value="${timesheetEntry?.taskAssignment?.id}" /><g:hiddenField name="timesheetEntries" value="${timesheetEntry?.id}" />${timesheetEntry?.taskAssignment?.task.name} </td>
             <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
             <td>${timesheetEntry?.taskAssignment?.chargeCode.chargeNumber}</td>
             <g:each status="j" in="${timesheetEntry?.workdays}" var="wd">

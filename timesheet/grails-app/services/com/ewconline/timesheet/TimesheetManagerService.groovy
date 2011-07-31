@@ -2,6 +2,8 @@ package com.ewconline.timesheet
 
 import hirondelle.date4j.DateTime 
 import java.util.TimeZone
+import java.util.*
+
 class TimesheetManagerService {
     def etimeSecurityService
     static transactional = true
@@ -36,19 +38,105 @@ class TimesheetManagerService {
         (APPROVED+disapproving): OPEN_NOT_SAVED,
         (OPEN_NOT_SAVED+saving): OPEN_SAVED
     ]
-	
+
+    /**dateOnWeek is a string with format of yyyy-MM-dd
+     */
+    def generatePastTimesheet(user, dateOnWeek, taskAssignmentIds) {
+
+        DateTime targetDay = null
+        if (dateOnWeek && dateOnWeek.length() > 0 && (taskAssignmentIds && taskAssignmentIds.size() >0 )) {
+            targetDay = new DateTime(dateOnWeek)
+            DateTime saturday = null
+            if (targetDay.getWeekDay() == 7) {
+                saturday = targetDay.getStartOfDay()
+            }else {
+                saturday = targetDay.minusDays(targetDay.getWeekDay()).getStartOfDay()
+            }
+
+            DateTime friday = saturday.plusDays(6).getEndOfDay()
+
+            Timesheet ts = new Timesheet(
+                startDate:new Date(saturday.getMilliseconds(TimeZone.getDefault())),
+                endDate:new Date(friday.getMilliseconds(TimeZone.getDefault())),
+                user: user,
+                currentState: NOT_STARTED
+            )
+
+            // add task assignments where the ids are selected
+            def taskAssignments = []
+            user.taskAssignments.each { ta ->
+                taskAssignmentIds.each { taId ->   
+                    if (taId == "${ta.id}") {
+                       taskAssignments.add ta
+                    }
+                }
+            }
+            
+            for (ta in taskAssignments){
+                def timesheetEntry = new TimesheetEntry(taskAssignment:ta, currentState: NOT_STARTED);
+                for (x in (0..6)){
+                    timesheetEntry.addToWorkdays(new Workday(dateWorked:new Date(saturday.plusDays(x).getEndOfDay().getMilliseconds(TimeZone.getDefault()))))
+                }
+                ts.addToTimesheetEntries(timesheetEntry)
+            }
+            return ts
+        }
+
+        
+    }
+    /**dateOnWeek is a string with format of yyyy-MM-dd
+     */
+    def findTimesheet(user, dateOnWeek) {
+        def systemUser = User.get(user.id)
+        def c = Timesheet.createCriteria()
+        DateTime targetDay = null
+        DateTime saturday = null
+        if (dateOnWeek && dateOnWeek.length() > 0) {
+            targetDay = new DateTime(dateOnWeek)
+            if (targetDay.getWeekDay() == 7) {
+                saturday = targetDay.getStartOfDay()
+            } else {
+                saturday = targetDay.minusDays(targetDay.getWeekDay()).getStartOfDay()
+            }
+            DateTime friday = saturday.plusDays(6).getEndOfDay()
+
+            def previousTimesheet = c.list {
+                eq("user.id", systemUser.id)
+                ge("startDate", new Date(saturday.getMilliseconds(TimeZone.getDefault())))
+                le("endDate", new Date(friday.getMilliseconds(TimeZone.getDefault())))
+            }
+            if (previousTimesheet && previousTimesheet.size() > 0) {
+                return previousTimesheet[0]
+            } else {
+                return null;
+            }
+        }   
+    }
     /**
      * Generates or builds an instance of a Timesheet object. This is normally for
      * create screens.
      * @return Timesheet - containing the timesheet entries (not persisted).
      */
     def generateWeeklyTimesheet(User user) {
-		
+	
+        Timesheet ts = null
+        ts = retrieveCurrentTimesheet(user)
+        if (ts != null) {
+            throw new RuntimeException("The current or weekly timesheet was already created.")
+        }
+	
         DateTime currentDay = DateTime.today(TimeZone.getDefault())
-        DateTime saturday = currentDay.minusDays(currentDay.getWeekDay()).getStartOfDay()
+        DateTime saturday = null
+
+        if (currentDay.getWeekDay() == 7) {
+            saturday = currentDay.getStartOfDay()
+        }else {
+            saturday = currentDay.minusDays(currentDay.getWeekDay()).getStartOfDay()
+        }
+
         DateTime friday = saturday.plusDays(6).getEndOfDay()
 
-        Timesheet ts = new Timesheet(
+        ts = new Timesheet(
             startDate:new Date(saturday.getMilliseconds(TimeZone.getDefault())),
             endDate:new Date(friday.getMilliseconds(TimeZone.getDefault())),
             user: user,
@@ -92,13 +180,8 @@ class TimesheetManagerService {
             return null;
         }
     }
-	
-    def createWeeklyTimesheet(Timesheet timesheet) {
 
-        def ts = retrieveCurrentTimesheet(timesheet.user)
-        if (ts != null) {
-            throw new RuntimeException("The current or weekly timesheet was already created.")
-        }
+    def createWeeklyTimesheet(Timesheet timesheet) {
         updateState(timesheet, saving)
         timesheet.lastUpdated = new Date()
         return timesheet.save(flush:true)
