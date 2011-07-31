@@ -200,23 +200,28 @@ class TimesheetManagerService {
 	
     def approve(Timesheet timesheet, user, isAccountantRole, isApproverRole) {
         // validate against user
-
+        println ("isAccountantRole = ${isAccountantRole.class} , isApproverRole = ${isApproverRole}")
         if (!isAccountantRole && !isApproverRole) {
             throw new RuntimeException("${user.userRealName} is not allowed to approve timesheets.${isAccountantRole} ${isApproverRole}")
         }
-        def numApproved = 0
+        int numApproved = 0
         timesheet.timesheetEntries.each {
             te ->
-            te.taskAssignment.taskAssignmentApprovals.each {
-                taa ->
-                if (taa.user.id == user.id || isAccountantRole) {
-                    te.currentState = APPROVED
+
+            if (isAccountantRole) {
+                te.currentState = APPROVED
+                numApproved++
+            } else {
+                for ( taa in te.taskAssignment.taskAssignmentApprovals ) {
+                   if (taa.user.id == user.id && isApproverRole) {
+                        te.currentState = APPROVED
+                        numApproved++
+                        break
+                    }
                 }
             }
-            if (te.currentState == APPROVED) {
-                numApproved++
-            }
         }
+        
         if (timesheet.timesheetEntries.size() == numApproved) {
             updateState(timesheet, approving)
         }
