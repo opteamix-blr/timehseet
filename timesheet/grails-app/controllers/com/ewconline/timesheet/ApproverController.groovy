@@ -5,6 +5,8 @@ class ApproverController {
     def index = { }
 	
     def approverListTimesheet = {
+
+        def user = User.get(session.user.id)
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         def timesheetList = Timesheet.createCriteria().list {
             and {
@@ -72,7 +74,7 @@ class ApproverController {
         if (!timesheetInstance.hasErrors()) {
 				
             flash.message = "${message(code: 'default.updated.message', args: [message(code: 'timesheet.label', default: 'Timesheet'), timesheetInstance.id])}"
-            timesheetManagerService.disapprove(timesheetInstance)
+            timesheetManagerService.disapprove(timesheetInstance, user, session.accountantRole, session.approverRole)
             redirect(action: "approverListTimesheet")
         }
     }
