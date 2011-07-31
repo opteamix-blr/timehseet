@@ -4,6 +4,7 @@ import org.codehaus.groovy.grails.commons.*
 import grails.util.Environment
 import hirondelle.date4j.DateTime 
 import java.util.TimeZone
+import java.util.Date
 
 import com.ewconline.timesheet.Timesheet 
 
@@ -14,9 +15,40 @@ class TimesheetController {
     def ldapAuthenticationService
     def scafold = true
     def index = { }
-	
-	
-    //  http://localhost:8080/Timesheet/timesheet/listTimesheets
+
+    def askPastTimesheetInfo = {
+        def user = User.get(session.user.id)
+	[userInstance:user]
+    }
+
+    def createPastTimesheet = {
+        def user = User.get(session.user.id)
+        def dateOnWeek = params["dateOnWeek"]
+        def taskAssignmentIds = params["taskAssignmentIds"]
+        def dateOnWeek2 = null
+        if (dateOnWeek) {
+            dateOnWeek2 = "${dateOnWeek?.format("yyyy-MM-dd")}"
+        }
+
+        Timesheet duplicateTimesheet = timesheetManagerService.findTimesheet(user, dateOnWeek2)
+        if(duplicateTimesheet){
+            // already created
+            flash.message = "Timesheet already created going to edit mode."
+            redirect(action:"edit", params:[id:duplicateTimesheet.id])
+        } else {
+            // obtain the newly created timesheet in the past
+            Timesheet prevTimesheet = timesheetManagerService.generatePastTimesheet(user, dateOnWeek2, taskAssignmentIds)
+            if (prevTimesheet) {
+                // populate the create screen with the previous timesheet
+                render(view: "create", model: [timesheetInstance:prevTimesheet, isCurrentWeek:false])
+            } else {
+                // error validation on required fields
+                flash.message = "Date of week or at least one Task Assignment must be selected to creating a previous timesheet."
+                render(view: "askPastTimesheetInfo", model: [userInstance:user])
+            }
+        }
+     
+    }
     def listTimesheets = {
                 
         def user = User.get(session.user.id)
@@ -28,7 +60,7 @@ class TimesheetController {
 		
         [timesheetList:timesheetList, timesheetInstanceTotal:timesheetList.count()]
     }
-	
+
     def create = {
 
         def user = User.get(session.user.id)
@@ -46,8 +78,20 @@ class TimesheetController {
 	
     def save = {
         def user = User.get(session.user.id)
-		
-        Timesheet timesheetInstance = timesheetManagerService.generateWeeklyTimesheet(user)
+        Timesheet timesheetInstance = null
+
+        // detect if its this week is a current week type.
+        if (params["isCurrentWeek"] == null || params["isCurrentWeek"] == "true") {
+            timesheetInstance = timesheetManagerService.generateWeeklyTimesheet(user)
+        } else {
+            def taskAssignmentIds = params["taskAssignmentIds"]
+            println("any taskAssignmentIds: ${taskAssignmentIds}")
+
+            def dateOnWeek = params["dateOnWeek"]
+
+            timesheetInstance = timesheetManagerService.generatePastTimesheet(user, dateOnWeek, taskAssignmentIds)
+        }
+
         try {
             validateHoursPerDay(timesheetInstance)
         } catch (Exception e) {

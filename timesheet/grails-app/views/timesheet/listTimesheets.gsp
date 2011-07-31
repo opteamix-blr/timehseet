@@ -10,6 +10,7 @@
 	<div class="nav">
 		<span class="menuButton"><a class="home" href="${createLinkTo(dir:'timesheet/listTimesheets')}">Home</a></span>
 		<span class="menuButton"><g:link class="create" action="create">Create New Timesheet</g:link></span>
+                <span class="menuButton"><a class="create"href="${createLinkTo(dir:'timesheet/askPastTimesheetInfo')}">Create a Past Timesheet</a></span>
 	</div>
 
 	<div class="body">
