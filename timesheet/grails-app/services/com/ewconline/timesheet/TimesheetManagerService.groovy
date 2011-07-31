@@ -282,10 +282,10 @@ class TimesheetManagerService {
 		
     }
 	
-    def deepCopyTimesheet(Timesheet ts) {
-		
+    def deepCopyTimesheet(tsId) {
+        Timesheet ts = Timesheet.get(tsId)
         Timesheet copyTs = new Timesheet(
-            id:ts.id,
+            id:tsId,
             startDate:ts.startDate,
             endDate:ts.endDate,
             user: ts.user,

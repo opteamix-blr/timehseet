@@ -85,8 +85,7 @@ class TimesheetController {
             timesheetInstance = timesheetManagerService.generateWeeklyTimesheet(user)
         } else {
             def taskAssignmentIds = params["taskAssignmentIds"]
-            println("any taskAssignmentIds: ${taskAssignmentIds}")
-
+            
             def dateOnWeek = params["dateOnWeek"]
 
             timesheetInstance = timesheetManagerService.generatePastTimesheet(user, dateOnWeek, taskAssignmentIds)
@@ -176,8 +175,15 @@ class TimesheetController {
             validateHoursPerDay(timesheetInstance)
         }catch(Exception e) {
             flash.message = "Invalid value. Each day can only add up to 24 hours. Must be a decimal between 0.0 to 24.0"
-            populateWorkdaysFromForm(timesheetInstance)
-            render(view: "edit", model: [timesheetInstance: timesheetInstance])
+            Timesheet timesheetCopy = timesheetManagerService.deepCopyTimesheet(timesheetInstance.id)
+
+            populateWorkdaysFromForm(timesheetCopy)
+
+            // for some reason this works... deep copy doesn't copy id
+            // maybe populateWorkdaysFromForm() is messing with the id.
+            // this works with the setting of the id here below:
+            timesheetCopy.id = timesheetInstance.id
+            render(view: "edit", model: [timesheetInstance: timesheetCopy])
             return
         }
 		
@@ -187,7 +193,7 @@ class TimesheetController {
             flash.message = "Modified work hours on a prior date requires a reason."
             // update from form
             // copy
-            Timesheet timesheetCopy = timesheetManagerService.deepCopyTimesheet(timesheetInstance)
+            Timesheet timesheetCopy = timesheetManagerService.deepCopyTimesheet(timesheetInstance.id)
 			
             populateWorkdaysFromForm(timesheetCopy)
             timesheetCopy.id = timesheetInstance.id
@@ -224,7 +230,7 @@ class TimesheetController {
         }
 		
         // copy
-        Timesheet timesheetCopy = timesheetManagerService.deepCopyTimesheet(timesheetInstance)
+        Timesheet timesheetCopy = timesheetManagerService.deepCopyTimesheet(timesheetInstance.id)
 		
         if (params.version) {
             def version = params.version.toLong()
@@ -241,7 +247,6 @@ class TimesheetController {
             timesheetCopy.properties = params
             populateModifiesFromForm(timesheetInstance)
             populateTodaysDateFromForm(timesheetInstance)
-			
         } catch (Exception e) {
             flash.message = e.getMessage()
             timesheetCopy.id = timesheetInstance.id
@@ -352,17 +357,19 @@ class TimesheetController {
             tse, index ->
             def notes = obtainModifiedDayNotes(tse.taskAssignment)
             def dayHrs = obtainModifiedDayHrs(tse.taskAssignment)
-			
+            def daysOfWeek = obtainWeekdays(tse.taskAssignment)
+            
             tse.workdays.eachWithIndex { workday, indx ->
-                def oldValue = workday?.hoursWorked
-                if (!oldValue) {
-                    oldValue = 0.0
-                }
-                //println "old value is ${workday?.hoursWorked} new value is ${dayHrs[indx]?.toFloat() }"
+                Float oldValue = workday?.hoursWorked
+
+                //println ("   old value is ${oldValue} new value is ${dayHrs[indx]?.toFloat()}")
                 if (dayHrs[indx] == "" || dayHrs[indx] == null) {
                     // skip
-                } else {
-					
+                    if (daysOfWeek[indx] && oldValue == null) {
+                        workday.hoursWorked = daysOfWeek[indx].toFloat()
+                        workday.save()
+                    }
+                } else {                     
                     workday.hoursWorked = dayHrs[indx].toFloat();
                     //println("mod hours: ${dayHrs[indx]}")
                     //println("mod notes: ${notes[indx]}")
@@ -376,11 +383,11 @@ class TimesheetController {
                             newValue:workday?.hoursWorked,
                             comment:notes[indx]
                         ).save()
-                        println "note = ${note}"
+                       
                         workday.notes.add note
-						
                     }
-
+                   
+                    
                 }
 				
             }
@@ -556,20 +563,27 @@ class TimesheetController {
             def daysOfWeek = obtainWeekdays(tse.taskAssignment)
             tse.workdays.eachWithIndex { workday, indx ->
                 def sysHoursWorked = workday?.hoursWorked
-                if (sysHoursWorked == null) {
-                    sysHoursWorked = ""
-                }
+                
                 DateTime dtWorkday = new DateTime(workday.dateWorked.toString()).getEndOfDay().truncate(DateTime.Unit.SECOND)
 
                 if (!currentDay.equals(dtWorkday)) {
-                    if (daysOfWeek[indx] != sysHoursWorked.toString()) {
-                        Workday changedWorkday = new Workday()
-                        changedWorkday.dateWorked = workday?.dateWorked
-                        if (daysOfWeek[indx]) {
-                            changedWorkday.hoursWorked = daysOfWeek[indx].toFloat()
+
+                    Float formWorkHour = null
+                    if (daysOfWeek[indx] && daysOfWeek[indx].isFloat()) {
+                        formWorkHour = daysOfWeek[indx].toFloat()
+                    }
+
+                    if (sysHoursWorked != null) {
+                        if (formWorkHour == null) {
+                            formWorkHour = 0f;
                         }
-                        changedWorkday.timesheetEntry = tse
-                        weekdaysModified.add changedWorkday
+                        if (formWorkHour != sysHoursWorked) {
+                            Workday changedWorkday = new Workday()
+                            changedWorkday.dateWorked = workday?.dateWorked
+                            changedWorkday.hoursWorked = formWorkHour
+                            changedWorkday.timesheetEntry = tse
+                            weekdaysModified.add changedWorkday
+                        }
                     }
                 }
             }
@@ -598,7 +612,7 @@ class TimesheetController {
                         //todayMod.dateWorked = workday?.dateWorked
                         if (daysOfWeek[indx]) {
                             workday?.hoursWorked = daysOfWeek[indx].toFloat()
-                            println("modified workday?.hoursWorked= ${workday?.hoursWorked}")
+//                            println("modified workday?.hoursWorked= ${workday?.hoursWorked}")
 							
                         }
                     }
