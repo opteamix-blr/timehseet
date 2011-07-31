@@ -200,7 +200,6 @@ class TimesheetManagerService {
 	
     def approve(Timesheet timesheet, user, isAccountantRole, isApproverRole) {
         // validate against user
-        println ("isAccountantRole = ${isAccountantRole.class} , isApproverRole = ${isApproverRole}")
         if (!isAccountantRole && !isApproverRole) {
             throw new RuntimeException("${user.userRealName} is not allowed to approve timesheets.${isAccountantRole} ${isApproverRole}")
         }
@@ -230,14 +229,40 @@ class TimesheetManagerService {
         return timesheet.save(flush:true)
     }
 	
-    def disapprove(Timesheet timesheet) {
-        updateState(timesheet, disapproving)
-        timesheet.timesheetEntries.each {
-            te ->
-            te.currentState = timesheet.currentState
+    def disapprove(Timesheet timesheet, user, isAccountantRole, isApproverRole) {
+        if (!isAccountantRole && !isApproverRole) {
+            throw new RuntimeException("${user.userRealName} is not allowed to disapprove timesheets.${isAccountantRole} ${isApproverRole}")
         }
-        timesheet.lastUpdated = new Date()
-        return timesheet.save(flush:true)
+        boolean disapproveIt = false
+
+        // if accountant go disaprove
+        if (isAccountantRole) {
+            disapproveIt = true
+        } else {
+            // check if user is one of the approvers
+            for ( te in timesheet.timesheetEntries) {
+                for ( taa in te.taskAssignment.taskAssignmentApprovals ) {
+                   if (taa.user.id == user.id && isApproverRole) {
+                        disapproveIt = true
+                        break
+                    }
+                }
+                if (disapproveIt) {
+                    break
+                }
+            }
+        }
+
+        // do it
+        if (disapproveIt) {
+            updateState(timesheet, disapproving)
+            timesheet.timesheetEntries.each {
+                te ->
+                te.currentState = timesheet.currentState
+            }
+            timesheet.lastUpdated = new Date()
+            return timesheet.save(flush:true)
+        }
     }
 	
     def retrieveTimesheets(User user) {
