@@ -21,11 +21,16 @@
             <div class="dialog">
                 <table>
                     <tbody>
-                    
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="user.id.label" default="Id" /></td>
-                            
+
                             <td valign="top" class="value">${fieldValue(bean: userInstance, field: "id")}</td>
+
+                        </tr>
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="user.employeeId.label" default="Employee Id" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "employeeId")}</td>
                             
                         </tr>
                     
