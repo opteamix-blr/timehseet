@@ -60,10 +60,18 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="userRealName"><g:message code="user.userRealName.label" default="User Real Name" /></label>
+                                    <label for="userRealName"><g:message code="user.userRealName.label" default="First Name" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'userRealName', 'errors')}">
-                                    <g:textField name="userRealName" value="${userInstance?.userRealName}" />
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'firstName', 'errors')}">
+                                    <g:textField name="firstName" value="${userInstance?.firstName}" />
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="userRealName"><g:message code="user.userRealName.label" default="Last Name" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: userInstance, field: 'firstName', 'errors')}">
+                                    <g:textField name="lastName" value="${userInstance?.lastName}" />
                                 </td>
                             </tr>
                         

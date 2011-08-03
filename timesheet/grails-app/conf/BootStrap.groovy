@@ -67,7 +67,8 @@ class BootStrap {
 
 			def user = new User(username:"accountant",
 				passwd:"p@ssw0rd1",
-				userRealName:"Accountant User",
+				firstName:"Accountant",
+                                lastName:"User",
 				description:"Dev Accountant user",
                                 employeeId:"004",
                                 guid:java.util.UUID.randomUUID().toString()
@@ -82,7 +83,8 @@ class BootStrap {
 	void createTestUsers() {
 		def user1 = new User(username:"emp1",
 				passwd:"p@ssw0rd1",
-				userRealName:"John Doe",
+				firstName:"John",
+                                lastName:"Doe",
 				description:"Employee",
 				email:"test@test.com",
                                 employeeId:"001",
@@ -93,7 +95,8 @@ class BootStrap {
 		
 		def user2 = new User(username:"approver1",
 			passwd:"p@ssw0rd1",
-			userRealName:"Jane Doe",
+			firstName:"Jane",
+                        lastName:"Doe",
 			description:"Employee and Approver",
                         employeeId:"002",
                         guid:java.util.UUID.randomUUID().toString()
@@ -105,7 +108,8 @@ class BootStrap {
 		
 		def user3 = new User(username:"accountant1",
 			passwd:"p@ssw0rd1",
-			userRealName:"Fred Sanford",
+			firstName:"Fred",
+                        lastName:"Sanford",
 			description:"Employee and Accountant",
                         employeeId:"003",
                         guid:java.util.UUID.randomUUID().toString()
