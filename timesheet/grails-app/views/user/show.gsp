@@ -42,10 +42,16 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="user.userRealName.label" default="User Real Name" /></td>
+                            <td valign="top" class="name"><g:message code="user.firstName.label" default="First Name" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "userRealName")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "firstName")}</td>
                             
+                        </tr>
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="user.lastName.label" default="Last Name" /></td>
+
+                            <td valign="top" class="value">${fieldValue(bean: userInstance, field: "lastName")}</td>
+
                         </tr>
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="user.enabled.label" default="Enabled" /></td>

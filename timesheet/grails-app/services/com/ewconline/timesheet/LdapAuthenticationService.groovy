@@ -52,7 +52,8 @@ class LdapAuthenticationService {
                 user.guid = attr?.get("objectGUID")?.get()
                 
                 // Get the display name
-                user.userRealName = attr?.get("displayName")?.get()
+                //Removed to support first name and last name
+//                user.userRealName = attr?.get("displayName")?.get()
 
                 // Get the primary email address
                 user.email = attr?.get("mail")?.get()

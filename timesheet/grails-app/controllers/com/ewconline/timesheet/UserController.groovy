@@ -126,13 +126,15 @@ class UserController {
             }
 
             //existing task assignments
-            def taIds = [params.existingTaskAssignment.id].flatten()
-            def enableds = [params.existingTaskAssignment.enabled].flatten()
+            def taIds = [params?.existingTaskAssignment?.id].flatten()
+            def enableds = [params?.existingTaskAssignment?.enabled].flatten()
             params.each {k, v -> println k + "--" + v}
             taIds.eachWithIndex {taId, i ->
                 def tempta = TaskAssignment.get(taId)
-                tempta.enabled = (enableds[i] == 'enabled') ? true : false
-                tempta.save()
+                if(tempta){
+                    tempta?.enabled = (enableds[i] == 'enabled') ? true : false
+                    tempta.save()
+                }
             }
 
             //new task assignemnts
