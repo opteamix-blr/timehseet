@@ -13,7 +13,7 @@
         <script language="JavaScript" type="text/javascript">
 
         function selectAllListBoxes() {
-            var targetListBoxes = ['taskAssignments', 'authorities'];
+            var targetListBoxes = ['authorities'];
             selectAllListBoxesByIds(targetListBoxes);
         }
         </script>

@@ -68,12 +68,6 @@ class LdapAuthenticationService {
                 if (size > 0) {
                     while (memberOf.hasMore()) {
                         def mValue = memberOf.next();
-                        if (mValue.contains('CN=Administrators')){
-                            Role role = Role.findByAuthority(etimeSecurityService.ADMIN_ROLE)
-                            if (!roles.contains(role)) {
-                                roles.add(role)
-                            }
-                        }
                         if (mValue.contains('CN=Accountants')){
                             Role role = Role.findByAuthority(etimeSecurityService.ACCOUNTANT_ROLE)
                             if (!roles.contains(role)) {
@@ -118,19 +112,6 @@ class LdapAuthenticationService {
                 changes = true
             }
 
-            // admin role
-            Role adminRole = Role.findByAuthority(etimeSecurityService.ACCOUNTANT_ROLE)
-            if (!tempUser.authorities.contains(adminRole) &&
-                user.authorities.contains(adminRole)) {
-                user.authorities.add(adminRole)
-                Role.findByAuthority(etimeSecurityService.ADMIN_ROLE).addToPeople(tempUser)
-                changes = true
-            } else if (tempUser.authorities.contains(adminRole) &&
-                !user.authorities.contains(adminRole)) {
-                user.authorities.add(adminRole)
-                Role.findByAuthority(etimeSecurityService.ADMIN_ROLE).removeFromPeople(tempUser)
-                changes = true
-            }
             // insure all authenticated people are employees (too many not in employee role)
             Role selfRole = Role.findByAuthority(etimeSecurityService.SELF_ROLE)
             if (!tempUser.authorities.contains(selfRole)) {
