@@ -20,12 +20,18 @@ class UserController {
         def userInstance = new User()
         userInstance.properties = params
         def allRoles = Role.list([sort: 'authority', order: 'asc'])
+        def approvers = com.ewconline.timesheet.Role.findByAuthority('approver_role').people
 
         def allTaskAssignments = TaskAssignment.createCriteria().list {
             eq('enabled', true)
         }
 		
-        return [userInstance: userInstance, allRoles:allRoles, allTaskAssignments:allTaskAssignments]
+        return [
+            userInstance: userInstance,
+            allRoles:allRoles,
+            allTaskAssignments:allTaskAssignments,
+            approvers: approvers
+        ]
     }
 
     def save = {
@@ -35,6 +41,8 @@ class UserController {
         def chargeCodes = [params["taskAssignment.chargeCode.id"]].flatten()
         def laborCategories = [params["taskAssignment.laborCategory.id"]].flatten()
         def enabled = [params["taskAssignment.enabled"]].flatten()
+        def approver1 = [params["taskAssignment.approver1.id"]].flatten()
+        def approver2 = [params["taskAssignment.approver2.id"]].flatten()
 
         tasks.eachWithIndex() { task, i ->
             if(task != 'null'){
@@ -44,6 +52,16 @@ class UserController {
                 ta.laborCategory = LaborCategory.get(laborCategories[i])
                 ta.enabled = (enabled[i] == 'enabled') ? true : false
                 userInstance.addToTaskAssignments(ta)
+                if(approver1[i] != 'null'){
+                    def taa = new TaskAssignmentApproval()
+                    taa.user = User.get(approver1[i] as Long)
+                    ta.addToTaskAssignmentApprovals(taa)
+                }
+                if(approver2[i] != 'null'){
+                    def taa = new TaskAssignmentApproval()
+                    taa.user = User.get(approver2[i] as Long)
+                    ta.addToTaskAssignments(taa)
+                }
             }
         }
 
@@ -86,6 +104,9 @@ class UserController {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])}"
             redirect(action: "list")
         } else {
+            userInstance.taskAssignments.each{
+                log.debug it.taskAssignmentApprovals.size()
+            }
             return [userInstance: userInstance, 
                 allRoles:availRoles,
                 allTaskAssignments:availTaskAssignments,
@@ -128,11 +149,31 @@ class UserController {
             //existing task assignments
             def taIds = [params?.existingTaskAssignment?.id].flatten()
             def enableds = [params?.existingTaskAssignment?.enabled].flatten()
+            def approver1 = [params?.existingTaskAssignment?.approver1?.id].flatten()
+            def approver2 = [params?.existingTaskAssignment?.approver2?.id].flatten()
             params.each {k, v -> println k + "--" + v}
             taIds.eachWithIndex {taId, i ->
                 def tempta = TaskAssignment.get(taId)
                 if(tempta){
                     tempta?.enabled = (enableds[i] == 'enabled') ? true : false
+                    if(approver1[i] != 'null'){
+                        if(!tempta?.taskAssignmentApprovals.find{
+                                it.user.id as String == approver1[i]
+                            }){
+                            def taa = new TaskAssignmentApproval()
+                            taa.user = User.get(approver1[i])
+                            tempta.addToTaskAssignmentApprovals(taa)
+                        }
+                    }
+                    if(approver2[i] != 'null'){
+                        if(!tempta?.taskAssignmentApprovals.find{
+                                it.user.id as String == approver2[i]
+                            }){
+                            def taa = new TaskAssignmentApproval()
+                            taa.user = User.get(approver2[i])
+                            tempta.addToTaskAssignmentApprovals(taa)
+                        }
+                    }
                     tempta.save()
                 }
             }

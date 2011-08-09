@@ -159,6 +159,7 @@
                                     <th>Task</th>
                                     <th>Charge Code</th>
                                     <th>Labor Category</th>
+                                    <th>Approver</th>
                                     <th>Enabled</th>
                                   </thead>
                                   <tbody id="taTable" class="taTable">
@@ -183,6 +184,18 @@
                                               from="${com.ewconline.timesheet.LaborCategory.list()}"
                                               optionKey="id"
                                               noSelection="${['null':'Select One...']}"/>
+                                      </td>
+                                      <td>
+                                        <g:select optionValue="userRealName"
+                                                  name="taskAssignment.approver1.id"
+                                                  optionKey="id"
+                                                  from="${com.ewconline.timesheet.Role.findByAuthority('approver_role').people}"
+                                                  noSelection="${['null':'Select One...']}"/>
+                                        <g:select optionValue="userRealName"
+                                                  name="taskAssignment.approver2.id"
+                                                  optionKey="id"
+                                                  from="${com.ewconline.timesheet.Role.findByAuthority('approver_role').people}"
+                                                  noSelection="${['null':'Select One...']}"/>
                                       </td>
                                       <td>
                                         <g:select name="taskAssignment.enabled"
