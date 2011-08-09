@@ -104,6 +104,7 @@
                                     <th>Task</th>
                                     <th>Charge Code</th>
                                     <th>Labor Category</th>
+                                    <th>Approvers</th>
                                     <th>Enabled</th>
                                   </tr>
                                 </thead>
@@ -118,6 +119,11 @@
                                       </td>
                                       <td>
                                         ${t.laborCategory.name}
+                                      </td>
+                                      <td>
+                                        <g:each in="${t.taskAssignmentApprovals}" var="ap">
+                                          ${ap.user.userRealName}<br/>
+                                        </g:each>
                                       </td>
                                       <td>
                                         ${t.enabled ? "enabled" : "disabled"}

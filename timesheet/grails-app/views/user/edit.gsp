@@ -171,6 +171,7 @@
                         <th>Task</th>
                         <th>Charge Code</th>
                         <th>Labor Category</th>
+                        <th>Approver</th>
                         <th>Enabled</th>
                       </thead>
                       <tbody>
@@ -187,6 +188,23 @@
                             </td>
                             <td>
                               <g:hiddenField name="existingTaskAssignment.id" value="${t.id}"/>
+                              <g:each in="${t?.taskAssignmentApprovals.size() > 0 ? t?.taskAssignmentApprovals : ['null', 'null']}" var="ap" status="c">
+                              <g:select optionValue="userRealName"
+                                        name="existingTaskAssignment.approver${c+1}.id"
+                                        optionKey="id"
+                                        from="${com.ewconline.timesheet.Role.findByAuthority('approver_role').people}"
+                                        value="${ap == 'null' ? 'null' : ap?.user?.id}"
+                                        noSelection="${['null':'Select One...']}"/>
+                              </g:each>
+                              <g:if test="${t?.taskAssignmentApprovals.size() == 1}">
+                                <g:select optionValue="userRealName"
+                                        name="existingTaskAssignment.approver2.id"
+                                        optionKey="id"
+                                        from="${com.ewconline.timesheet.Role.findByAuthority('approver_role').people}"
+                                        noSelection="${['null':'Select One...']}"/>
+                              </g:if>
+                            </td>
+                            <td>
                               <g:select name="existingTaskAssignment.enabled"
                                                   from="['enabled', 'disabled']"
                                                   value="${t.enabled ? 'enabled' : 'disabled'}"
@@ -217,6 +235,18 @@
                                   from="${com.ewconline.timesheet.LaborCategory.list()}"
                                   optionKey="id"
                                   noSelection="${['null':'Select One...']}"/>
+                          </td>
+                          <td>
+                            <g:select optionValue="userRealName"
+                                      name="taskAssignment.approver1.id"
+                                      from="${com.ewconline.timesheet.Role.findByAuthority('approver_role').people}"
+                                      optionkey="id"
+                                      noSelection="${['null':'Select One...']}"/>
+                            <g:select optionValue="userRealName"
+                                      name="taskAssignment.approver2.id"
+                                      from="${com.ewconline.timesheet.Role.findByAuthority('approver_role').people}"
+                                      optionkey="id"
+                                      noSelection="${['null':'Select One...']}"/>
                           </td>
                           <td>
                             <g:select name="taskAssignment.enabled"
