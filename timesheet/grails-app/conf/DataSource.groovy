@@ -29,7 +29,7 @@ environments {
 			driverClassName = "com.mysql.jdbc.Driver"
 			username = "timesheet"
 			password = "timesheet"
-            url = "jdbc:mysql://dev.bct-llc.com:3306/timesheet"
+            url = "jdbc:mysql://localhost:3306/timesheet"
         }
     }
 }
