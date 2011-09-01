@@ -13,6 +13,8 @@ class TimesheetController {
     def signatureService
     def auditingService
     def ldapAuthenticationService
+    def exportService
+    def dataTransferService
     def scafold = true
     def index = { }
 
@@ -57,7 +59,15 @@ class TimesheetController {
         // TODO use paging abilities pagination next, prev.
         //		params.max = Math.min(params.max ? params.int('max') : 10, 100)
         //		[userInstanceList: User.list(params), userInstanceTotal: User.count()]
-		
+
+        if(params?.format && params.format != "html"){
+            response.contentType = ConfigurationHolder.config.grails.mime.types[params.format]
+            response.setHeader("Content-disposition", "attachment; filename=books.${params.extension}")
+
+            def taskDto = dataTransferService.sevenDayReport(null)
+
+            exportService.export(params.format, response.outputStream,taskDto, [:], [:]) }
+
         [timesheetList:timesheetList, timesheetInstanceTotal:timesheetList.count()]
     }
 
