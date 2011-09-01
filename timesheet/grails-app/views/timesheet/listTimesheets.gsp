@@ -1,6 +1,7 @@
 <head>
     
 	<meta name="layout" content="main" />
+        <export:resource/>
 	<!-- http://localhost:8080/Timesheet/timesheet/listTimesheets -->
 	<title>Timesheet Listing</title>
 </head>
@@ -55,6 +56,6 @@
 		<div class="paginateButtons">
 			<g:paginate total="${timesheetInstanceTotal}" />
 		</div>
-
+<export:formats formats="['csv', 'excel']" />
 	</div>
 </body>
