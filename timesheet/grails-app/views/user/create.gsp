@@ -167,21 +167,21 @@
                                       <td>
                                         <g:select optionValue="name"
                                               name="taskAssignment.task.id"
-                                              from="${com.ewconline.timesheet.Task.list()}"
+                                              from="${com.ewconline.timesheet.Task.listOrderByName()}"
                                               optionKey="id"
                                               noSelection="${['null':'Select One...']}"/>
                                       </td>
                                       <td>
                                         <g:select optionValue="chargeNumber"
                                               name="taskAssignment.chargeCode.id"
-                                              from="${com.ewconline.timesheet.ChargeCode.list()}"
+                                              from="${com.ewconline.timesheet.ChargeCode.listOrderByChargeNumber()}"
                                               optionKey="id"
                                               noSelection="${['null':'Select One...']}"/>
                                       </td>
                                       <td>
                                         <g:select optionValue="name"
                                               name="taskAssignment.laborCategory.id"
-                                              from="${com.ewconline.timesheet.LaborCategory.list()}"
+                                              from="${com.ewconline.timesheet.LaborCategory.listOrderByName()}"
                                               optionKey="id"
                                               noSelection="${['null':'Select One...']}"/>
                                       </td>

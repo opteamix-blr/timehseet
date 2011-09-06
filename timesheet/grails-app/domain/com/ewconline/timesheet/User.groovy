@@ -47,7 +47,7 @@ class User {
         return username
     }
     public String getUserRealName(){
-        return firstName + " " + lastName
+        return lastName + ", " + firstName
     }
     static constraints = {
         username(blank: false, unique: true)
