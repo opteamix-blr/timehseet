@@ -10,7 +10,7 @@ class ChargeCodeController {
 
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [chargeCodeInstanceList: ChargeCode.list(params), chargeCodeInstanceTotal: ChargeCode.count()]
+        [chargeCodeInstanceList: ChargeCode.listOrderByChargeNumber(params), chargeCodeInstanceTotal: ChargeCode.count()]
     }
 
     def create = {

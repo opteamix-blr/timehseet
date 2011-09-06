@@ -112,7 +112,7 @@
                                   <g:each in="${userInstance.taskAssignments}" var="t">
                                     <tr>
                                       <td>
-                                        <g:link controller="taskAssignment" action="show" id="${t.id}">${t?.task}</g:link>
+                                        <g:link controller="task" action="show" id="${t?.task?.id}">${t?.task}</g:link>
                                       </td>
                                       <td>
                                         ${t.chargeCode}

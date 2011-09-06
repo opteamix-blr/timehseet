@@ -14,7 +14,7 @@ class LaborCategoryController {
 
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [laborCategoryInstanceList: LaborCategory.list(params), laborCategoryInstanceTotal: LaborCategory.count()]
+        [laborCategoryInstanceList: LaborCategory.listOrderByName(params), laborCategoryInstanceTotal: LaborCategory.count()]
     }
 
     def create = {
