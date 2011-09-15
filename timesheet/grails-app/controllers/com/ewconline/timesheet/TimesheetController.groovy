@@ -494,7 +494,17 @@ class TimesheetController {
         def endDate = params["endDate"]
 		
         def user = User.get(session.user.id)
-        def timesheetList = Timesheet.findAllByStartDateBetween(startDate, endDate)
+        def c = Timesheet.createCriteria()
+        def timesheetList = c.list{
+            between("startDate", startDate, endDate)
+            eq("user", user)
+        }
+
+        if(!timesheetList){
+            flash.message = "No timesheets found."
+            redirect(action:"listTimesheets")
+        }
+//        def timesheetList = Timesheet.findAllByStartDateBetween(startDate, endDate)
 		
         render(view: "listTimesheets", model: [timesheetList:timesheetList, timesheetInstanceTotal:timesheetList.count()])
     }
