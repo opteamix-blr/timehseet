@@ -2,7 +2,7 @@ package com.ewconline.timesheet
 
 /** This represents a row on a time sheet.
  */
-class TimesheetEntry extends AuditableObject implements Comparable{
+class TimesheetEntry extends AuditableObject{
     static belongsTo = [timesheet:Timesheet]
     List workdays
     TaskAssignment taskAssignment
@@ -29,9 +29,6 @@ class TimesheetEntry extends AuditableObject implements Comparable{
     static hasMany = [workdays : Workday,
         notes: Note]
 	
-    int compareTo(obj) {
-        taskAssignment?.task?.name.compareTo(obj.taskAssignment?.task?.name)
-    }
     def sumHours() {
         float total=0.0
         workdays.each { wd ->

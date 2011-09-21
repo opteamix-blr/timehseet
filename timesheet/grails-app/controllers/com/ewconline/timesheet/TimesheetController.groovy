@@ -154,6 +154,7 @@ class TimesheetController {
         if (ts.user.id != user.id) {
             throw new RuntimeException("Attempting to update a timesheet assigned to a different user.")
         }
+        ts = timesheetManagerService.validateTimesheetEntries(ts, user)
         [timesheetInstance:ts]
     }
 	
@@ -343,7 +344,7 @@ class TimesheetController {
     }
 
     def populateWorkdaysFromForm(timesheetInstance){
-        timesheetInstance.timesheetEntries.eachWithIndex {
+        timesheetInstance?.timesheetEntries.eachWithIndex {
             tse, index ->
             def daysOfWeek = obtainWeekdays(tse.taskAssignment)
             tse.workdays.eachWithIndex { workday, indx ->
