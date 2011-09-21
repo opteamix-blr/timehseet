@@ -181,6 +181,39 @@ class TimesheetManagerService {
         }
     }
 
+    def validateTimesheetEntries(timesheet, user){
+        DateTime currentDay = DateTime.today(TimeZone.getDefault())
+        int dayNum = currentDay.getWeekDay() % 7 + 1
+        DateTime saturday = currentDay.minusDays(dayNum - 1).getStartOfDay()
+        DateTime friday = saturday.plusDays(6).getEndOfDay()
+
+        def activeTaskAssignments = user.taskAssignments.findAll {
+            it.enabled == true
+        }
+        
+        def existingTaskAssignments = timesheet.timesheetEntries.collect {
+            it.taskAssignment
+        }
+
+        def taskAssignmentsToAdd = activeTaskAssignments - existingTaskAssignments
+
+        taskAssignmentsToAdd.each {ta ->
+            def timesheetEntry = new TimesheetEntry(taskAssignment:ta, currentState: NOT_STARTED);
+            for (x in (0..6)){
+                timesheetEntry.addToWorkdays(new Workday(dateWorked:new Date(saturday.plusDays(x).getEndOfDay().getMilliseconds(TimeZone.getDefault()))))
+            }
+            timesheet.addToTimesheetEntries(timesheetEntry)
+        }
+        timesheet.validate()
+        if(timesheet.hasErrors()){
+            timesheet.errors.each{
+                log.info it
+            }
+        }
+        timesheet.save()
+        return timesheet
+    }
+
     def createWeeklyTimesheet(Timesheet timesheet) {
         updateState(timesheet, saving)
         timesheet.lastUpdated = new Date()

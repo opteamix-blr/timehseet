@@ -33,7 +33,7 @@ class Timesheet extends AuditableObject{
         currentState(blank:false)
         signature(nullable:true)
     }
-    SortedSet timesheetEntries
+
     static hasMany = [timesheetEntries: TimesheetEntry,
         notes: Note]
 
