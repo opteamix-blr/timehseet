@@ -20,25 +20,26 @@ environments {
     test {
         dataSource {
             dbCreate = "create-drop"
-			url = "jdbc:hsqldb:mem:testDb"
+            url = "jdbc:hsqldb:mem:testDb"
         }
     }
     production {
         dataSource {
             dbCreate = "update"
-			driverClassName = "com.mysql.jdbc.Driver"
-			username = "timesheet"
-			password = "timesheet"
+            driverClassName = "com.mysql.jdbc.Driver"
+            username = "timesheet"
+            password = "timesheet"
             url = "jdbc:mysql://localhost:3306/timesheet"
-            //run the evictor every 30 minutes and evict any connections older than 30 minutes.
-            minEvictableIdleTimeMillis=1800000
-            timeBetweenEvictionRunsMillis=1800000
-            numTestsPerEvictionRun=3
-            //test the connection while its idle, before borrow and return it
-            testOnBorrow=true
-            testWhileIdle=true
-            testOnReturn=true
-            validationQuery="SELECT 1"
+            properties{
+                maxActive = 50
+                maxIdle = 25
+                minIdle = 5
+                intialSize = 5
+                minEvictableTimeMillis = 1800000
+                timeBetweenEvictionRunsMillis = 1800000
+                maxWait = 10000
+                validationQuery = "Select 1"
+            }
 
         }
     }
