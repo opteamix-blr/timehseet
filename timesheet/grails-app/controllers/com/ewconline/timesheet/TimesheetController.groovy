@@ -91,7 +91,13 @@ class TimesheetController {
         Timesheet timesheetInstance = null
 
         // detect if its this week is a current week type.
-        if (params["isCurrentWeek"] == null || params["isCurrentWeek"] == "true") {
+        params.each{
+            log.info it
+        }
+        if (params["isCurrentWeek"] == 'null' || 
+            params["isCurrentWeek"] == '' || 
+            params["isCurrentWeek"] == null ||
+            params["isCurrentWeek"] == "true") {
             timesheetInstance = timesheetManagerService.generateWeeklyTimesheet(user)
         } else {
             def taskAssignmentIds = params["taskAssignmentIds"]
