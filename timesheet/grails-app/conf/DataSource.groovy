@@ -30,16 +30,16 @@ environments {
             username = "timesheet"
             password = "timesheet"
             url = "jdbc:mysql://localhost:3306/timesheet"
-            properties{
-                maxActive = 50
-                maxIdle = 25
-                minIdle = 5
-                intialSize = 5
-                minEvictableTimeMillis = 1800000
-                timeBetweenEvictionRunsMillis = 1800000
-                maxWait = 10000
-                validationQuery = "Select 1"
-            }
+//            properties{
+//                maxActive = 50
+//                maxIdle = 25
+//                minIdle = 5
+//                intialSize = 5
+//                minEvictableTimeMillis = 1800000
+//                timeBetweenEvictionRunsMillis = 1800000
+//                maxWait = 10000
+//                validationQuery = "Select 1"
+//            }
 
         }
     }
