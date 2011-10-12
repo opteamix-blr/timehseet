@@ -55,10 +55,7 @@ class TimesheetController {
                 
         def user = User.get(session.user.id)
         auditingService.setCurrentUserName(user.username)
-        def timesheetList = timesheetManagerService.retrieveTimesheets(user)
-        // TODO use paging abilities pagination next, prev.
-        //		params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        //		[userInstanceList: User.list(params), userInstanceTotal: User.count()]
+        def timesheetList = timesheetManagerService.retrieveTimesheets(user, params)
 
         if(params?.format && params.format != "html"){
             response.contentType = ConfigurationHolder.config.grails.mime.types[params.format]
@@ -68,7 +65,7 @@ class TimesheetController {
 
             exportService.export(params.format, response.outputStream,taskDto, [:], [:]) }
 
-        [timesheetList:timesheetList, timesheetInstanceTotal:timesheetList.count()]
+        [timesheetList:timesheetList, timesheetInstanceTotal:params?.totCount?.toInteger()]
     }
 
     def create = {
