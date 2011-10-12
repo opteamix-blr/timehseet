@@ -3,21 +3,29 @@ package com.ewconline.timesheet
 class ApproverController {
     def timesheetManagerService
     def index = { }
-	
+
+    // recently signed
     def approverListTimesheet = {
 
         def user = User.get(session.user.id)
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        def timesheetList = Timesheet.createCriteria().list {
+        params.max = Math.min(params?.max?.toInteger() ?: 10, 100)
+        params.offset = params?.offset?.toInteger() ?: 0
+        
+        def timesheetList = Timesheet.createCriteria().list(max: params.max, offset: params.offset) {
             and {
                 eq('currentState', 'SIGNED')
-
             }
-            maxResults(params.max)
             order('lastUpdated', 'desc')
         }
+
+        def totCount = Timesheet.createCriteria().list {
+            and {
+                eq('currentState', 'SIGNED')
+            }
+            order('lastUpdated', 'desc')
+        }.size()
 		
-        [timesheetList: timesheetList, timesheetInstanceTotal: timesheetList.count()]
+        [timesheetList: timesheetList, timesheetInstanceTotal: totCount]
     }
 	
     def userApprove = {
@@ -78,18 +86,29 @@ class ApproverController {
             redirect(action: "approverListTimesheet")
         }
     }
-	
+
+    // Approved timesheets
     def approvedTimesheets = {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
-		
-        def timesheets = Timesheet.createCriteria().list {
+        params.max = Math.min(params?.max?.toInteger() ?: 10, 100)
+        params.offset = params?.offset?.toInteger() ?: 0
+
+        // get page of approved
+        def timesheets = Timesheet.createCriteria().list(max: params.max, offset: params.offset) {
             and {
                 eq('currentState', 'APPROVED')
             }
-            maxResults(params.max)
             order('lastUpdated', 'desc')
         }
-        [timesheetList: timesheets, timesheetInstanceTotal: timesheets.count()]
+        
+        // get count of all approved
+        def totCount = Timesheet.createCriteria().list {
+            and {
+                eq('currentState', 'APPROVED')
+            }
+            order('lastUpdated', 'desc')
+        }.size()
+        
+        [timesheetList: timesheets, timesheetInstanceTotal: totCount]
     }
 
     def viewTimesheet = {
