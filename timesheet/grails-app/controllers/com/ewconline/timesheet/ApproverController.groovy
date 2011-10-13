@@ -2,6 +2,8 @@ package com.ewconline.timesheet
 
 class ApproverController {
     def timesheetManagerService
+    def etimeSecurityService
+    
     def index = { }
 
     // recently signed
@@ -11,20 +13,45 @@ class ApproverController {
         params.max = Math.min(params?.max?.toInteger() ?: 10, 100)
         params.offset = params?.offset?.toInteger() ?: 0
         
-        def timesheetList = Timesheet.createCriteria().list(max: params.max, offset: params.offset) {
-            and {
+        def timesheetList
+        def totCount
+        if(user.authorities.find{
+             it.authority = etimeSecurityService.ACCOUNTANT_ROLE
+        }){
+            timesheetList = Timesheet.createCriteria().list(max: params.max, offset: params.offset) {
                 eq('currentState', 'SIGNED')
+                order('lastUpdated', 'desc')
             }
-            order('lastUpdated', 'desc')
+            totCount = Timesheet.createCriteria().list {
+                eq('currentState', 'SIGNED')
+                order('lastUpdated', 'desc')
+            }.size()
+        } else {
+            timesheetList = Timesheet.createCriteria().list(max: params.max, offset: params.offset) {
+                timesheetEntries{
+                    taskAssignment{
+                        taskAssignmentApprovals{
+                            eq("user", user)
+                        }
+                    }
+                }
+                eq('currentState', 'SIGNED')
+                order('lastUpdated', 'desc')
+            }
+            timesheetList = timesheetList.unique()
+        
+            totCount = Timesheet.createCriteria().list {
+                timesheetEntries{
+                    taskAssignment{
+                        taskAssignmentApprovals{
+                            eq("user", user)
+                        }
+                    }
+                }
+                eq('currentState', 'SIGNED')
+                order('lastUpdated', 'desc')
+            }.size()
         }
-
-        def totCount = Timesheet.createCriteria().list {
-            and {
-                eq('currentState', 'SIGNED')
-            }
-            order('lastUpdated', 'desc')
-        }.size()
-		
         [timesheetList: timesheetList, timesheetInstanceTotal: totCount]
     }
 	
@@ -93,22 +120,47 @@ class ApproverController {
         params.offset = params?.offset?.toInteger() ?: 0
 
         // get page of approved
-        def timesheets = Timesheet.createCriteria().list(max: params.max, offset: params.offset) {
-            and {
-                eq('currentState', 'APPROVED')
+        def timesheetList
+        def totCount
+        if(user.authorities.find{
+             it.authority = etimeSecurityService.ACCOUNTANT_ROLE
+        }){
+            timesheetList = Timesheet.createCriteria().list(max: params.max, offset: params.offset) {
+                eq('currentState', 'SIGNED')
+                order('lastUpdated', 'desc')
             }
-            order('lastUpdated', 'desc')
+            totCount = Timesheet.createCriteria().list {
+                eq('currentState', 'SIGNED')
+                order('lastUpdated', 'desc')
+            }.size()
+        } else {
+            timesheetList = Timesheet.createCriteria().list(max: params.max, offset: params.offset) {
+                timesheetEntries{
+                    taskAssignment{
+                        taskAssignmentApprovals{
+                            eq("user", user)
+                        }
+                    }
+                }
+                eq('currentState', 'SIGNED')
+                order('lastUpdated', 'desc')
+            }
+            timesheetList = timesheetList.unique()
+
+            totCount = Timesheet.createCriteria().list {
+                timesheetEntries{
+                    taskAssignment{
+                        taskAssignmentApprovals{
+                            eq("user", user)
+                        }
+                    }
+                }
+                eq('currentState', 'SIGNED')
+                order('lastUpdated', 'desc')
+            }.size()
         }
         
-        // get count of all approved
-        def totCount = Timesheet.createCriteria().list {
-            and {
-                eq('currentState', 'APPROVED')
-            }
-            order('lastUpdated', 'desc')
-        }.size()
-        
-        [timesheetList: timesheets, timesheetInstanceTotal: totCount]
+        [timesheetList: timesheetList, timesheetInstanceTotal: totCount]
     }
 
     def viewTimesheet = {
