@@ -118,6 +118,7 @@ class ApproverController {
     def approvedTimesheets = {
         params.max = Math.min(params?.max?.toInteger() ?: 10, 100)
         params.offset = params?.offset?.toInteger() ?: 0
+        def user = User.get(session.user.id)
 
         // get page of approved
         def timesheetList
@@ -126,11 +127,11 @@ class ApproverController {
              it.authority = etimeSecurityService.ACCOUNTANT_ROLE
         }){
             timesheetList = Timesheet.createCriteria().list(max: params.max, offset: params.offset) {
-                eq('currentState', 'SIGNED')
+                eq('currentState', 'APPROVED')
                 order('lastUpdated', 'desc')
             }
             totCount = Timesheet.createCriteria().list {
-                eq('currentState', 'SIGNED')
+                eq('currentState', 'APPROVED')
                 order('lastUpdated', 'desc')
             }.size()
         } else {
@@ -142,7 +143,7 @@ class ApproverController {
                         }
                     }
                 }
-                eq('currentState', 'SIGNED')
+                eq('currentState', 'APPROVED')
                 order('lastUpdated', 'desc')
             }
             timesheetList = timesheetList.unique()
@@ -155,7 +156,7 @@ class ApproverController {
                         }
                     }
                 }
-                eq('currentState', 'SIGNED')
+                eq('currentState', 'APPROVED')
                 order('lastUpdated', 'desc')
             }.size()
         }
