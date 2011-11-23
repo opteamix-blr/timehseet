@@ -69,7 +69,7 @@
                                         <th>Labor Category</th>
                                         
                                     </tr>
-                                    <g:each in="${timesheetInstance.timesheetEntries}" var="t">
+                                    <g:each in="${timesheetInstance.getSortedTimesheetEntries()}" var="t">
                                     <tr>
                                         <td>${t?.taskAssignment?.task?.name.encodeAsHTML()}</td>
                                         <td>${t?.taskAssignment?.chargeCode?.chargeNumber?.encodeAsHTML()}</td>

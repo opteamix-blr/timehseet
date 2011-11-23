@@ -69,7 +69,7 @@
 							            <th>Total</th>
 							          </tr>
 							          <g:hiddenField name="totalEntries" value="${timesheetInstance?.timesheetEntries.size() }" />
-							    <g:each status="i" in="${timesheetInstance?.timesheetEntries }" var="timesheetEntry">
+							    <g:each status="i" in="${timesheetInstance?.getSortedTimesheetEntries() }" var="timesheetEntry">
 							          <tr>
 							            <td><g:hiddenField name="timesheetEntries" value="${timesheetEntry?.id}" />${timesheetEntry?.taskAssignment?.task.name} </td>
 							            <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>

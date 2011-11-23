@@ -91,7 +91,7 @@ function grandTotal() {
 				<th>Fri <br/> <g:formatDate format="dd" date="${timesheetInstance.startDate + 6}"/></th>
 				<th>Total</th>
 		  	</tr>
-	<g:each status="i" in="${timesheetInstance?.timesheetEntries}" var="timesheetEntry">
+	<g:each status="i" in="${timesheetInstance?.getSortedTimesheetEntries()}" var="timesheetEntry">
 	      <tr>
             <td><g:hiddenField name="taskAssignmentIds" value="${timesheetEntry?.taskAssignment?.id}" /><g:hiddenField name="timesheetEntries" value="${timesheetEntry?.id}" />${timesheetEntry?.taskAssignment?.task.name} </td>
             <td>${timesheetEntry?.taskAssignment?.laborCategory.name}</td>
