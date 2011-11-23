@@ -38,7 +38,11 @@ class Timesheet extends AuditableObject{
         notes: Note]
 
     static belongsTo = [user:User]
-	
+
+    def getSortedTimesheetEntries(){
+        return timesheetEntries.sort{ self, oth -> self.taskAssignment.task.name <=> oth.taskAssignment.task.name}
+    }
+
     /**
      * 1= saturday
      * 2= sunday
