@@ -34,8 +34,8 @@
 			<tbody>
 			<g:each in="${timesheetList}" status="i" var="timesheet">
 				<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-					<td><g:link action="viewTimesheet" id="${timesheet.id}"><g:formatDate format="MMM-dd-yyyy" date="${timesheet.endDate}"/></g:link></td>
-					<td><g:formatDate format="MMM-dd-yyyy" date="${timesheet.startDate}"/></td>
+					<td><g:link action="viewTimesheet" id="${timesheet.id}"><g:formatDate format="MMM-dd-yyyy" date="${timesheet.startDate}"/></g:link></td>
+					<td><g:formatDate format="MMM-dd-yyyy" date="${timesheet.endDate}"/></td>
 					<td><g:formatDate format="MMM-dd-yyyy hh:mm:ss a" date="${timesheet.dateCreated}"/></td>
                                         <td><g:formatDate format="MMM-dd-yyyy hh:mm:ss a" date="${timesheet.lastUpdated}"/></td>
 

@@ -160,7 +160,6 @@ function grandTotal() {
 
 							    <div class="buttons">
 				                    <span class="button"><g:actionSubmit class="save" action="update" value="Save" /></span>
-									<span class="button"><g:actionSubmit class="sign" action="signform" value="Sign" ></g:actionSubmit></span>
 				                    <span class="button"><g:link action="listTimesheets" id="${timesheetInstance.id}">Cancel</g:link></span>
 				                </div>
                             </tr>
