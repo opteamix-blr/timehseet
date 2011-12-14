@@ -299,20 +299,22 @@ class TimesheetManagerService {
     }
 	
     def retrieveTimesheets(User user, params) {
+        log.debug "got here"
         params.max = Math.min(params?.max?.toInteger() ?: 10, 100)
         params.offset = params?.offset?.toInteger() ?: 0
-        
+        params.sort = params?.sort ?: "startDate"
+        params.order = params?.order ?: "desc"
         // obtain batch
         def c = Timesheet.createCriteria()
-        def timesheetList = c.list(max: params.max, offset: params.offset) {
+        def timesheetList = c.list(params) {
             eq("user.id", user.id)
-            order("startDate", "desc")
+//            order(params.sort, params.order)
         }
         // make count
         def c2 = Timesheet.createCriteria()
         def totCount = c2.list {
             eq("user.id", user.id)
-            order("startDate", "desc")
+            order(params.sort, params.order)
         }.size()
 
         // bad... service caller knows about totalCount
