@@ -12,22 +12,22 @@ class ApproverController {
         def user = User.get(session.user.id)
         params.max = Math.min(params?.max?.toInteger() ?: 10, 100)
         params.offset = params?.offset?.toInteger() ?: 0
-        
+        params.sort = params?.sort ?: "startDate"
+        params.order = params?.order ?: "desc"
+
         def timesheetList
         def totCount
         if(user.authorities.find{
-             it.authority = etimeSecurityService.ACCOUNTANT_ROLE
+             it.authority == etimeSecurityService.ACCOUNTANT_ROLE
         }){
-            timesheetList = Timesheet.createCriteria().list(max: params.max, offset: params.offset) {
+            timesheetList = Timesheet.createCriteria().list(params) {
                 eq('currentState', 'SIGNED')
-                order('lastUpdated', 'desc')
             }
             totCount = Timesheet.createCriteria().list {
                 eq('currentState', 'SIGNED')
-                order('lastUpdated', 'desc')
             }.size()
         } else {
-            timesheetList = Timesheet.createCriteria().list(max: params.max, offset: params.offset) {
+            timesheetList = Timesheet.createCriteria().list(params) {
                 timesheetEntries{
                     taskAssignment{
                         taskAssignmentApprovals{
@@ -36,11 +36,10 @@ class ApproverController {
                     }
                 }
                 eq('currentState', 'SIGNED')
-                order('lastUpdated', 'desc')
             }
             timesheetList = timesheetList.unique()
         
-            totCount = Timesheet.createCriteria().list {
+            totCount = Timesheet.createCriteria().list(params) {
                 timesheetEntries{
                     taskAssignment{
                         taskAssignmentApprovals{
@@ -118,24 +117,24 @@ class ApproverController {
     def approvedTimesheets = {
         params.max = Math.min(params?.max?.toInteger() ?: 10, 100)
         params.offset = params?.offset?.toInteger() ?: 0
+        params.sort = params?.sort ?: "startDate"
+        params.order = params?.order ?: "desc"
         def user = User.get(session.user.id)
 
         // get page of approved
         def timesheetList
         def totCount
         if(user.authorities.find{
-             it.authority = etimeSecurityService.ACCOUNTANT_ROLE
+             it.authority == etimeSecurityService.ACCOUNTANT_ROLE
         }){
-            timesheetList = Timesheet.createCriteria().list(max: params.max, offset: params.offset) {
+            timesheetList = Timesheet.createCriteria().list(params) {
                 eq('currentState', 'APPROVED')
-                order('lastUpdated', 'desc')
             }
-            totCount = Timesheet.createCriteria().list {
+            totCount = Timesheet.createCriteria().list(params) {
                 eq('currentState', 'APPROVED')
-                order('lastUpdated', 'desc')
             }.size()
         } else {
-            timesheetList = Timesheet.createCriteria().list(max: params.max, offset: params.offset) {
+            timesheetList = Timesheet.createCriteria().list(params) {
                 timesheetEntries{
                     taskAssignment{
                         taskAssignmentApprovals{
@@ -144,11 +143,10 @@ class ApproverController {
                     }
                 }
                 eq('currentState', 'APPROVED')
-                order('lastUpdated', 'desc')
             }
             timesheetList = timesheetList.unique()
 
-            totCount = Timesheet.createCriteria().list {
+            totCount = Timesheet.createCriteria().list(params) {
                 timesheetEntries{
                     taskAssignment{
                         taskAssignmentApprovals{
@@ -157,7 +155,6 @@ class ApproverController {
                     }
                 }
                 eq('currentState', 'APPROVED')
-                order('lastUpdated', 'desc')
             }.size()
         }
         
