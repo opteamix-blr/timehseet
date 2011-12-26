@@ -62,7 +62,7 @@ function grandTotal() {
 			    <td valign="top" class="name">
 			      <label for="startDate"><g:message code="timesheet.startDate.label" default="Start Date" /></label>
                               <g:hiddenField name="isCurrentWeek" value="${isCurrentWeek}" />
-                              <g:hiddenField name="dateOnWeek" value="${timesheetInstance.startDate.format('yyyy-MM-dd').toString()}" />
+                              <g:hiddenField name="dateOnWeek" value="${timesheetInstance?.startDate.format('yyyy-MM-dd').toString()}" />
 
 			    </td>
 			    <td valign="top" class="value ${hasErrors(bean: timesheetInstance, field: 'startDate', 'errors')}">
