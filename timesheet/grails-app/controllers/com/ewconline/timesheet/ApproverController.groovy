@@ -29,6 +29,7 @@ class ApproverController {
         } else {
             timesheetList = Timesheet.createCriteria().list(params) {
                 timesheetEntries{
+                    ne("state", "APPROVED")
                     taskAssignment{
                         taskAssignmentApprovals{
                             eq("user", user)
