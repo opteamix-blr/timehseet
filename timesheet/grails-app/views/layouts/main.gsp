@@ -60,7 +60,7 @@
 
             </g:if>
             <g:if test="${session?.accountantRole}">
-              <li><p>Administration</p></li>
+              <li><p>Accountant/Admin</p></li>
               <li><a href="${createLinkTo(dir:'', file:'user/list')}">Employees</a></li>
               <li><a href="${createLinkTo(dir:'', file:'task/list')}">Tasks</a></li>
               <li><a href="${createLinkTo(dir:'', file:'chargeCode/list')}">Charge Codes</a></li>
