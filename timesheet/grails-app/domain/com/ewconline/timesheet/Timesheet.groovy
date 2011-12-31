@@ -40,7 +40,10 @@ class Timesheet extends AuditableObject{
     static belongsTo = [user:User]
 
     def getSortedTimesheetEntries(){
-        return timesheetEntries.sort{ self, oth -> self?.taskAssignment?.task?.id <=> oth?.taskAssignment?.task?.id}
+        if (timesheetEntries) {
+            return [timesheetEntries].flatten().sort{ self, oth -> self?.taskAssignment?.task?.id <=> oth?.taskAssignment?.task?.id}
+        }
+        return [];
     }
 
     /**
