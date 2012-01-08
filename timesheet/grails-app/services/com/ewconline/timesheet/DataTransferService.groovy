@@ -6,7 +6,14 @@ class DataTransferService {
 
     def sevenDayReport(startDate) {
         def retval = []
-        def allTimesheets = Timesheet.list()
+        def c = Timesheet.createCriteria()
+        def allTimesheets = c.list {
+//            gt("startDate", startDate)
+             or{
+                 eq('currentState', 'SIGNED')
+                 eq('currentState', 'APPROVED')
+             }
+        }
         allTimesheets.each { t ->
             def allEntries = t.timesheetEntries
             allEntries.each { te ->
@@ -19,8 +26,8 @@ class DataTransferService {
                 dto.chargeCode = te.taskAssignment.chargeCode.chargeNumber
                 def total = 0.0D
                 te.workdays.eachWithIndex{ w, i ->
-                    dto."day$i" = w.hoursWorked as String
-                    total += w.hoursWorks as Double
+                    dto."day$i" = w?.hoursWorked as String
+                    total += (w?.hoursWorked ?: 0.0) as Double
                 }
                 retval.add(dto)
             }
