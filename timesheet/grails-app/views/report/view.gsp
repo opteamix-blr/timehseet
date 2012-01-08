@@ -22,14 +22,8 @@
                         <tr class="prop">
                             <td valign="top" class="name">Report 1</td>
                             
-                            <td valign="top" class="value"><a href="">link 1</a></td>
+                            <td valign="top" class="value"><g:link action="exportTimesheets">Export All Approved Timesheets</g:link></td>
                             
-                        </tr>
-                        <tr class="prop">
-                            <td valign="top" class="name">Report 2</td>
-
-                            <td valign="top" class="value"><a href="">link 2</a></td>
-
                         </tr>
                         <tr class="prop">
                             <td valign="top" class="name">Report 3</td>

@@ -29,7 +29,7 @@ class ApproverController {
         } else {
             timesheetList = Timesheet.createCriteria().list(params) {
                 timesheetEntries{
-                    ne("state", "APPROVED")
+                    ne("currentState", "APPROVED")
                     taskAssignment{
                         taskAssignmentApprovals{
                             eq("user", user)
@@ -40,7 +40,7 @@ class ApproverController {
             }
             timesheetList = timesheetList.unique()
         
-            totCount = Timesheet.createCriteria().list(params) {
+            totCount = Timesheet.createCriteria().list() {
                 timesheetEntries{
                     taskAssignment{
                         taskAssignmentApprovals{
@@ -147,7 +147,7 @@ class ApproverController {
             }
             timesheetList = timesheetList.unique()
 
-            totCount = Timesheet.createCriteria().list(params) {
+            totCount = Timesheet.createCriteria().list() {
                 timesheetEntries{
                     taskAssignment{
                         taskAssignmentApprovals{

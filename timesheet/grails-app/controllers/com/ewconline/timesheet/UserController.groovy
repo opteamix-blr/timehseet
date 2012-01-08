@@ -157,6 +157,7 @@ class UserController {
                 if(tempta){
                     tempta?.enabled = (enableds[i] == 'enabled') ? true : false
                     tempta.taskAssignmentApprovals.clear()
+                    tempta.save(flush:true)
                     if(approver1[i] != 'null'){
                         if(!tempta?.taskAssignmentApprovals.find{
                                 it.user.id as String == approver1[i]
