@@ -35,8 +35,10 @@ class TimesheetManagerService {
         (OPEN_SAVED+saving): OPEN_SAVED,
         (SIGNED+approving): APPROVED,
         (SIGNED+disapproving): OPEN_NOT_SAVED,
+        (SIGNED+saving): OPEN_SAVED,
         (APPROVED+disapproving): OPEN_NOT_SAVED,
-        (OPEN_NOT_SAVED+saving): OPEN_SAVED
+        (OPEN_NOT_SAVED+saving): OPEN_SAVED,
+        (OPEN_NOT_SAVED+signing): SIGNED
     ]
 
     /**dateOnWeek is a string with format of yyyy-MM-dd
