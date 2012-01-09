@@ -56,6 +56,7 @@
             <g:if test="${session?.approverRole || session?.accountantRole}">
               <li><p>Approver</p></li>
               <li><a href="${createLinkTo(dir:'', file:'approver/approverListTimesheet')}">Recently Signed</a></li>
+              <li><a href="${createLinkTo(dir:'', file:'approver/approverListOpenSignedTimesheet')}">Open & Recently Signed</a></li>
               <li><a href="${createLinkTo(dir:'', file:'approver/approvedTimesheets')}">Approved Timesheets</a></li>
 
             </g:if>
