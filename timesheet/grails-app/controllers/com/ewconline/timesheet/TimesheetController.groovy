@@ -65,7 +65,7 @@ class TimesheetController {
 
             exportService.export(params.format, response.outputStream,taskDto, [:], [:]) }
 
-        [timesheetList:timesheetList, timesheetInstanceTotal:params?.totCount?.toInteger()]
+        [timesheetList:timesheetList, timesheetInstanceTotal:params?.totCount?.toInteger(), max:params.max]
     }
 
     def create = {

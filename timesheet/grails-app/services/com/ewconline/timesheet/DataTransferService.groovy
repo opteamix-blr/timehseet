@@ -24,11 +24,14 @@ class DataTransferService {
                 dto.contractInfo1 = te.taskAssignment.task.contractInfo1
                 dto.contractInfo2 = te.taskAssignment.task.contractInfo2
                 dto.chargeCode = te.taskAssignment.chargeCode.chargeNumber
+                dto.startDate = t.startDate
+                dto.endDate = t.endDate
                 def total = 0.0D
                 te.workdays.eachWithIndex{ w, i ->
-                    dto."day$i" = w?.hoursWorked as String
+                    dto."day$i" = w?.hoursWorked
                     total += (w?.hoursWorked ?: 0.0) as Double
                 }
+                dto.totalHours = total
                 retval.add(dto)
             }
         }

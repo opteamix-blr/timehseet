@@ -56,6 +56,13 @@
 		<div class="paginateButtons">
 			<g:paginate total="${timesheetInstanceTotal}" />
 		</div>
-
+                <g:form action="approverListTimesheet" method="get">
+                Records Displayed:
+                <g:select from="${['10', '50', '100']}"
+                          name="max"
+                          value="${max}"
+                          />
+                <g:submitButton name="submit"/>
+                </g:form>
 	</div>
 </body>
