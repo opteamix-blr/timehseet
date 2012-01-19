@@ -16,13 +16,15 @@ class TimesheetDTSevenDay {
         String taskName
         String contractInfo1
         String contractInfo2
-        String day0
-        String day1
-        String day2
-        String day3
-        String day4
-        String day5
-        String day6
-        String total
+        Date startDate
+        Date endDate
+        Double day0
+        Double day1
+        Double day2
+        Double day3
+        Double day4
+        Double day5
+        Double day6
+        Double totalHours
 }
 

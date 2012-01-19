@@ -11,6 +11,7 @@ class ApproverController {
 
         def user = User.get(session.user.id)
         params.max = Math.min(params?.max?.toInteger() ?: 10, 100)
+        log.debug params.max
         params.offset = params?.offset?.toInteger() ?: 0
         params.sort = params?.sort ?: "startDate"
         params.order = params?.order ?: "desc"
@@ -52,7 +53,7 @@ class ApproverController {
                 order('lastUpdated', 'desc')
             }.size()
         }
-        [timesheetList: timesheetList, timesheetInstanceTotal: totCount]
+        [timesheetList: timesheetList, timesheetInstanceTotal: totCount, max:params.max]
     }
 
     // open and recently signed
@@ -254,7 +255,7 @@ class ApproverController {
             timesheetList = Timesheet.createCriteria().list(params) {
                 eq('currentState', 'APPROVED')
             }
-            totCount = Timesheet.createCriteria().list(params) {
+            totCount = Timesheet.createCriteria().list() {
                 eq('currentState', 'APPROVED')
             }.size()
         } else {
@@ -282,7 +283,7 @@ class ApproverController {
             }.size()
         }
         
-        [timesheetList: timesheetList, timesheetInstanceTotal: totCount]
+        [timesheetList: timesheetList, timesheetInstanceTotal: totCount, max:params.max]
     }
 
     def viewTimesheet = {
