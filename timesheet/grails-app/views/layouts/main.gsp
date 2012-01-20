@@ -33,9 +33,7 @@
           <div id="dateClock">${ new Date() }</div>
         </td>
         <td align="right" style="padding-right: 10px;">
-          <font face="arial" color="#FFFF00" size="13">
             <a class="buttons" href="${createLinkTo(dir:'', file:'access/logout')}">Logout</a>
-          </font>
         </td>
       </tr>
     </table>
