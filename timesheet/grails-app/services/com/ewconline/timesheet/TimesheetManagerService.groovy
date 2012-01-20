@@ -12,9 +12,9 @@ class TimesheetManagerService {
      * OPEN_SAVED - signing - SIGNED
      * OPEN_SAVED - saving - OPEN_SAVED
      * SIGNED - approving - APPROVED
-     * SIGNED - disapproving - OPEN_NOT_SAVED
-     * APPROVED - disapproving - OPEN_NOT_SAVED
-     * OPEN_NOT_SAVED - saving - OPEN_SAVED
+     * SIGNED - disapproving - OPEN_SAVED
+     * APPROVED - disapproving - OPEN_SAVED
+     * 
      */
 
     // States
@@ -22,8 +22,7 @@ class TimesheetManagerService {
     static OPEN_SAVED = "OPEN_SAVED"
     static SIGNED = "SIGNED"
     static APPROVED = "APPROVED"
-    static OPEN_NOT_SAVED = "OPEN_NOT_SAVED"
-
+    
     // transitions
     static saving = "saving"
     static signing = "signing"
@@ -34,11 +33,9 @@ class TimesheetManagerService {
         (OPEN_SAVED+signing): SIGNED,
         (OPEN_SAVED+saving): OPEN_SAVED,
         (SIGNED+approving): APPROVED,
-        (SIGNED+disapproving): OPEN_NOT_SAVED,
+        (SIGNED+disapproving): OPEN_SAVED,
         (SIGNED+saving): OPEN_SAVED,
-        (APPROVED+disapproving): OPEN_NOT_SAVED,
-        (OPEN_NOT_SAVED+saving): OPEN_SAVED,
-        (OPEN_NOT_SAVED+signing): SIGNED
+        (APPROVED+disapproving): OPEN_SAVED
     ]
 
     /**dateOnWeek is a string with format of yyyy-MM-dd
@@ -356,9 +353,8 @@ class TimesheetManagerService {
          * OPEN_SAVED - signing - SIGNED
          * OPEN_SAVED - saving - OPEN_SAVED
          * SIGNED - approving - APPROVED
-         * SIGNED - disapproving - OPEN_NOT_SAVED
-         * APPROVED - disapproving - OPEN_NOT_SAVED
-         * OPEN_NOT_SAVED - saving - OPEN_SAVED
+         * SIGNED - disapproving - OPEN_SAVED
+         * APPROVED - disapproving - OPEN_SAVED
          */
 		
     }
