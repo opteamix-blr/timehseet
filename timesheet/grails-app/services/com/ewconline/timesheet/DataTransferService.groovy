@@ -9,10 +9,10 @@ class DataTransferService {
         def c = Timesheet.createCriteria()
         def allTimesheets = c.list {
 //            gt("startDate", startDate)
-             or{
-                 eq('currentState', 'SIGNED')
-                 eq('currentState', 'APPROVED')
-             }
+//             or{
+//                 eq('currentState', 'SIGNED')
+//                 eq('currentState', 'APPROVED')
+//             }
         }
         allTimesheets.each { t ->
             def allEntries = t.timesheetEntries
