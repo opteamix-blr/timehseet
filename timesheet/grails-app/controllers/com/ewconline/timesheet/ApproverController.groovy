@@ -74,7 +74,6 @@ class ApproverController {
                 or {
                     eq('currentState', 'SIGNED')
                     eq('currentState', 'OPEN_SAVED')
-                    eq('currentState', 'OPEN_NOT_SAVED')
                 }
 
             }
@@ -82,7 +81,6 @@ class ApproverController {
                 or {
                     eq('currentState', 'SIGNED')
                     eq('currentState', 'OPEN_SAVED')
-                    eq('currentState', 'OPEN_NOT_SAVED')
                 }
             }.size()
         } else {
@@ -99,7 +97,6 @@ class ApproverController {
                     or {
                        eq('currentState', 'SIGNED')
                        eq('currentState', 'OPEN_SAVED')
-                       eq('currentState', 'OPEN_NOT_SAVED')
                     }
                 }
             }
@@ -117,7 +114,6 @@ class ApproverController {
                     or {
                        eq('currentState', 'SIGNED')
                        eq('currentState', 'OPEN_SAVED')
-                       eq('currentState', 'OPEN_NOT_SAVED')
                     }
                 }
                 order('lastUpdated', 'desc')
