@@ -26,7 +26,8 @@ class TimesheetController {
     def createPastTimesheet = {
         def user = User.get(session.user.id)
         def dateOnWeek = params["dateOnWeek"]
-        def taskAssignmentIds = params["taskAssignmentIds"]
+        def taskAssignmentIds = [params["taskAssignmentIds"]].flatten().findAll { it != null}
+
         def dateOnWeek2 = null
         if (dateOnWeek) {
             dateOnWeek2 = "${dateOnWeek?.format("yyyy-MM-dd")}"

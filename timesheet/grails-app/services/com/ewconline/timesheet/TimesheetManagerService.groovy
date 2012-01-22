@@ -58,16 +58,15 @@ class TimesheetManagerService {
                 startDate:new Date(saturday.getMilliseconds(TimeZone.getDefault())),
                 endDate:new Date(friday.getMilliseconds(TimeZone.getDefault())),
                 user: user,
-                currentState: NOT_STARTED
+                currentState: NOT_STARTED,
+                timesheetEntries: []
             )
 
             // add task assignments where the ids are selected
             def taskAssignments = []
             user.taskAssignments.each { ta ->
-                taskAssignmentIds.each { taId ->   
-                    if (taId == "${ta.id}") {
-                       taskAssignments.add ta
-                    }
+                if (taskAssignmentIds.contains(ta.id as String)){
+                    taskAssignments.add ta
                 }
             }
             
@@ -139,7 +138,8 @@ class TimesheetManagerService {
             startDate:new Date(saturday.getMilliseconds(TimeZone.getDefault())),
             endDate:new Date(friday.getMilliseconds(TimeZone.getDefault())),
             user: user,
-            currentState: NOT_STARTED
+            currentState: NOT_STARTED,
+            timesheetEntries: []
         )
 		
 		
@@ -366,7 +366,8 @@ class TimesheetManagerService {
             startDate:ts.startDate,
             endDate:ts.endDate,
             user: ts.user,
-            currentState: ts.currentState
+            currentState: ts.currentState,
+            timesheetEntries: []
         )
 		
 		
