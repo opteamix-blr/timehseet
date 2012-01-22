@@ -26,7 +26,7 @@ class TimesheetController {
     def createPastTimesheet = {
         def user = User.get(session.user.id)
         def dateOnWeek = params["dateOnWeek"]
-        def taskAssignmentIds = [params["taskAssignmentIds"]].flatten().findAll { it != null}
+        def taskAssignmentIds = [params["taskAssignmentIds"]].flatten().findAll { it!=null}.collect { it?.toInteger() }.sort()
 
         def dateOnWeek2 = null
         if (dateOnWeek) {
@@ -89,16 +89,13 @@ class TimesheetController {
         Timesheet timesheetInstance = null
 
         // detect if its this week is a current week type.
-        params.each{
-            log.info it
-        }
         if (params["isCurrentWeek"] == 'null' || 
             params["isCurrentWeek"] == '' || 
             params["isCurrentWeek"] == null ||
             params["isCurrentWeek"] == "true") {
             timesheetInstance = timesheetManagerService.generateWeeklyTimesheet(user)
         } else {
-            def taskAssignmentIds = params["taskAssignmentIds"]
+            def taskAssignmentIds = [params["taskAssignmentIds"]].flatten().findAll { it!=null}.collect { it?.toInteger() }.sort()
             
             def dateOnWeek = params["dateOnWeek"]
 
