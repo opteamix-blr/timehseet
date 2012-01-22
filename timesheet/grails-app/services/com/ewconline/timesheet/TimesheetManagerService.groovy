@@ -64,9 +64,11 @@ class TimesheetManagerService {
 
             // add task assignments where the ids are selected
             def taskAssignments = []
-            user.taskAssignments.each { ta ->
-                if (taskAssignmentIds.contains(ta.id as String)){
-                    taskAssignments.add ta
+            taskAssignmentIds.each { taId ->
+                user.taskAssignments.each { ta ->
+                    if (taId == ta.id){
+                       taskAssignments.add ta
+                    }
                 }
             }
             
