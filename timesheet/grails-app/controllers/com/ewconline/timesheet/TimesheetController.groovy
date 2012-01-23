@@ -57,7 +57,8 @@ class TimesheetController {
         def user = User.get(session.user.id)
         auditingService.setCurrentUserName(user.username)
         def timesheetList = timesheetManagerService.retrieveTimesheets(user, params)
-
+        params.max = params.max ? params.max : (session.max ? session.max : 10)
+        session.max = params.max
         if(params?.format && params.format != "html"){
             response.contentType = ConfigurationHolder.config.grails.mime.types[params.format]
             response.setHeader("Content-disposition", "attachment; filename=books.${params.extension}")
