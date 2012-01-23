@@ -7,7 +7,7 @@ import com.ewconline.timesheet.TaskAssignment
  * User domain class.
  */
 class User {
-    static transients = ['pass', 'userRealName']
+    static transients = ['pass']
     static hasMany = [authorities: Role,
         timesheets: Timesheet,
         taskAssignments: TaskAssignment,
