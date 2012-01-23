@@ -13,6 +13,8 @@ class DataTransferService {
 //                 eq('currentState', 'SIGNED')
 //                 eq('currentState', 'APPROVED')
 //             }
+            createAlias("user", "u")
+            order("u.lastName", "asc")
         }
         allTimesheets.each { t ->
             def allEntries = t.timesheetEntries

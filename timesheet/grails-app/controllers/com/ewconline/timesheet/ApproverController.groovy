@@ -10,7 +10,8 @@ class ApproverController {
     def approverListTimesheet = {
 
         def user = User.get(session.user.id)
-        params.max = Math.min(params?.max?.toInteger() ?: 10, 100)
+        params.max = params.max ? params.max : (session.max ? session.max : 10)
+        session.max = params.max
         log.debug params.max
         params.offset = params?.offset?.toInteger() ?: 0
         params.sort = params?.sort ?: "startDate"
@@ -60,7 +61,8 @@ class ApproverController {
     def approverListOpenSignedTimesheet = {
 
         def user = User.get(session.user.id)
-        params.max = Math.min(params?.max?.toInteger() ?: 10, 100)
+        params.max = params.max ? params.max : (session.max ? session.max : 10)
+        session.max = params.max
         params.offset = params?.offset?.toInteger() ?: 0
         params.sort = params?.sort ?: "startDate"
         params.order = params?.order ?: "desc"
@@ -236,7 +238,8 @@ class ApproverController {
 
     // Approved timesheets
     def approvedTimesheets = {
-        params.max = Math.min(params?.max?.toInteger() ?: 10, 100)
+        params.max = params.max ? params.max : (session.max ? session.max : 10)
+        session.max = params.max
         params.offset = params?.offset?.toInteger() ?: 0
         params.sort = params?.sort ?: "startDate"
         params.order = params?.order ?: "desc"
