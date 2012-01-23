@@ -16,9 +16,9 @@ class ApproverController {
         params.offset = params?.offset?.toInteger() ?: 0
         params.sort = params?.sort ?: "startDate"
         params.order = params?.order ?: "desc"
-        if(params.sort == "user.userRealName"){
-            params.sort = "u.userRealName"
-        }
+//        if(params.sort == "user.userRealName"){
+//            params.sort = "u.userRealName"
+//        }
 
         def timesheetList
         def totCount
@@ -26,7 +26,7 @@ class ApproverController {
              it.authority == etimeSecurityService.ACCOUNTANT_ROLE
         }){
             timesheetList = Timesheet.createCriteria().list(params) {
-                createAlias("user", "u")
+                createAlias("user", "user")
                 eq('currentState', 'SIGNED')
             }
             totCount = Timesheet.createCriteria().list {
@@ -34,7 +34,7 @@ class ApproverController {
             }.size()
         } else {
             timesheetList = Timesheet.createCriteria().list(params) {
-                createAlias("user", "u")
+                createAlias("user", "user")
                 timesheetEntries{
                     ne("currentState", "APPROVED")
                     taskAssignment{
