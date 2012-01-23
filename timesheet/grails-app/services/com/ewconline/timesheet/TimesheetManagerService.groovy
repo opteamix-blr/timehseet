@@ -300,7 +300,6 @@ class TimesheetManagerService {
     }
 	
     def retrieveTimesheets(User user, params) {
-        log.debug "got here"
         params.max = Math.min(params?.max?.toInteger() ?: 10, 100)
         params.offset = params?.offset?.toInteger() ?: 0
         params.sort = params?.sort ?: "startDate"
