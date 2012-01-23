@@ -10,7 +10,7 @@ function grandTotal() {
 	var arr=new Array();
 <%
   int x=0;
-  for (te in timesheetInstance?.timesheetEntries){
+  for (te in timesheetInstance?.getSortedTimesheetEntries()){
      out.println("   arr[" + x + "]=" + te.taskAssignment.id + ";\n")
 	 x++
   }	
