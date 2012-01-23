@@ -121,7 +121,7 @@ class ApproverController {
                 order('lastUpdated', 'desc')
             }.size()
         }
-        [timesheetList: timesheetList, timesheetInstanceTotal: totCount]
+        [timesheetList: timesheetList, timesheetInstanceTotal: totCount, max: params.max]
     }
 	
     def userApprove = {
