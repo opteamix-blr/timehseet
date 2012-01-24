@@ -26,7 +26,6 @@ class ApproverController {
              it.authority == etimeSecurityService.ACCOUNTANT_ROLE
         }){
             timesheetList = Timesheet.createCriteria().list(params) {
-                createAlias("user", "user")
                 eq('currentState', 'SIGNED')
             }
             totCount = Timesheet.createCriteria().list {
@@ -34,7 +33,6 @@ class ApproverController {
             }.size()
         } else {
             timesheetList = Timesheet.createCriteria().list(params) {
-                createAlias("user", "user")
                 timesheetEntries{
                     ne("currentState", "APPROVED")
                     taskAssignment{
@@ -78,7 +76,6 @@ class ApproverController {
              it.authority == etimeSecurityService.ACCOUNTANT_ROLE
         }){
             timesheetList = Timesheet.createCriteria().list(params) {
-                createAlias("user", "user")
                 or {
                     eq('currentState', 'SIGNED')
                     eq('currentState', 'OPEN_SAVED')
@@ -94,7 +91,6 @@ class ApproverController {
         } else {
             timesheetList = Timesheet.createCriteria().list(params) {
                 timesheetEntries{
-                    createAlias("user", "user")
                     ne("currentState", "APPROVED")
                     taskAssignment{
                         taskAssignmentApprovals{
@@ -113,6 +109,7 @@ class ApproverController {
 
             totCount = Timesheet.createCriteria().list() {
                 timesheetEntries{
+                    ne("currentState", "APPROVED")
                     taskAssignment{
                         taskAssignmentApprovals{
                             eq("user", user)
@@ -259,7 +256,6 @@ class ApproverController {
              it.authority == etimeSecurityService.ACCOUNTANT_ROLE
         }){
             timesheetList = Timesheet.createCriteria().list(params) {
-                createAlias("user", "user")
                 eq('currentState', 'APPROVED')
             }
             totCount = Timesheet.createCriteria().list() {
@@ -267,7 +263,6 @@ class ApproverController {
             }.size()
         } else {
             timesheetList = Timesheet.createCriteria().list(params) {
-                createAlias("user", "user")
                 timesheetEntries{
                     taskAssignment{
                         taskAssignmentApprovals{
