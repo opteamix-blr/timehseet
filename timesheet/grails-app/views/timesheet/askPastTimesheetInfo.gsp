@@ -36,7 +36,7 @@
                       <th>Enabled</th>
                     </tr>
                     <!-- Loop through employee's task assignments-->
-                    <g:each in="${userInstance.taskAssignments}" status="i" var="taskAssignment">
+                    <g:each in="${userInstance.findActiveTaskAssignments()}" status="i" var="taskAssignment">
 				<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                                   <td><g:checkBox name="taskAssignmentIds" value="${taskAssignment.id}" /></td>
 					<td>${taskAssignment?.task?.name}</td>

@@ -7,7 +7,7 @@ import com.ewconline.timesheet.TaskAssignment
  * User domain class.
  */
 class User {
-    static transients = ['pass']
+    static transients = ['pass', 'userRealName']
     static hasMany = [authorities: Role,
         timesheets: Timesheet,
         taskAssignments: TaskAssignment,
@@ -49,6 +49,11 @@ class User {
     public String getUserRealName(){
         return lastName + ", " + firstName
     }
+
+    def findActiveTaskAssignments(){
+        return taskAssignments.findAll{it.enabled}
+    }
+    
     static constraints = {
         username(blank: false, unique: true)
         userRealName(nullable: true)

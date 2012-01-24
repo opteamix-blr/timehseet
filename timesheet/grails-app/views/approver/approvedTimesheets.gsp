@@ -21,7 +21,7 @@
 			<thead>
 				<tr>
 					<g:sortableColumn property="id" title="Id" />
-					<g:sortableColumn property="user.userRealName" title="Employee"/>
+					<g:sortableColumn property="user.lastName" title="Employee"/>
 					<g:sortableColumn property="lastUpdated" title="Last Modified" />
 					<g:sortableColumn property="startDate" title="Start Date" />
 					<g:sortableColumn property="endDate" title="End Date" />
