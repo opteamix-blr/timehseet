@@ -49,6 +49,7 @@ class ApproverController {
         
             totCount = Timesheet.createCriteria().list() {
                 timesheetEntries{
+                    ne("currentState", "APPROVED")
                     taskAssignment{
                         taskAssignmentApprovals{
                             eq("user", user)
