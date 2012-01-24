@@ -56,7 +56,6 @@ class ApproverController {
                     }
                 }
                 eq('currentState', 'SIGNED')
-                order('lastUpdated', 'desc')
             }.size()
         }
         [timesheetList: timesheetList, timesheetInstanceTotal: totCount, max:params.max]
