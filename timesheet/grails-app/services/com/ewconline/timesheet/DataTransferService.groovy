@@ -4,23 +4,34 @@ class DataTransferService {
 
     static transactional = true
 
-    def sevenDayReport(startDate) {
+    def sevenDayReport(startDate, chargeNumber) {
         def retval = []
         def c = Timesheet.createCriteria()
         def allTimesheets = c.list {
-//            gt("startDate", startDate)
+            createAlias("user", "u")
+            createAlias("timesheetEntries", "te")
+            createAlias("te.taskAssignment", "ta")
+            createAlias("ta.chargeCode", "cc")
+            if(startDate){
+                eq("startDate", startDate)
+            }
+            if(chargeNumber && chargeNumber != "null"){
+                eq("cc.chargeNumber", chargeNumber)
+            }
 //             or{
 //                 eq('currentState', 'SIGNED')
 //                 eq('currentState', 'APPROVED')
 //             }
-            createAlias("user", "u")
+            
             order("u.lastName", "asc")
         }
         allTimesheets.each { t ->
             def allEntries = t.timesheetEntries
             allEntries.each { te ->
                 def dto = new TimesheetDTSevenDay()
-                dto.userName = t.user.username
+                dto.userRealName = t.user.userRealName
+                dto.lastName = t.user.lastName
+                dto.firstName = t.user.firstName
                 dto.laborCategory = te.taskAssignment.laborCategory.name
                 dto.taskName = te.taskAssignment.task.name
                 dto.contractInfo1 = te.taskAssignment.task.contractInfo1

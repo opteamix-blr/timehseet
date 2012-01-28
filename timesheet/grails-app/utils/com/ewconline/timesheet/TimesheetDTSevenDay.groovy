@@ -10,7 +10,9 @@ package com.ewconline.timesheet
  * @author eldrave
  */
 class TimesheetDTSevenDay {
-        String userName
+        String lastName
+        String firstName
+        String userRealName
         String laborCategory
         String chargeCode
         String taskName
