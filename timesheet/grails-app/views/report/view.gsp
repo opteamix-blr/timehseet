@@ -5,6 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
         <title>Reports</title>
+        <resource:dateChooser />
     </head>
     <body>
         <div class="nav">
@@ -16,24 +17,29 @@
             <div class="message">${flash.message}</div>
             </g:if>
             <div class="dialog">
+              <g:form name="report" action="exportTimesheets">
                 <table>
                     <tbody>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name">Report 1</td>
-                            
-                            <td valign="top" class="value"><g:link action="exportTimesheets">Export All Approved Timesheets</g:link></td>
-                            
+                        <tr>
+                          <th>Date within week that you wish to report on (no selection means all timesheets)</th>
+                          <th>Charge Code</th>
                         </tr>
-                        <tr class="prop">
-                            <td valign="top" class="name">Report 3</td>
-
-                            <td valign="top" class="value"><a href="">link 3</a></td>
+                        <tr>
+                          <td>
+                            <richui:dateChooser firstDayOfWeek="Sa" name="dateOnWeek" id="dateOnWeek" format="MM/dd/yyyy"/>
+                          </td>
+                          <td>
+                            <g:select optionValue="chargeNumber"
+                                      name="chargeNumber"
+                                      from="${com.ewconline.timesheet.ChargeCode.listOrderByChargeNumber()}"
+                                      noSelection="${['null':'Select One...']}"/>
+                          </td>
 
                         </tr>
-                    
                     </tbody>
                 </table>
+                <g:submitButton name="submit" value="Submit"/>
+              </g:form>
             </div>
         </div>
     </body>
