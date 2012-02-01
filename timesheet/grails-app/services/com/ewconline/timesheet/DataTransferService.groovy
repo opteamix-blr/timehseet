@@ -25,6 +25,8 @@ class DataTransferService {
             
             order("u.lastName", "asc")
         }
+
+        allTimesheets = allTimesheets.unique()
         allTimesheets.each { t ->
             def allEntries = t.timesheetEntries
             allEntries.each { te ->
