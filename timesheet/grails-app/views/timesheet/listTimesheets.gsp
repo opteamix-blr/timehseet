@@ -19,6 +19,9 @@
 		<g:if test="${flash.message}">
         <div class="message">${flash.message}</div>
         </g:if>
+                            <g:if test="${motd}">
+            <div class="motd">${motd.message}</div>
+            </g:if>
 		<div class="list">
 			<table>
 			<thead>

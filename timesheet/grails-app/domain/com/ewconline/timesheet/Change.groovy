@@ -18,8 +18,8 @@ class Change {
     static constraints = {
         domainModelName(blank:false)
         fieldName(blank:false)
-        previousValue(nullable:true)
-        newValue(blank:false)
+        previousValue(nullable:true, maxSize:2500)
+        newValue(blank:false, maxSize:2500)
         userName(nullable:true)
         referenceId(blank:false)
     }

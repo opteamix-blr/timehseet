@@ -58,6 +58,8 @@ class TimesheetController {
         auditingService.setCurrentUserName(user.username)
         params.max = params.max ? params.max : (session.max ? session.max : 10)
         session.max = params.max
+        def motd = MessageOfTheDay.findByExpirationDateGreaterThan(new Date());
+        log.debug motd
         def timesheetList = timesheetManagerService.retrieveTimesheets(user, params)
         if(params?.format && params.format != "html"){
             response.contentType = ConfigurationHolder.config.grails.mime.types[params.format]
@@ -67,7 +69,12 @@ class TimesheetController {
 
             exportService.export(params.format, response.outputStream,taskDto, [:], [:]) }
 
-        [timesheetList:timesheetList, timesheetInstanceTotal:params?.totCount?.toInteger(), max:params.max]
+        [
+            timesheetList:timesheetList,
+            timesheetInstanceTotal:params?.totCount?.toInteger(),
+            max:params.max,
+            motd: motd
+        ]
     }
 
     def create = {

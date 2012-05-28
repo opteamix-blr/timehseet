@@ -49,6 +49,9 @@ function grandTotal() {
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>
 		</g:if>
+                <g:if test="${motd}">
+                <div class="motd">${motd.message}</div>
+                </g:if>
 		<g:hasErrors bean="${timesheetInstance}">
             <div class="errors">
                 <g:renderErrors bean="${timesheetInstance}" as="list" />
