@@ -161,6 +161,14 @@ input:focus, select:focus, textarea:focus {
     padding: 5px 5px 5px 30px
 }
 
+.motd {
+    background: #e4e3e3 url(../images/skin/lightbulb.png) 8px 50% no-repeat;
+    border: 1px solid #bab9b9;
+    color: #5c5b5b;
+    margin: 10px 0 5px 0;
+    padding: 5px 5px 5px 30px;
+}
+
 div.errors {
     background: #fff3f3;
     border: 1px solid red;
