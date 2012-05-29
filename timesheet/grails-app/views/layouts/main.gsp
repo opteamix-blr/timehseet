@@ -66,6 +66,7 @@
               <li><a href="${createLinkTo(dir:'', file:'laborCategory/list')}">Labor Categories</a></li>
               <!-- createLinkTo(dir:'', file:'reports/list')-->
               <li><a href="${createLinkTo(dir:'report/view')}">Reporting</a></li>
+              <li><a href="${createLinkTo(dir:'messageOfTheDay/list')}">Message of the Day</a></li>
             </g:if>
             <li><p></p>
             </li>
